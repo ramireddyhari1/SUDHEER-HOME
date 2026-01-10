@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { Container } from "@/components/ui/Container";
 
 const collections = [
     {
@@ -25,7 +26,7 @@ const collections = [
         id: 3,
         title: "Today's Special",
         badge: "Healthy Picks",
-        image: "https://images.unsplash.com/photo-1515543904379-3d757afe72e3?q=80&w=400&auto=format&fit=crop",
+        image: "/products/features/healthy-juice.png",
         href: "/products?category=healthy",
         type: "standard"
     },
@@ -41,7 +42,7 @@ const collections = [
         id: 5,
         title: "Sankranti Special",
         badge: "Featured",
-        image: "https://images.unsplash.com/photo-1605333396715-57772fa5f5df?q=80&w=400&auto=format&fit=crop",
+        image: "/products/features/sankranti-pongal.png",
         href: "/products?category=festive",
         type: "standard"
     },
@@ -57,7 +58,7 @@ const collections = [
         id: 7,
         title: "Ghee Sweets",
         badge: "Bestseller",
-        image: "https://images.unsplash.com/photo-1579372786545-ea65448d7af1?q=80&w=400&auto=format&fit=crop",
+        image: "/products/features/mysore-pak.png",
         href: "/products?category=sweets",
         type: "standard"
     }
@@ -66,7 +67,7 @@ const collections = [
 export function FeaturedCollections() {
     return (
         <section className="py-8 bg-[#FFFDF5]">
-            <div className="w-full pl-4 md:pl-8"> {/* Left aligned start, full width right */}
+            <Container>
                 <div className="mb-6">
                     <h2 className="font-serif text-xl md:text-2xl font-bold text-gray-900 border-b-2 border-black inline-block pb-1">
                         Featured this week!
@@ -74,7 +75,7 @@ export function FeaturedCollections() {
                 </div>
 
                 {/* Full Width Scroll Container */}
-                <div className="flex gap-4 overflow-x-auto pb-6 scrollbar-hide pr-4">
+                <div className="flex gap-4 overflow-x-auto pb-6 no-scrollbar pr-4">
                     {collections.map((item) => (
                         <Link
                             key={item.id}
@@ -129,6 +130,20 @@ export function FeaturedCollections() {
                         </Link>
                     ))}
                 </div>
+            </Container>
+
+            {/* Branding Bar */}
+            <div className="w-full bg-[#155E42] py-2 mt-8 flex items-center justify-center gap-4 relative overflow-hidden group">
+
+                {/* Left Animated Line */}
+                <div className="h-[1px] w-12 md:w-24 bg-gradient-to-r from-transparent via-[#FFD700] to-[#FFD700] animate-pulse opacity-80"></div>
+
+                <h3 className="text-white font-serif text-sm tracking-[0.2em] uppercase relative z-10 drop-shadow-sm whitespace-nowrap">
+                    Vaishnavi Organics
+                </h3>
+
+                {/* Right Animated Line */}
+                <div className="h-[1px] w-12 md:w-24 bg-gradient-to-l from-transparent via-[#FFD700] to-[#FFD700] animate-pulse opacity-80"></div>
             </div>
         </section>
     );

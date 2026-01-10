@@ -1,0 +1,3 @@
+  ssh root@165.232.176.157
+ cd /var/www
+/var/www# ls

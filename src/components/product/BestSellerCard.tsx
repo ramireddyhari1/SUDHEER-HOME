@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCart } from "@/context/CartContext";
 import { Star, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { AnimatedTractorButton } from "@/components/ui/AnimatedTractorButton";
 
 interface BestSellerCardProps {
     id: string;
@@ -34,7 +37,25 @@ export function BestSellerCard({
     isBestSeller,
     badge
 }: BestSellerCardProps) {
+    const router = useRouter();
+    const { addToCart } = useCart();
     const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
+
+    const handleAddToCart = () => {
+        addToCart({
+            id,
+            name,
+            price,
+            image,
+            weight,
+            quantity: 1
+        });
+
+        // Wait for tractor animation (2000ms) then navigate
+        setTimeout(() => {
+            router.push("/cart");
+        }, 2000);
+    };
 
     return (
         <div className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
@@ -118,13 +139,10 @@ export function BestSellerCard({
                         <span className="text-lg font-bold text-orange-500">Rs. {price}</span>
                     </div>
 
-                    <Button className="w-full bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-full h-10 shadow-md transition-colors flex items-center justify-center gap-2 text-base">
-                        {/* Pot Icon SVG Mock */}
-                        <svg className="h-5 w-5 fill-white" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z" />
-                        </svg>
-                        Add to cart
-                    </Button>
+                    <AnimatedTractorButton
+                        className="bg-[#F59E0B] hover:bg-[#D97706]"
+                        onClick={handleAddToCart}
+                    />
                 </div>
             </div>
         </div>

@@ -4,28 +4,30 @@ import { useState } from "react";
 import Link from "next/link";
 import { Menu, X, ShoppingBag, Search, User, Heart, ChevronDown, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { useCart } from "@/context/CartContext";
 
 // Navigation Data with badges
 const navigation = [
     { name: "Home", href: "/" },
     { name: "BIG SALE", href: "/products", badge: "Get 70% Extra!", badgeColor: "bg-red-700 text-white", icon: "⚡" },
     { name: "SIRIPURAPU VARI STORE", href: "/products", hasDropdown: true },
-    { name: "Daily Essentials", href: "/products?category=staples", badge: "Upto 20% OFF*", badgeColor: "bg-pink-600 text-white" },
+
     { name: "Newest Arrivals", href: "/products?sort=new", badge: "Trending", badgeColor: "bg-amber-400 text-black" },
     { name: "Global Shipping", href: "/shipping", badge: "Open Now", badgeColor: "bg-black text-white" },
 ];
 
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const { cartCount } = useCart();
 
     return (
-        <div className="w-full">
+        <div className="w-full sticky top-0 z-50">
 
 
             {/* Main Header */}
-            <header className="sticky top-0 z-40 w-full bg-white border-b shadow-sm transition-all duration-300">
+            <header className="w-full bg-white border-b shadow-sm transition-all duration-300">
                 <div className="w-full px-4 lg:px-8">
-                    <div className="flex h-20 md:h-24 lg:h-28 items-center justify-between gap-4">
+                    <div className="flex h-16 md:h-20 lg:h-24 items-center justify-between gap-4">
 
                         {/* Logo Area */}
                         <div className="flex-shrink-0 flex items-center gap-3">
@@ -38,7 +40,7 @@ export function Navbar() {
 
                             <Link href="/" className="flex items-center gap-2 group">
                                 {/* Logo Video - Visual Overflow for Impact */}
-                                <div className="relative h-20 w-20 md:h-24 md:w-24 lg:h-28 lg:w-28 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 origin-left">
+                                <div className="relative h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 origin-left">
                                     <div className="absolute inset-0 flex items-center justify-center scale-[1.6] origin-left">
                                         <video
                                             src="/logo.mp4"
@@ -55,7 +57,7 @@ export function Navbar() {
                         </div>
 
                         {/* Desktop Navigation */}
-                        <nav className="hidden lg:flex items-center gap-8 pt-2">
+                        <nav className="hidden lg:flex items-center gap-6 xl:gap-8 pt-2">
                             {navigation.map((item) => (
                                 <Link
                                     key={item.name}
@@ -67,31 +69,42 @@ export function Navbar() {
                                             {item.badge}
                                         </span>
                                     )}
-                                    <span className="text-[15px] font-medium text-gray-900 group-hover:text-primary transition-colors flex items-center gap-1">
+                                    <span className="text-[15px] font-medium text-gray-800 group-hover:text-primary transition-colors flex items-center gap-1">
                                         {item.icon === "⚡" && <span className="text-orange-500">⚡</span>}
                                         {item.name}
-                                        {item.hasDropdown && <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2]" />}
+                                        {item.hasDropdown && <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2.5]" />}
                                     </span>
                                 </Link>
                             ))}
+
+                            {/* My Account & More - Text Style */}
+                            <button className="relative group flex flex-col items-center ml-2">
+                                <span className="text-[15px] font-medium text-gray-800 group-hover:text-primary transition-colors flex items-center gap-1">
+                                    My Account & More
+                                    <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2.5]" />
+                                </span>
+                            </button>
                         </nav>
 
                         {/* Icons / Actions */}
-                        <div className="flex items-center gap-1 sm:gap-4">
+                        <div className="flex items-center gap-2 sm:gap-4 ml-2">
                             <button className="p-2 hover:bg-secondary/5 rounded-full transition-colors" aria-label="Search">
-                                <Search className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
+                                <Search className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80 stroke-[2]" />
                             </button>
-                            <button className="hidden sm:block p-2 hover:bg-secondary/5 rounded-full transition-colors" aria-label="Account">
-                                <User className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
-                            </button>
+                            {/* Wishlist */}
                             <button className="hidden sm:block p-2 hover:bg-secondary/5 rounded-full transition-colors relative" aria-label="Wishlist">
-                                <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
-                                <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full">0</span>
+                                <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80 stroke-[2]" />
+                                <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full font-bold">0</span>
                             </button>
+                            {/* Cart */}
                             <Link href="/cart">
                                 <button className="p-2 hover:bg-secondary/5 rounded-full transition-colors relative" aria-label="Cart">
-                                    <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
-                                    <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full">0</span>
+                                    <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80 stroke-[2]" />
+                                    {cartCount > 0 && (
+                                        <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full font-bold">
+                                            {cartCount}
+                                        </span>
+                                    )}
                                 </button>
                             </Link>
                         </div>
