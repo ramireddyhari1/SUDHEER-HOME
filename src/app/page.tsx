@@ -1,5 +1,6 @@
 import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { BestSellers } from "@/components/home/BestSellers";
+import { OffersTicker } from "@/components/home/OffersTicker";
 import { StorySection } from "@/components/home/StorySection";
 import { ComboPacks } from "@/components/home/ComboPacks";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
@@ -14,6 +15,7 @@ export default function Home() {
       <HeroCarousel />
       <div className="relative z-10">
         <BestSellers />
+        <OffersTicker />
         <StorySection />
         <FeaturedCollections />
         <ProductCategories />

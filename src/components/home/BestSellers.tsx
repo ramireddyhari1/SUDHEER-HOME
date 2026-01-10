@@ -8,55 +8,55 @@ import { Container } from "@/components/ui/Container";
 
 const bestSellers = [
     {
-        id: "mysorepak",
-        name: "Ghee Mysorepak",
-        englishName: "(Soft)",
-        price: 199,
-        originalPrice: 298,
-        weight: "2 x 100 g",
-        image: "/products/mysorepak.png",
-        tags: ["Melt in Mouth", "Authentic Taste", "No Preservatives", "Festive Spl"],
-        rating: 4.8,
-        reviews: 880,
+        id: "jaggery-cubes",
+        name: "Palm Jaggery Cubes",
+        englishName: "(Karupatti)",
+        price: 260,
+        originalPrice: 320,
+        weight: "500 g",
+        image: "/products/jaggery cubes.png",
+        tags: ["Natural Sweetener", "Iron Rich", "Bone Health"],
+        rating: 4.9,
+        reviews: 420,
         isBestSeller: true
     },
     {
-        id: "abc-mix",
-        name: "ABC Milk Mix",
-        englishName: "(Apple, Beetroot, Carrot)",
-        price: 339,
-        originalPrice: 355,
-        weight: "250 g",
-        image: "/products/abc-mix.png",
-        tags: ["No White Sugar", "No Added Colors", "No Preservatives", "Ready to Mix"],
+        id: "black-rice",
+        name: "Black Rice",
+        englishName: "(Kavuni Arisi)",
+        price: 350,
+        originalPrice: 450,
+        weight: "1 kg",
+        image: "/products/black rice.png",
+        tags: ["Antioxidants", "Superfood", "Diabetes Friendly"],
         rating: 4.8,
-        reviews: 633,
+        reviews: 185,
         isBestSeller: true
     },
     {
-        id: "athirasam",
-        name: "Athirasam",
-        englishName: "(Traditional Jaggery Sweet)",
-        price: 159,
-        originalPrice: 169,
-        weight: "150 g",
-        image: "/products/athirasam.png",
-        tags: ["No White Sugar", "No Additives", "Jaggery Based", "Festive Spl"],
+        id: "jaggery-powder",
+        name: "Palm Jaggery Powder",
+        englishName: "(Nattu Sakkarai)",
+        price: 280,
+        originalPrice: 340,
+        weight: "500 g",
+        image: "/products/jaggery powder.png",
+        tags: ["Chemical Free", "Mineral Rich", "Coffee Ready"],
+        rating: 4.9,
+        reviews: 310,
+        isBestSeller: true
+    },
+    {
+        id: "brown-rice",
+        name: "Traditional Brown Rice",
+        englishName: "(Kaikuthal Arisi)",
+        price: 180,
+        originalPrice: 240,
+        weight: "1 kg",
+        image: "/products/brown rice.png",
+        tags: ["High Fiber", "Weight Loss", "Farm Fresh"],
         rating: 4.7,
-        reviews: 805,
-        isBestSeller: true
-    },
-    {
-        id: "banana-chips",
-        name: "Kerala Banana Chips",
-        englishName: "(100% Coconut Oil)",
-        price: 399,
-        originalPrice: 558,
-        weight: "3 x 200 g",
-        image: "/products/banana-chips.png",
-        tags: ["Super Crispy", "Kerala Special", "No Palm Oil", "No Preservatives"],
-        rating: 4.8,
-        reviews: 897,
+        reviews: 150,
         isBestSeller: true
     }
 ];
@@ -82,7 +82,7 @@ export function BestSellers() {
                 </div>
 
                 {/* Grid Layout (Only 4 items) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
                     {bestSellers.map((product) => (
                         <BestSellerCard key={product.id} {...product} />
                     ))}

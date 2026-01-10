@@ -13,6 +13,18 @@ import Image from "next/image";
 const slides = [
     {
         id: 0,
+        title: "First Order Special",
+        subtitle: "Welcome Offer",
+        description: "Get flat 10% OFF on your first order. Use code: SWEET10",
+        image: "/POSTERS/10-percent-off-first-order.png",
+        cta: "Claim Offer",
+        link: "/products",
+        align: "center",
+        theme: "gold",
+        hideText: true
+    },
+    {
+        id: 1,
         title: "Happy Sankranthi",
         subtitle: "Festival of Harvest",
         description: "",
@@ -24,33 +36,33 @@ const slides = [
         hideText: true
     },
     {
-        id: 1,
+        id: 2,
         title: "Grand Sweets Festival",
         subtitle: "Authentic Traditon",
         description: "Experience the divine taste of home-made Mysorepak, Laddoos & more.",
-        image: "https://images.unsplash.com/photo-1605333396715-57772fa5f5df?q=80&w=1600&auto=format&fit=crop", // Festive/Sweets (Orange/Red)
+        image: "https://images.unsplash.com/photo-1605333396715-57772fa5f5df?q=80&w=1600&auto=format&fit=crop",
         cta: "Shop Sweets",
         link: "/products?category=sweets",
         align: "left",
         theme: "gold"
     },
     {
-        id: 2,
+        id: 3,
         title: "Crunchy Goodness",
         subtitle: "Savory Delights",
         description: "Perfect tea-time companions. Hand-crafted Murukku, Mixture & Chips.",
-        image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=1600&auto=format&fit=crop", // Savories (Yellow/Brown)
+        image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=1600&auto=format&fit=crop",
         cta: "Explore Savories",
         link: "/products?category=savories",
         align: "right",
         theme: "orange"
     },
     {
-        id: 3,
+        id: 4,
         title: "Taste of Home, Anywhere",
         subtitle: "Global Shipping",
         description: "We ship fresh sweets & snacks to over 20+ countries worldwide.",
-        image: "https://images.unsplash.com/photo-1526304640156-503db427b3d3?q=80&w=1600&auto=format&fit=crop", // Travel/Shipping (Blue/Green)
+        image: "https://images.unsplash.com/photo-1526304640156-503db427b3d3?q=80&w=1600&auto=format&fit=crop",
         cta: "Ship Now",
         link: "/shipping",
         align: "center",

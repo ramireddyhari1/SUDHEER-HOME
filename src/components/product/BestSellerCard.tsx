@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Star } from "lucide-react";
+import { Star, BadgeCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 
 interface BestSellerCardProps {
@@ -78,7 +78,7 @@ export function BestSellerCard({
             </div>
 
             {/* Content Section */}
-            <div className="p-4 flex flex-col gap-2 flex-1">
+            <div className="p-3 flex flex-col gap-1.5 flex-1">
                 <h3 className="font-bold text-gray-900 leading-tight">
                     <Link href={`/products/${id}`} className="hover:text-primary transition-colors">
                         {name} <span className="font-normal text-gray-600">{englishName}</span>
@@ -86,9 +86,9 @@ export function BestSellerCard({
                 </h3>
 
                 {/* Tags */}
-                <div className="flex flex-wrap gap-2 text-[10px] font-medium text-orange-600">
+                <div className="flex flex-wrap gap-1.5 text-[9px] font-medium text-gray-700">
                     {tags.map(tag => (
-                        <span key={tag} className="border border-orange-200 bg-orange-50 px-2 py-0.5 rounded-full whitespace-nowrap">
+                        <span key={tag} className="border border-orange-300 bg-white px-2 py-0.5 rounded-full whitespace-nowrap">
                             {tag}
                         </span>
                     ))}
@@ -99,6 +99,7 @@ export function BestSellerCard({
                     <span className="bg-[#155E42] text-white text-xs font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
                         {rating} <Star className="h-3 w-3 fill-white text-white" />
                     </span>
+                    <BadgeCheck className="h-4 w-4 text-red-500 fill-white" />
                     <span className="text-xs text-gray-500 font-medium">({reviews})</span>
                 </div>
 
@@ -110,19 +111,17 @@ export function BestSellerCard({
                 </div>
 
                 {/* Price Section */}
-                <div className="mt-auto pt-3">
-                    <div className="flex items-center gap-2">
-                        <span className="text-xs font-bold text-[#155E42]">{discount}% OFF</span>
-                    </div>
-                    <div className="flex items-baseline gap-2">
+                <div className="mt-auto pt-2">
+                    <div className="text-xs font-bold text-[#004D40] mb-0.5">{discount}% OFF</div>
+                    <div className="flex items-baseline gap-2 mb-3">
                         <span className="text-sm text-gray-400 line-through">Rs. {originalPrice}</span>
-                        <span className="text-lg font-bold text-orange-600">Rs. {price}</span>
+                        <span className="text-lg font-bold text-orange-500">Rs. {price}</span>
                     </div>
 
-                    <Button className="w-full mt-3 bg-orange-400 hover:bg-orange-500 text-white font-bold rounded-full h-10 shadow-md transition-colors flex items-center justify-center gap-2">
+                    <Button className="w-full bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded-full h-10 shadow-md transition-colors flex items-center justify-center gap-2 text-base">
                         {/* Pot Icon SVG Mock */}
-                        <svg className="h-5 w-5 fill-current" viewBox="0 0 24 24">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z" /> {/* Simplified pot/bowl shape */}
+                        <svg className="h-5 w-5 fill-white" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z" />
                         </svg>
                         Add to cart
                     </Button>
