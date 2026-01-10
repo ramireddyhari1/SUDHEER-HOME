@@ -12,15 +12,72 @@ export default function CheckoutPage() {
     const { cartTotal } = useCart();
     const [paymentMethod, setPaymentMethod] = useState<"online" | "cod">("online");
     const [orderPlaced, setOrderPlaced] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    // Form State
+    const [formData, setFormData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        pincode: "",
+        address: "",
+        city: "",
+        state: "Select State"
+    });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+    };
 
     // Derived state
     const subtotal = cartTotal;
     const shippingCost = subtotal > 500 ? 0 : 50;
     const grandTotal = subtotal + shippingCost;
 
-    const handlePlaceOrder = () => {
-        setOrderPlaced(true);
-        // Here you would typically clear the cart and redirect to success
+    const handlePlaceOrder = async () => {
+        // Basic Validation
+        if (!formData.name || !formData.email || !formData.phone || !formData.address || !formData.pincode) {
+            alert("Please fill in all shipping details.");
+            return;
+        }
+
+        setLoading(true);
+        const orderId = `VO-${Math.floor(10000 + Math.random() * 90000)}`;
+
+        try {
+            // Call Notification API
+            const response = await fetch('/api/notify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    orderId,
+                    amount: grandTotal,
+                    paymentMethod,
+                    customer: formData,
+                    items: [] // In a real app, pass 'cart' items here. For now we use context if available, or empty.
+                })
+            });
+
+            const result = await response.json();
+
+            if (!result.success) {
+                console.error("Notification API Failed:", result);
+                alert(`Order Placed, but confirmation email failed: ${result.error}. ${result.details?.response || ''}`);
+                // Still allow success screen to show, but warn user
+            }
+
+            // Simulate slight delay for UX
+            setTimeout(() => {
+                setOrderPlaced(true);
+                setLoading(false);
+            }, 1500);
+
+        } catch (error) {
+            console.error("Order failed:", error);
+            setLoading(false);
+            alert("Something went wrong. Please try again.");
+        }
     };
 
     if (orderPlaced) {
@@ -55,7 +112,7 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="min-h-screen bg-[#FDFBF7] py-8 md:py-12">
+        <div className="min-h-screen bg-[#FDFBF7] py-8 md:py-12 pb-32">
             <Container>
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
@@ -95,27 +152,78 @@ export default function CheckoutPage() {
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                                <input type="text" placeholder="e.g. Aditi Sharma" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]" />
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={formData.name}
+                                    onChange={handleInputChange}
+                                    placeholder="e.g. Aditi Sharma"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                />
+                            </div>
+                            <div className="md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder="e.g. aditi@example.com"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-                                <input type="tel" placeholder="+91 98765 43210" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]" />
+                                <input
+                                    type="tel"
+                                    name="phone"
+                                    value={formData.phone}
+                                    onChange={handleInputChange}
+                                    placeholder="+91 98765 43210"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Pincode</label>
-                                <input type="text" placeholder="e.g. 560034" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]" />
+                                <input
+                                    type="text"
+                                    name="pincode"
+                                    value={formData.pincode}
+                                    onChange={handleInputChange}
+                                    placeholder="e.g. 560034"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                />
                             </div>
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">Address (House No, Building, Street)</label>
-                                <textarea rows={2} placeholder="e.g. Flat 402, Green Heights, HSR Layout" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]" />
+                                <textarea
+                                    rows={2}
+                                    name="address"
+                                    value={formData.address}
+                                    onChange={handleInputChange}
+                                    placeholder="e.g. Flat 402, Green Heights, HSR Layout"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">City</label>
-                                <input type="text" placeholder="e.g. Bengaluru" className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]" />
+                                <input
+                                    type="text"
+                                    name="city"
+                                    value={formData.city}
+                                    onChange={handleInputChange}
+                                    placeholder="e.g. Bengaluru"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                />
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">State</label>
-                                <select className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42] bg-white">
+                                <select
+                                    name="state"
+                                    value={formData.state}
+                                    onChange={handleInputChange}
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42] bg-white"
+                                >
                                     <option>Select State</option>
                                     <option>Andhra Pradesh</option>
                                     <option>Telangana</option>
@@ -181,12 +289,7 @@ export default function CheckoutPage() {
                             </div>
                         </div>
 
-                        {/* Place Order Button */}
-                        <AnimatedTractorButton
-                            onClick={handlePlaceOrder}
-                            className="w-full text-lg py-4 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                            label={`Place Order • ₹${grandTotal}`}
-                        />
+                        {/* Place Order Button moved to fixed bottom bar */}
 
                         <p className="text-center text-xs text-muted-foreground mt-4 flex items-center justify-center gap-2">
                             <CheckCircle2 className="h-3 w-3" /> Secure checkout powered by Razorpay
@@ -194,6 +297,23 @@ export default function CheckoutPage() {
                     </div>
                 </div>
             </Container>
+
+            {/* Fixed Bottom Bar for Place Order */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-50">
+                <Container>
+                    <div className="flex items-center gap-4 justify-between">
+                        <div>
+                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Total to Pay</p>
+                            <p className="text-xl font-bold text-gray-900">₹{grandTotal}</p>
+                        </div>
+                        <AnimatedTractorButton
+                            onClick={handlePlaceOrder}
+                            className="w-full md:w-auto md:min-w-[300px] h-12 text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg"
+                            label="Place Order"
+                        />
+                    </div>
+                </Container>
+            </div>
         </div>
     );
 }
