@@ -1,0 +1,134 @@
+"use client";
+
+import { useState } from "react";
+import Link from "next/link";
+import { Menu, X, ShoppingBag, Search, User, Heart, ChevronDown, MapPin } from "lucide-react";
+import { Container } from "@/components/ui/Container";
+
+// Navigation Data with badges
+const navigation = [
+    { name: "Home", href: "/" },
+    { name: "BIG SALE", href: "/products", badge: "Get 70% Extra!", badgeColor: "bg-red-700 text-white", icon: "⚡" },
+    { name: "SIRIPURAPU VARI STORE", href: "/products", hasDropdown: true },
+    { name: "Daily Essentials", href: "/products?category=staples", badge: "Upto 20% OFF*", badgeColor: "bg-pink-600 text-white" },
+    { name: "Newest Arrivals", href: "/products?sort=new", badge: "Trending", badgeColor: "bg-amber-400 text-black" },
+    { name: "Global Shipping", href: "/shipping", badge: "Open Now", badgeColor: "bg-black text-white" },
+];
+
+export function Navbar() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+        <div className="w-full">
+
+
+            {/* Main Header */}
+            <header className="sticky top-0 z-40 w-full bg-white border-b shadow-sm transition-all duration-300">
+                <div className="w-full px-4 lg:px-8">
+                    <div className="flex h-20 md:h-24 lg:h-28 items-center justify-between gap-4">
+
+                        {/* Logo Area */}
+                        <div className="flex-shrink-0 flex items-center gap-3">
+                            <button
+                                onClick={() => setIsOpen(!isOpen)}
+                                className="lg:hidden p-2 -ml-2 text-foreground"
+                            >
+                                <Menu className="h-6 w-6" />
+                            </button>
+
+                            <Link href="/" className="flex items-center gap-2 group">
+                                {/* Logo Video - Visual Overflow for Impact */}
+                                <div className="relative h-20 w-20 md:h-24 md:w-24 lg:h-28 lg:w-28 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 origin-left">
+                                    <div className="absolute inset-0 flex items-center justify-center scale-[1.6] origin-left">
+                                        <video
+                                            src="/logo.mp4"
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            className="h-full w-full object-contain mix-blend-multiply"
+                                            style={{ filter: "brightness(1.1) contrast(1.1)" }}
+                                        />
+                                    </div>
+                                </div>
+                            </Link>
+                        </div>
+
+                        {/* Desktop Navigation */}
+                        <nav className="hidden lg:flex items-center gap-8 pt-2">
+                            {navigation.map((item) => (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className="relative group flex flex-col items-center"
+                                >
+                                    {item.badge && (
+                                        <span className={`absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm ${item.badgeColor}`}>
+                                            {item.badge}
+                                        </span>
+                                    )}
+                                    <span className="text-[15px] font-medium text-gray-900 group-hover:text-primary transition-colors flex items-center gap-1">
+                                        {item.icon === "⚡" && <span className="text-orange-500">⚡</span>}
+                                        {item.name}
+                                        {item.hasDropdown && <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2]" />}
+                                    </span>
+                                </Link>
+                            ))}
+                        </nav>
+
+                        {/* Icons / Actions */}
+                        <div className="flex items-center gap-1 sm:gap-4">
+                            <button className="p-2 hover:bg-secondary/5 rounded-full transition-colors" aria-label="Search">
+                                <Search className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
+                            </button>
+                            <button className="hidden sm:block p-2 hover:bg-secondary/5 rounded-full transition-colors" aria-label="Account">
+                                <User className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
+                            </button>
+                            <button className="hidden sm:block p-2 hover:bg-secondary/5 rounded-full transition-colors relative" aria-label="Wishlist">
+                                <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
+                                <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full">0</span>
+                            </button>
+                            <Link href="/cart">
+                                <button className="p-2 hover:bg-secondary/5 rounded-full transition-colors relative" aria-label="Cart">
+                                    <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80" />
+                                    <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full">0</span>
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            {/* Mobile Menu Overlay */}
+            {isOpen && (
+                <div className="fixed inset-0 z-50 bg-black/50 lg:hidden" onClick={() => setIsOpen(false)}>
+                    <div className="absolute left-0 top-0 h-full w-4/5 max-w-sm bg-white shadow-xl p-6 overflow-y-auto" onClick={e => e.stopPropagation()}>
+                        <div className="flex justify-between items-center mb-8">
+                            <span className="font-serif font-bold text-xl text-primary">Menu</span>
+                            <button onClick={() => setIsOpen(false)}><X className="h-6 w-6" /></button>
+                        </div>
+                        <div className="flex flex-col gap-4">
+                            {navigation.map((item) => (
+                                <Link
+                                    key={item.name}
+                                    href={item.href}
+                                    className="text-base font-medium py-2 border-b border-gray-100 flex justify-between items-center"
+                                    onClick={() => setIsOpen(false)}
+                                >
+                                    <span className="flex items-center gap-2">
+                                        {item.icon} {item.name}
+                                    </span>
+                                    {item.badge && (
+                                        <span className={`text-[10px] px-2 py-0.5 rounded-full ${item.badgeColor}`}>
+                                            {item.badge}
+                                        </span>
+                                    )}
+                                </Link>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
+    );
+}
