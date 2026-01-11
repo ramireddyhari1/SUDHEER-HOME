@@ -24,9 +24,9 @@ const testimonials = [
 
 export function Testimonials() {
     return (
-        <section className="py-20 bg-[#FDFBF7]">
+        <section className="py-8 md:py-20 bg-[#FDFBF7]">
             <Container>
-                <div className="text-center mb-16">
+                <div className="text-center mb-8 md:mb-16">
                     <h2 className="font-serif text-3xl md:text-4xl font-bold mb-4">Family Favorites</h2>
                     <p className="text-muted-foreground">Hear from our community of happy families</p>
                 </div>

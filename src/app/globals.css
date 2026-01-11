@@ -61,6 +61,18 @@
   .animate-shimmer {
     animation: shimmer 2s infinite linear;
   }
+
+  /* Tractor Drive Animation */
+  @keyframes drive {
+    0% {
+      transform: translateX(-200px);
+    }
+
+    100% {
+      transform: translateX(120vw);
+      /* Move fully off screen */
+    }
+  }
 }
 
 body {

@@ -7,6 +7,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { VideoLoader } from "@/components/ui/VideoLoader";
 import { FloatingButtons } from "@/components/layout/FloatingButtons";
 import { CartSpacer } from "@/components/layout/CartSpacer";
+import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 
 const playfair = Playfair_Display({
   variable: "--font-serif",
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
 };
 
 import { CartProvider } from "@/context/CartContext";
+import { AuthProvider } from "@/context/AuthContext";
 
 export default function RootLayout({
   children,
@@ -33,23 +35,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${playfair.variable} ${inter.variable} antialiased bg-background text-foreground font-sans`}
       >
-        <CartProvider>
-          <div className="flex min-h-screen flex-col">
-            <AnnouncementBar />
-            <VideoLoader />
-            <FloatingButtons />
-            <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-            <CartSpacer />
-          </div>
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <div className="flex min-h-screen flex-col">
+              <AnnouncementBar />
+              <VideoLoader />
+              <FloatingButtons />
+              <Navbar />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+              <CartSpacer />
+              <MobileBottomNav />
+            </div>
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -8,26 +8,26 @@ import { Container } from "@/components/ui/Container";
 const collections = [
     {
         id: 1,
-        title: "Ready to Mix",
+        title: "Jaggery Products",
         badge: "Featured",
-        image: "https://images.unsplash.com/photo-1610970881699-44a5587cabec?q=80&w=400&auto=format&fit=crop",
-        href: "/products?category=mixes",
+        image: "/products/features/jaggery-mix.png",
+        href: "/products?category=jaggery",
         type: "standard"
     },
     {
         id: 2,
         title: "Winter Special",
         badge: "Seasonal Picks",
-        image: "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?q=80&w=400&auto=format&fit=crop",
-        href: "/products?category=seasonal",
+        image: "/products/features/winter-ghee.png",
+        href: "/products?category=ghee",
         type: "standard"
     },
     {
         id: 3,
-        title: "Today's Special",
+        title: "Healthy Millets",
         badge: "Healthy Picks",
-        image: "/products/features/healthy-juice.png",
-        href: "/products?category=healthy",
+        image: "/products/features/healthy-millet.png",
+        href: "/products?category=millets",
         type: "standard"
     },
     {
@@ -40,33 +40,33 @@ const collections = [
     },
     {
         id: 5,
-        title: "Sankranti Special",
+        title: "Heritage Rice",
         badge: "Featured",
-        image: "/products/features/sankranti-pongal.png",
-        href: "/products?category=festive",
+        image: "/products/features/heritage-rice.png",
+        href: "/products?category=rice",
         type: "standard"
     },
     {
         id: 6,
-        title: "New Arrivals",
+        title: "Cold-Pressed Oils",
         badge: "Exclusive",
-        image: "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?q=80&w=400&auto=format&fit=crop",
-        href: "/products?sort=new",
+        image: "/products/features/cold-pressed-oils.png",
+        href: "/products?category=oils",
         type: "standard"
     },
     {
         id: 7,
-        title: "Ghee Sweets",
+        title: "Honey & Spices",
         badge: "Bestseller",
-        image: "/products/features/mysore-pak.png",
-        href: "/products?category=sweets",
+        image: "/products/features/honey-spices.png",
+        href: "/products?category=honey-spices",
         type: "standard"
     }
 ];
 
 export function FeaturedCollections() {
     return (
-        <section className="py-8 bg-[#FFFDF5]">
+        <section className="pt-4 pb-8 md:py-8 bg-[#FFFDF5]">
             <Container>
                 <div className="mb-6">
                     <h2 className="font-serif text-xl md:text-2xl font-bold text-gray-900 border-b-2 border-black inline-block pb-1">
@@ -74,13 +74,13 @@ export function FeaturedCollections() {
                     </h2>
                 </div>
 
-                {/* Full Width Scroll Container */}
-                <div className="flex gap-4 overflow-x-auto pb-6 no-scrollbar pr-4">
+                {/* Grid Layout for Mobile consistency */}
+                <div className="grid grid-cols-2 md:flex md:gap-4 md:overflow-x-auto md:pb-6 md:no-scrollbar md:pr-4 md:snap-x md:snap-mandatory gap-3">
                     {collections.map((item) => (
                         <Link
                             key={item.id}
                             href={item.href}
-                            className="flex-shrink-0 w-[140px] md:w-[160px] group flex flex-col items-center gap-2"
+                            className="w-full md:flex-shrink-0 md:w-[160px] group flex flex-col items-center gap-2 md:snap-center"
                         >
                             {/* Card Image Container */}
                             <div className={`relative w-full aspect-square rounded-2xl overflow-hidden shadow-sm transition-transform duration-300 group-hover:-translate-y-1 ${item.type === 'sale_card' ? 'bg-[#1a237e]' : 'bg-white'}`}>
@@ -88,8 +88,8 @@ export function FeaturedCollections() {
                                 {item.type === 'standard' ? (
                                     <>
                                         {/* Top Badge - White Pill with Pink Text */}
-                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-b-lg shadow-sm z-10">
-                                            <span className="text-[10px] font-bold uppercase tracking-wider text-[#D81B60]">
+                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-b-lg shadow-sm z-10 w-max max-w-[90%]">
+                                            <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-[#D81B60] truncate block">
                                                 {item.badge}
                                             </span>
                                         </div>
@@ -100,6 +100,7 @@ export function FeaturedCollections() {
                                             alt={item.title}
                                             fill
                                             className="object-cover group-hover:scale-105 transition-transform duration-500"
+                                            sizes="(max-width: 768px) 50vw, 200px"
                                         />
                                     </>
                                 ) : (
@@ -118,7 +119,7 @@ export function FeaturedCollections() {
                             </div>
 
                             {/* Label */}
-                            <h3 className="font-bold text-xs md:text-sm text-center text-gray-900 leading-tight px-1">
+                            <h3 className="font-bold text-xs md:text-sm text-center text-gray-900 leading-tight px-1 line-clamp-2 min-h-[2.5em] flex items-center justify-center">
                                 {item.type === 'sale_card' ? (
                                     <span className="flex items-center justify-center gap-1 text-[#ea580c]">
                                         ⚡ {item.title}

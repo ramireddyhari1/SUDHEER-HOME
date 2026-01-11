@@ -38,7 +38,7 @@ export default function CartPage() {
     }
 
     return (
-        <div className="py-8 md:py-12 min-h-screen bg-[#FDFBF7] pb-32">
+        <div className="py-8 md:py-12 min-h-screen bg-[#FDFBF7] pb-40 md:pb-32">
             <Container>
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
                     <Link href="/">Home</Link> <ChevronRight className="h-3 w-3" /> <span>Cart</span>
@@ -167,7 +167,7 @@ export default function CartPage() {
             </Container>
 
             {/* Fixed Bottom Bar (Visible on ALL screens) - Clean Implementation */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-50">
+            <div className="fixed bottom-[60px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-40">
                 <Container>
                     <div className="flex items-center gap-4 justify-between">
                         <div>

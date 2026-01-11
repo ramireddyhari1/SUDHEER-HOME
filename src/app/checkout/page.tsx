@@ -7,9 +7,10 @@ import { useCart } from "@/context/CartContext";
 import { ChevronRight, CreditCard, Banknote, CheckCircle2, ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { AnimatedTractorButton } from "@/components/ui/AnimatedTractorButton";
+import { OrderSuccess } from "@/components/checkout/OrderSuccess";
 
 export default function CheckoutPage() {
-    const { cartTotal } = useCart();
+    const { cartTotal, cart, clearCart } = useCart();
     const [paymentMethod, setPaymentMethod] = useState<"online" | "cod">("online");
     const [orderPlaced, setOrderPlaced] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -47,6 +48,7 @@ export default function CheckoutPage() {
 
         try {
             // Call Notification API
+            // ... (fetch logic) ...
             const response = await fetch('/api/notify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -55,7 +57,7 @@ export default function CheckoutPage() {
                     amount: grandTotal,
                     paymentMethod,
                     customer: formData,
-                    items: [] // In a real app, pass 'cart' items here. For now we use context if available, or empty.
+                    items: cart || []
                 })
             });
 
@@ -63,9 +65,24 @@ export default function CheckoutPage() {
 
             if (!result.success) {
                 console.error("Notification API Failed:", result);
-                alert(`Order Placed, but confirmation email failed: ${result.error}. ${result.details?.response || ''}`);
-                // Still allow success screen to show, but warn user
+                alert(`Order Placed, but confirmation email failed: ${result.error}.`);
             }
+
+            // Save order to localStorage
+            const newOrder = {
+                id: orderId,
+                date: new Date().toISOString(),
+                amount: grandTotal,
+                status: 'Processing',
+                paymentMethod,
+                items: cart || []
+            };
+
+            const existingOrders = JSON.parse(localStorage.getItem("orders") || "[]");
+            localStorage.setItem("orders", JSON.stringify([newOrder, ...existingOrders]));
+
+            // CLEAR CART
+            clearCart(); // <--- ADDED THIS
 
             // Simulate slight delay for UX
             setTimeout(() => {
@@ -82,37 +99,17 @@ export default function CheckoutPage() {
 
     if (orderPlaced) {
         return (
-            <div className="min-h-screen bg-[#FDFBF7] py-20 flex flex-col items-center justify-center text-center px-4">
-                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
-                    <CheckCircle2 className="h-10 w-10 text-green-600" />
-                </div>
-                <h1 className="font-serif text-3xl font-bold mb-4 text-green-800">Order Placed Successfully!</h1>
-                <p className="text-gray-600 mb-8 max-w-md">
-                    Thank you for choosing Vaishnavi Organics. Your order has been received and will be processed shortly.
-                </p>
-                <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 w-full max-w-sm mb-8">
-                    <div className="flex justify-between mb-2">
-                        <span className="text-gray-500">Order ID</span>
-                        <span className="font-mono font-bold">#VO-{Math.floor(10000 + Math.random() * 90000)}</span>
-                    </div>
-                    <div className="flex justify-between mb-2">
-                        <span className="text-gray-500">Amount</span>
-                        <span className="font-bold">₹{grandTotal}</span>
-                    </div>
-                    <div className="flex justify-between">
-                        <span className="text-gray-500">Payment</span>
-                        <span className="font-medium capitalize">{paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}</span>
-                    </div>
-                </div>
-                <Link href="/products">
-                    <Button className="bg-[#155E42] hover:bg-[#0f4631]">Continue Shopping</Button>
-                </Link>
-            </div>
+            <OrderSuccess
+                orderId={`VO-${Math.floor(10000 + Math.random() * 90000)}`} // In a real app, this comes from the API response
+                amount={grandTotal}
+                paymentMethod={paymentMethod}
+            />
         );
     }
 
+
     return (
-        <div className="min-h-screen bg-[#FDFBF7] py-8 md:py-12 pb-32">
+        <div className="min-h-screen bg-[#FDFBF7] py-8 md:py-12 pb-40 md:pb-32">
             <Container>
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
@@ -299,7 +296,7 @@ export default function CheckoutPage() {
             </Container>
 
             {/* Fixed Bottom Bar for Place Order */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-50">
+            <div className="fixed bottom-[60px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-40">
                 <Container>
                     <div className="flex items-center gap-4 justify-between">
                         <div>

@@ -37,10 +37,10 @@ const categories = [
 
 export function SiripurapuStore() {
     return (
-        <section className="py-16 bg-white relative">
+        <section className="py-8 md:py-16 bg-white relative">
             <Container>
                 {/* Header Section */}
-                <div className="text-center mb-12 relative">
+                <div className="text-center mb-6 md:mb-12 relative">
                     <div className="flex items-center justify-center gap-3 mb-2">
                         <span className="text-2xl">🎀</span>
                         <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 text-center">
@@ -60,14 +60,14 @@ export function SiripurapuStore() {
                 </div>
 
                 {/* Categories Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                     {categories.map((category) => (
                         <Link
                             key={category.id}
                             href={category.link}
                             className="group relative block"
                         >
-                            <div className="relative overflow-hidden rounded-3xl bg-[#0B2136] aspect-[4/5] shadow-lg transition-transform duration-300 group-hover:-translate-y-2">
+                            <div className="relative overflow-hidden rounded-3xl bg-[#0B2136] aspect-square shadow-lg transition-transform duration-300 group-hover:-translate-y-2">
                                 {/* Yellow Top Label */}
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-[#FFC107] px-6 py-2 rounded-b-xl z-20 w-3/4 text-center shadow-md">
                                     <h3 className="font-serif font-bold text-[#0B2136] text-sm md:text-base">

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Menu, X, ShoppingBag, Search, User, Heart, ChevronDown, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 
 // Navigation Data with badges
 const navigation = [
@@ -19,6 +20,7 @@ const navigation = [
 export function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const { cartCount } = useCart();
+    const { user } = useAuth();
 
     return (
         <div className="w-full sticky top-0 z-50">
@@ -26,22 +28,25 @@ export function Navbar() {
 
             {/* Main Header */}
             <header className="w-full bg-white border-b shadow-sm transition-all duration-300">
-                <div className="w-full px-4 lg:px-8">
-                    <div className="flex h-16 md:h-20 lg:h-24 items-center justify-between gap-4">
+                <div className="w-full px-4 lg:px-8 relative">
+                    <div className="flex h-24 md:h-28 lg:h-32 items-center justify-between gap-4">
 
-                        {/* Logo Area */}
-                        <div className="flex-shrink-0 flex items-center gap-3">
+                        {/* Mobile Menu Button */}
+                        <div className="flex-shrink-0 flex items-center lg:hidden z-10">
                             <button
                                 onClick={() => setIsOpen(!isOpen)}
-                                className="lg:hidden p-2 -ml-2 text-foreground"
+                                className="p-2 -ml-2 text-foreground"
                             >
                                 <Menu className="h-6 w-6" />
                             </button>
+                        </div>
 
+                        {/* Logo Area - Centered on Mobile, Left on Desktop */}
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 lg:flex-shrink-0 lg:flex lg:items-center lg:gap-3">
                             <Link href="/" className="flex items-center gap-2 group">
                                 {/* Logo Video - Visual Overflow for Impact */}
-                                <div className="relative h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 origin-left">
-                                    <div className="absolute inset-0 flex items-center justify-center scale-[1.6] origin-left">
+                                <div className="relative h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 origin-center lg:origin-left">
+                                    <div className="absolute inset-0 flex items-center justify-center scale-[2.5] lg:scale-[1.8]">
                                         <video
                                             src="/logo.mp4"
                                             autoPlay
@@ -49,7 +54,7 @@ export function Navbar() {
                                             muted
                                             playsInline
                                             className="h-full w-full object-contain mix-blend-multiply"
-                                            style={{ filter: "brightness(1.1) contrast(1.1)" }}
+                                            style={{ filter: "brightness(1.05) contrast(1.2)" }}
                                         />
                                     </div>
                                 </div>
@@ -78,12 +83,12 @@ export function Navbar() {
                             ))}
 
                             {/* My Account & More - Text Style */}
-                            <button className="relative group flex flex-col items-center ml-2">
+                            <Link href={user ? "/account" : "/login"} className="relative group flex flex-col items-center ml-2">
                                 <span className="text-[15px] font-medium text-gray-800 group-hover:text-primary transition-colors flex items-center gap-1">
-                                    My Account & More
-                                    <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2.5]" />
+                                    {user ? `Hi, ${user.name.split(' ')[0]}` : "Login"}
+                                    {user && <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2.5]" />}
                                 </span>
-                            </button>
+                            </Link>
                         </nav>
 
                         {/* Icons / Actions */}

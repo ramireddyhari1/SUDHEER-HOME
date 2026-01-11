@@ -27,7 +27,7 @@ export function VideoLoader() {
 
     return (
         <div
-            className={`fixed inset-0 z-[100] flex items-center justify-center bg-transparent transition-opacity duration-500 pointer-events-none ${fading ? "opacity-0" : "opacity-100"
+            className={`fixed inset-0 z-[100] hidden md:flex items-center justify-center transition-opacity duration-500 pointer-events-none ${fading ? "opacity-0" : "opacity-100"
                 }`}
             aria-hidden="true"
         >
@@ -35,7 +35,7 @@ export function VideoLoader() {
                 autoPlay
                 muted
                 playsInline
-                className="w-full h-full object-cover md:object-contain max-w-3xl mix-blend-multiply"
+                className="w-48 h-48 md:w-full md:h-full object-contain md:max-w-3xl mix-blend-multiply"
                 onEnded={handleComplete}
                 onError={handleComplete} // Dismiss on error
             >

@@ -17,10 +17,10 @@ export function MadeWithLove() {
     };
 
     return (
-        <section className="py-16 bg-white">
+        <section className="py-8 md:py-16 bg-white">
             <Container>
                 {/* Header */}
-                <div className="flex items-center justify-center gap-6 mb-10">
+                <div className="flex items-center justify-center gap-6 mb-6 md:mb-10">
                     <div className="hidden md:block h-[1px] bg-amber-200/60 flex-1 max-w-[150px]"></div>
                     <h2 className="text-3xl md:text-4xl font-serif text-amber-950 text-center tracking-wide uppercase italic">
                         Made with Love by SIRIPURAPU

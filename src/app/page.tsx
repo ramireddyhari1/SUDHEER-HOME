@@ -9,9 +9,12 @@ import { MadeWithLove } from "@/components/home/MadeWithLove";
 import { AuthenticFarmerBanner } from "@/components/home/AuthenticFarmerBanner";
 import { FeaturedCollections } from "@/components/home/FeaturedCollections";
 
+import { MobileTopNav } from "@/components/home/MobileTopNav";
+
 export default function Home() {
   return (
     <main className="min-h-screen">
+      <MobileTopNav />
       <HeroCarousel />
       <div className="relative z-10">
         <BestSellers />

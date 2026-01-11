@@ -1,16 +1,8 @@
 
 import { NextResponse } from 'next/server';
-import nodemailer from 'nodemailer';
-
-// Create a transporter using standard SMTP (Placeholders for USER to fill)
-// Ideally, use environment variables: process.env.SMTP_USER, process.env.SMTP_PASS
-const transporter = nodemailer.createTransport({
-    service: 'gmail', // You can change this to 'hotmail', 'yahoo', etc.
-    auth: {
-        user: 'agentcat31@gmail.com', // REPLACE WITH YOUR EMAIL
-        pass: 'Hariharan123@'     // REPLACE WITH YOUR APP PASSWORD
-    }
-});
+import { transporter } from '@/lib/email';
+// We reused the transporter export for compatibility with the existing sendMail call below, 
+// or we could use the sendEmail helper. For minimal changes to the complex HTML logic below, keeping transporter usage.
 
 export async function POST(request: Request) {
     try {
@@ -75,13 +67,48 @@ export async function POST(request: Request) {
 
         // 2. Send Email
         await transporter.sendMail({
-            from: '"Vaishnavi Organics" <agentcat31@gmail.com>', // Sender address
-            to: customer.email, // Use customer email from request
+            from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
+            to: customer.email,
             subject: `Order Confirmation - ${orderId}`,
             html: emailHtml,
         });
 
         console.log("Email sent successfully to:", customer.email);
+
+        // 3. Send WhatsApp (Twilio)
+        // Only run if credentials are present to avoid crashes
+        const accountSid = process.env.TWILIO_ACCOUNT_SID;
+        const authToken = process.env.TWILIO_AUTH_TOKEN;
+        const fromWhatsapp = process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886'; // Default sandbox number
+
+        if (accountSid && authToken && customer.phone) {
+            try {
+                const twilio = (await import('twilio')).default;
+                const client = twilio(accountSid, authToken);
+
+                // Format phone number (ensure it has +91 or country code)
+                // Basic cleanup: remove spaces/dashes. If starts with 9, assume/prepend +91
+                let cleanPhone = customer.phone.replace(/\D/g, '');
+                if (cleanPhone.length === 10) cleanPhone = '+91' + cleanPhone;
+                // If it already has country code, Twilio expects E.164 format. 
+                // We'll trust the user or our cleanup for this demo.
+                if (!cleanPhone.startsWith('+')) cleanPhone = '+' + cleanPhone;
+
+                const message = `🌿 *Order Confirmed!* \n\nHi ${customer.name}, thanks for shopping with Vaishnavi Organics! \n\n🆔 Order: *${orderId}*\n💰 Amount: *₹${amount}*\n📦 Status: Processing\n\nWe will update you when it ships!`;
+
+                await client.messages.create({
+                    body: message,
+                    from: fromWhatsapp,
+                    to: `whatsapp:${cleanPhone}`
+                });
+                console.log("WhatsApp sent to:", cleanPhone);
+            } catch (waError) {
+                console.error("WhatsApp Failed:", waError);
+                // Don't fail the whole request if WA fails, just log it
+            }
+        } else {
+            console.log("Skipping WhatsApp: Missing Credentials or Phone Number");
+        }
 
         return NextResponse.json({ success: true, message: "Notifications processed" });
 

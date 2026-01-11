@@ -9,7 +9,7 @@ const newProducts = [
         name: "Lakadong Turmeric",
         price: 399,
         originalPrice: 499,
-        image: "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&q=80&w=600",
+        image: "/products/turmeric_powder.png",
         weight: "250g",
         category: "Spices",
     },
@@ -18,7 +18,7 @@ const newProducts = [
         name: "A2 Gir Cow Ghee",
         price: 1250,
         originalPrice: 1450,
-        image: "https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&q=80&w=600",
+        image: "/products/ghee.png",
         weight: "500ml",
         category: "Dairy",
     },
@@ -27,7 +27,7 @@ const newProducts = [
         name: "Karuppu Kavuni Rice",
         price: 349,
         originalPrice: 399,
-        image: "https://plus.unsplash.com/premium_photo-1675237626068-bf4dc298ca3a?auto=format&fit=crop&q=80&w=600",
+        image: "/products/black rice.png",
         weight: "1kg",
         category: "Rice",
     },
@@ -35,7 +35,7 @@ const newProducts = [
         id: "honey-wild",
         name: "Wild Forest Honey",
         price: 650,
-        image: "https://images.unsplash.com/photo-1587049352851-8d4e8918d37b?auto=format&fit=crop&q=80&w=600",
+        image: "/products/raw_honey.png",
         weight: "500g",
         category: "Sweeteners",
     },
@@ -55,7 +55,7 @@ export function NewArrivals() {
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                     {newProducts.map((product) => (
                         <ProductCard key={product.id} {...product} />
                     ))}

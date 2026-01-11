@@ -93,10 +93,10 @@ export function HeroCarousel() {
     }, [emblaApi, onSelect]);
 
     return (
-        <section className="w-full bg-gray-50 pt-2 pb-6"> {/* Added padding for separation */}
+        <section className="w-full bg-gray-50 pt-2 pb-2"> {/* Added padding for separation */}
             <div className="container mx-auto px-4 lg:px-6">
-                {/* Carousel Container with Fixed Aspect Ratio 1600/472 = ~29.5% padding-bottom */}
-                <div className="relative w-full rounded-2xl overflow-hidden shadow-xl" style={{ aspectRatio: '1600/472' }}>
+                {/* Carousel Container - Mobile: Landscape Rectangle Aspect Ratio (3:2), Desktop: Wide Aspect Ratio */}
+                <div className="relative w-full rounded-2xl overflow-hidden shadow-xl aspect-[3/2] md:aspect-[1600/472]">
 
                     {/* Embla Viewport */}
                     <div className="overflow-hidden h-full" ref={emblaRef}>
@@ -110,6 +110,7 @@ export function HeroCarousel() {
                                         fill
                                         className="object-cover"
                                         priority={slide.id === 0}
+                                        sizes="100vw"
                                     />
 
                                     {/* Overlay Gradient (Only if text is visible) */}
@@ -122,23 +123,23 @@ export function HeroCarousel() {
 
                                     {/* Content */}
                                     <div className={`absolute inset-0 flex flex-col ${slide.hideText ? 'justify-end items-center pb-12' :
-                                        (slide.align === 'left' ? 'justify-center items-start text-left p-8 md:p-16' :
-                                            slide.align === 'right' ? 'justify-center items-end text-right p-8 md:p-16' :
-                                                'justify-center items-center text-center p-8 md:p-16')
+                                        (slide.align === 'left' ? 'justify-center items-start text-left p-6 md:p-16' :
+                                            slide.align === 'right' ? 'justify-center items-end text-right p-6 md:p-16' :
+                                                'justify-center items-center text-center p-6 md:p-16')
                                         }`}>
 
                                         {!slide.hideText && (
                                             <>
-                                                <span className={`inline-block px-3 py-1 mb-4 text-xs md:text-sm font-bold tracking-wider uppercase rounded-full ${slide.theme === 'gold' ? 'bg-yellow-400 text-red-900' :
+                                                <span className={`inline-block px-3 py-1 mb-2 md:mb-4 text-[10px] md:text-sm font-bold tracking-wider uppercase rounded-full ${slide.theme === 'gold' ? 'bg-yellow-400 text-red-900' :
                                                     slide.theme === 'orange' ? 'bg-orange-500 text-white' :
                                                         'bg-blue-500 text-white'
                                                     }`}>
                                                     {slide.subtitle}
                                                 </span>
-                                                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-4 drop-shadow-lg max-w-2xl leading-tight">
+                                                <h2 className="text-2xl md:text-5xl lg:text-6xl font-black text-white mb-2 md:mb-4 drop-shadow-lg max-w-2xl leading-tight">
                                                     {slide.title}
                                                 </h2>
-                                                <p className="text-base md:text-xl text-white/90 mb-8 max-w-lg font-medium drop-shadow-md">
+                                                <p className="text-sm md:text-xl text-white/90 mb-4 md:mb-8 max-w-lg font-medium drop-shadow-md hidden sm:block">
                                                     {slide.description}
                                                 </p>
                                             </>

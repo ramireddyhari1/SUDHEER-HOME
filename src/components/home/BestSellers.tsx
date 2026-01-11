@@ -63,26 +63,26 @@ const bestSellers = [
 
 export function BestSellers() {
     return (
-        <section className="py-12 bg-white">
+        <section className="py-6 md:py-12 bg-white">
             <Container>
                 {/* Header */}
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-serif font-bold flex items-center justify-center gap-2">
+                <div className="text-center mb-4 md:mb-8">
+                    <h2 className="text-xl md:text-3xl font-serif font-bold flex items-center justify-center gap-3">
+                        <span className="hidden md:block h-[2px] w-12 bg-gray-800"></span>
+                        <span className="block md:hidden h-[2px] w-8 bg-gray-800"></span>
                         <span className="text-orange-500">⚡</span>
                         Season's Best Sellers
                         <span className="text-orange-500">⚡</span>
+                        <span className="hidden md:block h-[2px] w-12 bg-gray-800"></span>
+                        <span className="block md:hidden h-[2px] w-8 bg-gray-800"></span>
                     </h2>
-                    <p className="text-gray-500 italic mt-2 flex items-center justify-center gap-1">
+                    <p className="text-gray-500 italic mt-2 flex items-center justify-center gap-1 text-sm md:text-base">
                         Loved & Trusted by 1M+ Happy Families <span className="text-red-500">💕</span>
                     </p>
-                    <div className="w-full flex items-center justify-center gap-4 mt-4">
-                        <div className="h-[1px] w-24 bg-gray-300"></div>
-                        <div className="h-[1px] w-24 bg-gray-300"></div>
-                    </div>
                 </div>
 
                 {/* Grid Layout (Only 4 items) */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 max-w-5xl mx-auto">
                     {bestSellers.map((product) => (
                         <BestSellerCard key={product.id} {...product} />
                     ))}

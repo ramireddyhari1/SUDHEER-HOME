@@ -65,7 +65,7 @@ const itemVariants = {
 
 export function ProductCategories() {
     return (
-        <section className="py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
+        <section className="py-8 md:py-16 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
             <Container>
                 <div className="flex items-end justify-center gap-4 md:gap-12 mb-16 relative">
                     {/* Animated Tractor Mascot (Left) */}
@@ -150,7 +150,7 @@ export function ProductCategories() {
                     initial="hidden"
                     whileInView="show"
                     viewport={{ once: true, margin: "-50px" }}
-                    className="flex flex-wrap justify-center gap-6 md:gap-10"
+                    className="grid grid-cols-2 md:flex md:flex-wrap justify-center gap-4 md:gap-10 px-2 md:px-0"
                 >
                     {categories.map((category) => (
                         <Link
@@ -161,18 +161,18 @@ export function ProductCategories() {
                             <motion.div
                                 variants={itemVariants}
                                 whileHover={{
-                                    scale: 1.15,
-                                    rotate: [0, -2, 2, -2, 0],
-                                    transition: { duration: 0.4 }
+                                    scale: 1.05,
+                                    transition: { duration: 0.2 }
                                 }}
-                                className="flex flex-col items-center gap-4 w-28 md:w-36"
+                                whileTap={{ scale: 0.95 }}
+                                className="flex flex-col items-center gap-3 p-3 md:p-0 rounded-2xl md:rounded-none bg-white/50 md:bg-transparent border border-white/60 md:border-none shadow-sm md:shadow-none backdrop-blur-sm md:backdrop-blur-none w-full md:w-36"
                             >
                                 {/* Anime Style Circle Container */}
-                                <div className="relative w-24 h-24 md:w-32 md:h-32">
+                                <div className="relative w-20 h-20 md:w-32 md:h-32">
                                     {/* Rotating Border Effect */}
                                     <div className={`absolute -inset-1 rounded-full bg-gradient-to-tr ${category.color} opacity-0 group-hover:opacity-100 blur transition-opacity duration-300 animate-spin-slow`} />
 
-                                    <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-lg group-hover:shadow-xl transition-all z-10">
+                                    <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white shadow-md group-hover:shadow-xl transition-all z-10">
                                         {/* eslint-disable-next-line @next/next/no-img-element */}
                                         <img
                                             src={category.image}
@@ -188,7 +188,7 @@ export function ProductCategories() {
                                     <motion.div
                                         initial={{ opacity: 0, scale: 0 }}
                                         whileHover={{ opacity: 1, scale: 1 }}
-                                        className="absolute -top-1 -right-1 bg-white text-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md z-20"
+                                        className="absolute -top-1 -right-1 bg-white text-primary text-[10px] font-bold px-2 py-0.5 rounded-full shadow-md z-20 hidden md:block"
                                     >
                                         Explore
                                     </motion.div>

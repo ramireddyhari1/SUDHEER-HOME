@@ -1,58 +1,81 @@
 import { Container } from "@/components/ui/Container";
 import Image from "next/image";
-import { Button } from "@/components/ui/Button";
+import Link from "next/link";
 
-const combos = [
+const categories = [
     {
-        id: "breakfast-combo",
-        name: "Healthy Breakfast Combo",
-        description: "Millet Mix + Jaggery Powder + Honey",
-        price: 999,
-        originalPrice: 1250,
-        image: "https://images.unsplash.com/photo-1505253758473-96b701d2cd03?auto=format&fit=crop&q=80&w=600",
-        bg: "bg-orange-50",
+        id: "staples",
+        title: "Organic Staples",
+        image: "/products/features/heritage-rice.png", // Using heritage rice image
+        link: "/products?category=staples"
     },
     {
-        id: "immunity-combo",
-        name: "Immunity Booster Pack",
-        description: "Turmeric + Black Pepper + Ginger Powder",
-        price: 799,
-        originalPrice: 999,
-        image: "https://images.unsplash.com/photo-1515543904379-3d757afe72e3?auto=format&fit=crop&q=80&w=600",
-        bg: "bg-green-50",
+        id: "snacks",
+        title: "Organic Groceries",
+        image: "/products/features/healthy-millet.png", // Using millets image
+        link: "/products?category=groceries"
     },
+    {
+        id: "spices",
+        title: "Immunity Boosters",
+        image: "/products/features/honey-spices.png", // Using honey & spices image
+        link: "/products?category=spices"
+    },
+    {
+        id: "oils",
+        title: "Pure Oils",
+        image: "/products/features/cold-pressed-oils.png", // Using oils image
+        link: "/products?category=oils"
+    }
 ];
 
 export function ComboPacks() {
     return (
         <section className="py-16 bg-white">
             <Container>
-                <div className="text-center mb-10">
-                    <h2 className="font-serif text-2xl md:text-3xl font-bold">Value Combos</h2>
-                    <p className="text-muted-foreground">Perfectly curated for your wellness journey</p>
+                {/* Section Header with Stamp Logo */}
+                <div className="flex flex-col items-center justify-center mb-12">
+                    <div className="w-24 h-24 relative mb-4">
+                        <Image
+                            src="/stamp.png"
+                            alt="Vaishnavi Organics Since 1995"
+                            fill
+                            className="object-contain opacity-90 hover:opacity-100 transition-opacity duration-300"
+                        />
+                    </div>
+                    <h2 className="font-serif text-3xl md:text-4xl font-bold text-center text-[#1a237e]">
+                        Shop by Category
+                    </h2>
+                    <div className="w-24 h-1 bg-yellow-400 mt-4 rounded-full"></div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {combos.map((combo) => (
-                        <div key={combo.id} className={`rounded-2xl overflow-hidden flex flex-col md:flex-row shadow-sm border border-gray-100 ${combo.bg}`}>
-                            <div className="relative w-full md:w-1/2 h-64 md:h-auto">
-                                <Image src={combo.image} alt={combo.name} fill className="object-cover" />
-                                <div className="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded">
-                                    SAVE ₹{combo.originalPrice - combo.price}
-                                </div>
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
+                    {categories.map((category) => (
+                        <Link
+                            key={category.id}
+                            href={category.link}
+                            className="group relative flex flex-col rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+                        >
+                            {/* Card Header - Yellow Bar */}
+                            <div className="bg-yellow-400 py-3 text-center relative z-20">
+                                <h3 className="font-serif font-bold text-[#1a237e] text-lg tracking-wide uppercase">
+                                    {category.title}
+                                </h3>
+                                {/* Decorative Triangle/Arrow pointing down (optional, keeping it clean for now) */}
                             </div>
-                            <div className="p-6 md:w-1/2 flex flex-col justify-center gap-4">
-                                <div>
-                                    <h3 className="font-serif font-bold text-xl mb-1">{combo.name}</h3>
-                                    <p className="text-sm text-foreground/70">{combo.description}</p>
-                                </div>
-                                <div className="flex items-end gap-2">
-                                    <span className="text-2xl font-bold text-primary">₹{combo.price}</span>
-                                    <span className="text-sm text-muted-foreground line-through mb-1">₹{combo.originalPrice}</span>
-                                </div>
-                                <Button className="w-full">Add Combo</Button>
+
+                            {/* Image Container with Dark Overlay Effect */}
+                            <div className="relative aspect-square w-full bg-[#0d1b2a]">
+                                <Image
+                                    src={category.image}
+                                    alt={category.title}
+                                    fill
+                                    className="object-cover group-hover:scale-110 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                                />
+                                {/* Inner Shadow Gradient */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </Container>
