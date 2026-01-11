@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
-import { VideoLoader } from "@/components/ui/VideoLoader";
-import { FloatingButtons } from "@/components/layout/FloatingButtons";
-import { CartSpacer } from "@/components/layout/CartSpacer";
-import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
+import { CartProvider } from "@/context/CartContext";
+import { AuthProvider } from "@/context/AuthContext";
+import { ClientLayoutWrapper } from "@/components/layout/ClientLayoutWrapper";
 
 const playfair = Playfair_Display({
   variable: "--font-serif",
@@ -26,9 +22,6 @@ export const metadata: Metadata = {
   description: "Experience the purity of traditional organic food with Vaishnavi Organics. From farm to family – chemical-free essentials you can trust.",
 };
 
-import { CartProvider } from "@/context/CartContext";
-import { AuthProvider } from "@/context/AuthContext";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -41,18 +34,9 @@ export default function RootLayout({
       >
         <AuthProvider>
           <CartProvider>
-            <div className="flex min-h-screen flex-col">
-              <AnnouncementBar />
-              <VideoLoader />
-              <FloatingButtons />
-              <Navbar />
-              <main className="flex-1">
-                {children}
-              </main>
-              <Footer />
-              <CartSpacer />
-              <MobileBottomNav />
-            </div>
+            <ClientLayoutWrapper>
+              {children}
+            </ClientLayoutWrapper>
           </CartProvider>
         </AuthProvider>
       </body>

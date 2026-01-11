@@ -105,6 +105,13 @@ export default function LoginPage() {
                 </Link>
             </div>
 
+            {/* ADMIN LOGIN LINK - TOP RIGHT */}
+            <div className="absolute top-6 right-6 z-20">
+                <Link href="/admin/login" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 hover:border-white/20">
+                    <span className="font-medium text-xs uppercase tracking-wider">Admin</span>
+                </Link>
+            </div>
+
             {/* GLASSMORPHISM CARD */}
             <div className="relative z-10 w-full max-w-md p-8 sm:p-10 mx-4">
                 <div className="bg-white/10 border border-white/20 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] backdrop-blur-md p-8 sm:p-10">

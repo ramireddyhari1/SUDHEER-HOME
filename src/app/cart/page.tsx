@@ -167,15 +167,15 @@ export default function CartPage() {
             </Container>
 
             {/* Fixed Bottom Bar (Visible on ALL screens) - Clean Implementation */}
-            <div className="fixed bottom-[60px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-40">
+            <div className="fixed bottom-[56px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-3 md:p-4 z-40">
                 <Container>
                     <div className="flex items-center gap-4 justify-between">
                         <div>
-                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Total</p>
-                            <p className="text-xl font-bold text-gray-900">₹{grandTotal}</p>
+                            <p className="text-[10px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">Total</p>
+                            <p className="text-lg md:text-xl font-bold text-gray-900">₹{grandTotal}</p>
                         </div>
                         <AnimatedTractorButton
-                            className="w-full md:w-auto md:min-w-[300px] h-12 text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg"
+                            className="w-full md:w-auto md:min-w-[300px] h-10 md:h-12 text-sm md:text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg"
                             label="Proceed to Pay"
                             onClick={() => router.push("/checkout")}
                         />

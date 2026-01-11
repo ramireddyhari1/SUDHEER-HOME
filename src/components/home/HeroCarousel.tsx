@@ -71,6 +71,41 @@ const slides = [
 ];
 
 export function HeroCarousel() {
+    const [dynamicSlides, setDynamicSlides] = useState(slides);
+
+    // Fetch dynamic content
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                // Use 'section' parameter to match API
+                const res = await fetch('/api/content?section=home-hero');
+                const data = await res.json();
+
+                if (data.success && data.content) {
+                    // Check if we have simple text overrides for the main slide
+                    const { hero_title, hero_subtitle, hero_btn_text } = data.content;
+
+                    if (hero_title || hero_subtitle) {
+                        setDynamicSlides(prevSlides => {
+                            const newSlides = [...prevSlides];
+                            // Override the first slide (Main Banner)
+                            newSlides[0] = {
+                                ...newSlides[0],
+                                title: hero_title || newSlides[0].title,
+                                subtitle: hero_subtitle || newSlides[0].subtitle,
+                                cta: hero_btn_text || newSlides[0].cta
+                            };
+                            return newSlides;
+                        });
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to fetch hero content");
+            }
+        };
+        fetchContent();
+    }, []);
+
     const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000 })]);
     const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -101,7 +136,7 @@ export function HeroCarousel() {
                     {/* Embla Viewport */}
                     <div className="overflow-hidden h-full" ref={emblaRef}>
                         <div className="flex h-full touch-pan-y">
-                            {slides.map((slide) => (
+                            {dynamicSlides.map((slide) => (
                                 <div className="flex-[0_0_100%] min-w-0 relative h-full" key={slide.id}>
                                     {/* Background Image */}
                                     <Image
@@ -134,9 +169,9 @@ export function HeroCarousel() {
                                                     slide.theme === 'orange' ? 'bg-orange-500 text-white' :
                                                         'bg-blue-500 text-white'
                                                     }`}>
-                                                    {slide.subtitle}
+                                                    {slide.subtitle || ""}
                                                 </span>
-                                                <h2 className="text-2xl md:text-5xl lg:text-6xl font-black text-white mb-2 md:mb-4 drop-shadow-lg max-w-2xl leading-tight">
+                                                <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-2 md:mb-4 drop-shadow-lg max-w-2xl leading-tight">
                                                     {slide.title}
                                                 </h2>
                                                 <p className="text-sm md:text-xl text-white/90 mb-4 md:mb-8 max-w-lg font-medium drop-shadow-md hidden sm:block">
@@ -178,7 +213,7 @@ export function HeroCarousel() {
 
                     {/* Pagination Dots */}
                     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-                        {slides.map((_, index) => (
+                        {dynamicSlides.map((_, index) => (
                             <button
                                 key={index}
                                 className={`h-2 rounded-full transition-all duration-300 ${index === selectedIndex ? "w-8 bg-white" : "w-2 bg-white/50 hover:bg-white/80"

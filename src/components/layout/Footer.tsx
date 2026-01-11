@@ -1,8 +1,33 @@
+"use client";
+
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function Footer() {
+    const [content, setContent] = useState({
+        footer_address: "123 Green Farm Road,\nKumbakonam, Tamil Nadu 612001",
+        footer_email: "hello@vaishnaviorganics.com",
+        footer_phone: "+91 1234 567 890",
+        footer_copyright: "Vaishnavi Organics"
+    });
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                const res = await fetch('/api/content?section=footer');
+                const data = await res.json();
+                if (data.success && data.content) {
+                    setContent(prev => ({ ...prev, ...data.content })); // Merge with defaults
+                }
+            } catch (error) {
+                console.error("Failed to fetch footer content");
+            }
+        };
+        fetchContent();
+    }, []);
+
     return (
         <footer className="bg-[#1a1a1a] text-white pt-16 pb-8 border-t-4 border-primary">
             <Container>
@@ -62,17 +87,16 @@ export function Footer() {
                         <ul className="space-y-4 text-sm text-gray-300">
                             <li className="flex items-start gap-3">
                                 <Mail className="h-5 w-5 text-primary shrink-0" />
-                                <a href="mailto:hello@vaishnaviorganics.com" className="hover:text-white">hello@vaishnaviorganics.com</a>
+                                <a href={`mailto:${content.footer_email}`} className="hover:text-white">{content.footer_email}</a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <Phone className="h-5 w-5 text-primary shrink-0" />
-                                <a href="tel:+911234567890" className="hover:text-white">+91 1234 567 890</a>
+                                <a href={`tel:${content.footer_phone}`} className="hover:text-white">{content.footer_phone}</a>
                             </li>
                             <li className="flex items-start gap-3">
                                 <MapPin className="h-5 w-5 text-primary shrink-0" />
-                                <span>
-                                    123 Green Farm Road,<br />
-                                    Kumbakonam, Tamil Nadu 612001
+                                <span className="whitespace-pre-line">
+                                    {content.footer_address}
                                 </span>
                             </li>
                         </ul>
@@ -80,7 +104,7 @@ export function Footer() {
                 </div>
 
                 <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
-                    <p>© {new Date().getFullYear()} Vaishnavi Organics. All rights reserved.</p>
+                    <p>© {new Date().getFullYear()} {content.footer_copyright}. All rights reserved.</p>
                     <div className="flex gap-4">
                         <span>Made with ❤️ in India</span>
                     </div>

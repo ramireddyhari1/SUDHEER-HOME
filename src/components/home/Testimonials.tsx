@@ -31,9 +31,9 @@ export function Testimonials() {
                     <p className="text-muted-foreground">Hear from our community of happy families</p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
                     {testimonials.map((t, i) => (
-                        <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-secondary/10 hover:shadow-md transition-shadow">
+                        <div key={i} className="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-secondary/10 hover:shadow-md transition-shadow">
                             <div className="flex gap-1 mb-4">
                                 {[...Array(t.rating)].map((_, i) => (
                                     <Star key={i} className="h-4 w-4 fill-amber-400 text-amber-400" />

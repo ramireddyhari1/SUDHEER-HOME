@@ -1,8 +1,9 @@
 
 import { NextResponse } from 'next/server';
 import { transporter } from '@/lib/email';
-// We reused the transporter export for compatibility with the existing sendMail call below, 
-// or we could use the sendEmail helper. For minimal changes to the complex HTML logic below, keeping transporter usage.
+import dbConnect from '@/lib/mongodb';
+import Order from '@/models/Order';
+
 
 export async function POST(request: Request) {
     try {
@@ -20,7 +21,32 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false, error: "SMTP Connection Failed", details: verifyError }, { status: 500 });
         }
 
-        // 1. Construct Email Content
+        // 0. Save Order to Database
+        try {
+            await dbConnect();
+            // Check if order already exists (idempotency)
+            const existingOrder = await Order.findOne({ orderId: orderId });
+            if (!existingOrder) {
+                const newOrder = new Order({
+                    orderId,
+                    customer,
+                    items,
+                    amount,
+                    paymentMethod,
+                    status: 'Processing'
+                });
+                await newOrder.save();
+                console.log("Order saved to MongoDB:", orderId);
+            } else {
+                console.log("Order already exists in DB, skipping save:", orderId);
+            }
+        } catch (dbError) {
+            console.error("Database Save Failed:", dbError);
+            // We continue to send emails even if DB fails, or we could strict fail. 
+            // For now, logging error is safest to ensure notifications likely go out.
+        }
+
+        // 1. Construct Email Content (Customer)
         const itemsHtml = items.map((item: any) => `
             <tr>
                 <td style="padding: 8px; border-bottom: 1px solid #ddd;">${item.name}</td>
@@ -65,18 +91,48 @@ export async function POST(request: Request) {
             </div>
         `;
 
-        // 2. Send Email
-        await transporter.sendMail({
-            from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
-            to: customer.email,
-            subject: `Order Confirmation - ${orderId}`,
-            html: emailHtml,
-        });
+        // 1.5 Construct Admin Notification Email
+        const adminEmailHtml = `
+            <div style="font-family: Arial, sans-serif; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; border-left: 5px solid #155E42;">
+                <h2>🔔 New Order Received</h2>
+                <p><strong>Order ID:</strong> ${orderId}</p>
+                <p><strong>Customer:</strong> ${customer.name} (${customer.email})</p>
+                <p><strong>Phone:</strong> ${customer.phone}</p>
+                <p><strong>Amount:</strong> ₹${amount}</p>
+                <p><strong>Method:</strong> ${paymentMethod}</p>
+                
+                <h3>Items:</h3>
+                <ul>
+                    ${items.map((item: any) => `<li>${item.quantity} x ${item.name}</li>`).join('')}
+                </ul>
 
-        console.log("Email sent successfully to:", customer.email);
+                <br />
+                <a href="${process.env.NEXTAUTH_URL}/admin/orders" style="background-color: #155E42; color: white; padding: 10px 15px; text-decoration: none; border-radius: 5px;">View in Admin Panel</a>
+            </div>
+        `;
+
+        // 2. Send Emails (Parallel)
+        await Promise.all([
+            // Customer Email
+            transporter.sendMail({
+                from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
+                to: customer.email,
+                subject: `Order Confirmation - ${orderId}`,
+                html: emailHtml,
+            }),
+            // Admin Email
+            transporter.sendMail({
+                from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
+                to: "vaishnaviorganics1995@gmail.com", // Admin Email
+                subject: `New Order: ${orderId} from ${customer.name}`,
+                html: adminEmailHtml,
+            })
+        ]);
+
+        console.log("Emails sent successfully to Customer and Admin");
 
         // 3. Send WhatsApp (Twilio)
-        // Only run if credentials are present to avoid crashes
+        // ... (WhatsApp logic remains same) ...
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const fromWhatsapp = process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886'; // Default sandbox number
@@ -110,7 +166,7 @@ export async function POST(request: Request) {
             console.log("Skipping WhatsApp: Missing Credentials or Phone Number");
         }
 
-        return NextResponse.json({ success: true, message: "Notifications processed" });
+        return NextResponse.json({ success: true, message: "Order processed and notifications sent" });
 
     } catch (error: any) {
         console.error("API Error detailed:", error);

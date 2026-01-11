@@ -67,8 +67,8 @@ function ProductDetailContent({ id }: { id: string }) {
                 </Container>
             </div>
 
-            <Container className="py-8 md:py-12">
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 mb-16">
+            <Container className="py-4 md:py-12">
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 mb-8 md:mb-16">
 
                     {/* Left: Detail Gallery */}
                     <div className="lg:col-span-1 hidden lg:flex flex-col gap-4">
@@ -81,7 +81,7 @@ function ProductDetailContent({ id }: { id: string }) {
 
                     {/* Center: Main Image */}
                     <div className="lg:col-span-5">
-                        <div className="relative aspect-[4/5] md:aspect-square rounded-2xl overflow-hidden bg-white border border-gray-100 shadow-sm">
+                        <div className="relative aspect-square md:aspect-square rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm">
                             <div className="absolute top-4 left-4 z-10 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
                                 BESTSELLER
                             </div>
@@ -94,7 +94,7 @@ function ProductDetailContent({ id }: { id: string }) {
                             />
                         </div>
                         {/* Mobile Thumbnails */}
-                        <div className="lg:hidden flex gap-4 mt-4 overflow-x-auto pb-2 no-scrollbar">
+                        <div className="flex gap-3 mt-4 overflow-x-auto pb-2 no-scrollbar lg:hidden">
                             {product.images.map((img, i) => (
                                 <div key={i} className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200">
                                     <Image src={img} alt="Thumb" fill className="object-cover" />
@@ -104,42 +104,42 @@ function ProductDetailContent({ id }: { id: string }) {
                     </div>
 
                     {/* Right: Product Info */}
-                    <div className="lg:col-span-6 space-y-6">
+                    <div className="lg:col-span-6 space-y-4 md:space-y-6">
                         <div>
-                            <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-2">{product.name}</h1>
+                            <h1 className="font-serif text-2xl md:text-4xl font-bold text-foreground mb-2 leading-tight">{product.name}</h1>
                             <div className="flex items-center gap-4 text-sm">
                                 <div className="flex items-center gap-1 bg-green-900 text-white px-2 py-0.5 rounded text-xs font-bold">
                                     {product.rating} <Star className="h-3 w-3 fill-current" />
                                 </div>
-                                <span className="text-muted-foreground underline decoration-dotted">{product.reviews} Reviews</span>
+                                <span className="text-muted-foreground underline decoration-dotted text-xs md:text-sm">{product.reviews} Reviews</span>
                                 <span className="text-muted-foreground hidden md:inline">|</span>
-                                <span className="text-green-700 font-medium flex items-center gap-1"><ShieldCheck className="h-4 w-4" /> Certified Organic</span>
+                                <span className="text-green-700 font-medium flex items-center gap-1 text-xs md:text-sm"><ShieldCheck className="h-3 w-3 md:h-4 md:w-4" /> Certified Organic</span>
                             </div>
                         </div>
 
-                        <div className="border-t border-b border-dashed py-4 flex items-end gap-3">
-                            <span className="text-3xl font-bold">₹{product.price}</span>
-                            <span className="text-lg text-muted-foreground line-through mb-1">₹{product.originalPrice}</span>
-                            <span className="text-red-600 font-bold text-sm mb-1.5">(Save ₹{product.originalPrice - product.price})</span>
-                            <span className="text-xs text-muted-foreground ml-auto mb-1">Tax included</span>
+                        <div className="border-t border-b border-dashed py-3 md:py-4 flex items-end gap-3">
+                            <span className="text-2xl md:text-3xl font-bold text-[#155E42]">₹{product.price}</span>
+                            <span className="text-sm md:text-lg text-muted-foreground line-through mb-1">₹{product.originalPrice}</span>
+                            <span className="text-red-600 font-bold text-xs md:text-sm mb-1.5">(Save ₹{product.originalPrice - product.price})</span>
+                            <span className="text-[10px] md:text-xs text-muted-foreground ml-auto mb-1">Tax included</span>
                         </div>
 
                         {/* Trust Badges Strip */}
                         <div className="flex gap-4 md:gap-8 overflow-x-auto py-2">
                             <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-3 rounded-full"><Leaf className="h-5 w-5 text-amber-700" /></div>
+                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><Leaf className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
                                 <span className="text-[10px] text-center font-medium leading-tight">No Palm<br />Oil</span>
                             </div>
                             <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-3 rounded-full"><Star className="h-5 w-5 text-amber-700" /></div>
+                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><Star className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
                                 <span className="text-[10px] text-center font-medium leading-tight">Premium<br />Quality</span>
                             </div>
                             <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-3 rounded-full"><ShieldCheck className="h-5 w-5 text-amber-700" /></div>
+                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><ShieldCheck className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
                                 <span className="text-[10px] text-center font-medium leading-tight">Chemical<br />Free</span>
                             </div>
                             <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-3 rounded-full"><Truck className="h-5 w-5 text-amber-700" /></div>
+                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><Truck className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
                                 <span className="text-[10px] text-center font-medium leading-tight">Safe<br />Shipping</span>
                             </div>
                         </div>
@@ -165,8 +165,8 @@ function ProductDetailContent({ id }: { id: string }) {
                         </div>
 
 
-                        {/* Sticky Action Bar (Desktop mainly, standard styling) */}
-                        <div className="space-y-4">
+                        {/* Desktop Action Bar */}
+                        <div className="space-y-4 hidden md:block">
                             <div className="flex gap-4">
                                 <div className="flex items-center border border-gray-300 rounded-md bg-white w-32 justify-between">
                                     <button className="px-3 py-2 hover:bg-gray-50 text-xl text-gray-500 font-medium">-</button>
@@ -190,9 +190,9 @@ function ProductDetailContent({ id }: { id: string }) {
                 </div>
 
                 {/* Related Products */}
-                <div className="border-t border-gray-200 pt-12">
-                    <h2 className="font-serif text-2xl md:text-3xl font-bold mb-8">You may also like</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <div className="border-t border-gray-200 pt-8 md:pt-12">
+                    <h2 className="font-serif text-xl md:text-3xl font-bold mb-6 md:mb-8">You may also like</h2>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
                         <ProductCard
                             id="black-rice"
                             name="Karuppu Kavuni Rice"
@@ -213,6 +213,18 @@ function ProductDetailContent({ id }: { id: string }) {
                     </div>
                 </div>
             </Container>
+
+            {/* Mobile Sticky Action Bar */}
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 md:hidden z-50 flex items-center gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+                <div className="flex items-center border border-gray-300 rounded-md bg-white h-10 px-2 justify-between w-24 flex-shrink-0">
+                    <button className="px-2 text-lg text-gray-500 font-medium">-</button>
+                    <span className="font-bold text-sm">1</span>
+                    <button className="px-2 text-lg text-gray-500 font-medium">+</button>
+                </div>
+                <Button className="flex-1 h-10 text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-md animate-shimmer">
+                    ADD TO CART
+                </Button>
+            </div>
         </div>
     );
 }

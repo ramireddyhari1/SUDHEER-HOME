@@ -6,7 +6,8 @@ import { ArrowRight } from "lucide-react";
 import { BestSellerCard } from "@/components/product/BestSellerCard";
 import { Container } from "@/components/ui/Container";
 
-const bestSellers = [
+
+const initialProducts = [
     {
         id: "jaggery-cubes",
         name: "Palm Jaggery Cubes",
@@ -62,6 +63,42 @@ const bestSellers = [
 ];
 
 export function BestSellers() {
+    const [products, setProducts] = React.useState(initialProducts);
+
+    // Fetch products from API
+    React.useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const res = await fetch('/api/products');
+                const data = await res.json();
+                if (data.success && data.products.length > 0) {
+                    // Combine default products with new DB products for MVP display
+                    // Or ideally replace them if DB works well.
+                    // Let's replace only if we get data, and map DB fields to UI fields.
+                    const dbProducts = data.products.slice(0, 4).map((p: any) => ({
+                        id: p._id,
+                        name: p.name,
+                        englishName: p.englishName || "",
+                        price: p.price,
+                        originalPrice: p.originalPrice,
+                        weight: p.weight || "1 kg",
+                        image: p.image,
+                        tags: p.tags || [],
+                        rating: p.rating || 5,
+                        reviews: p.reviews || 0,
+                        isBestSeller: p.isBestSeller
+                    }));
+                    if (dbProducts.length > 0) {
+                        setProducts(dbProducts);
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to load products");
+            }
+        };
+        fetchProducts();
+    }, []);
+
     return (
         <section className="py-6 md:py-12 bg-white">
             <Container>
@@ -83,7 +120,7 @@ export function BestSellers() {
 
                 {/* Grid Layout (Only 4 items) */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 max-w-5xl mx-auto">
-                    {bestSellers.map((product) => (
+                    {products.map((product) => (
                         <BestSellerCard key={product.id} {...product} />
                     ))}
                 </div>

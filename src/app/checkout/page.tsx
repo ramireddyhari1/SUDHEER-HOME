@@ -84,11 +84,9 @@ export default function CheckoutPage() {
             // CLEAR CART
             clearCart(); // <--- ADDED THIS
 
-            // Simulate slight delay for UX
-            setTimeout(() => {
-                setOrderPlaced(true);
-                setLoading(false);
-            }, 1500);
+            // Simulate slight delay for UX - REMOVED for speed
+            setOrderPlaced(true);
+            setLoading(false);
 
         } catch (error) {
             console.error("Order failed:", error);
@@ -155,7 +153,7 @@ export default function CheckoutPage() {
                                     value={formData.name}
                                     onChange={handleInputChange}
                                     placeholder="e.g. Aditi Sharma"
-                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
                                 />
                             </div>
                             <div className="md:col-span-2">
@@ -166,7 +164,7 @@ export default function CheckoutPage() {
                                     value={formData.email}
                                     onChange={handleInputChange}
                                     placeholder="e.g. aditi@example.com"
-                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
                                 />
                             </div>
                             <div>
@@ -177,7 +175,7 @@ export default function CheckoutPage() {
                                     value={formData.phone}
                                     onChange={handleInputChange}
                                     placeholder="+91 98765 43210"
-                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
                                 />
                             </div>
                             <div>
@@ -188,7 +186,7 @@ export default function CheckoutPage() {
                                     value={formData.pincode}
                                     onChange={handleInputChange}
                                     placeholder="e.g. 560034"
-                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
                                 />
                             </div>
                             <div className="md:col-span-2">
@@ -199,7 +197,7 @@ export default function CheckoutPage() {
                                     value={formData.address}
                                     onChange={handleInputChange}
                                     placeholder="e.g. Flat 402, Green Heights, HSR Layout"
-                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
                                 />
                             </div>
                             <div>
@@ -210,7 +208,7 @@ export default function CheckoutPage() {
                                     value={formData.city}
                                     onChange={handleInputChange}
                                     placeholder="e.g. Bengaluru"
-                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
                                 />
                             </div>
                             <div>
@@ -219,7 +217,7 @@ export default function CheckoutPage() {
                                     name="state"
                                     value={formData.state}
                                     onChange={handleInputChange}
-                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42] bg-white"
+                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-base focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42] bg-white"
                                 >
                                     <option>Select State</option>
                                     <option>Andhra Pradesh</option>
@@ -296,16 +294,16 @@ export default function CheckoutPage() {
             </Container>
 
             {/* Fixed Bottom Bar for Place Order */}
-            <div className="fixed bottom-[60px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-4 z-40">
+            <div className="fixed bottom-[56px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-3 md:p-4 z-40">
                 <Container>
                     <div className="flex items-center gap-4 justify-between">
                         <div>
-                            <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">Total to Pay</p>
-                            <p className="text-xl font-bold text-gray-900">₹{grandTotal}</p>
+                            <p className="text-[10px] md:text-xs text-muted-foreground font-medium uppercase tracking-wider">Total to Pay</p>
+                            <p className="text-lg md:text-xl font-bold text-gray-900">₹{grandTotal}</p>
                         </div>
                         <AnimatedTractorButton
                             onClick={handlePlaceOrder}
-                            className="w-full md:w-auto md:min-w-[300px] h-12 text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg"
+                            className="w-full md:w-auto md:min-w-[300px] h-10 md:h-12 text-sm md:text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg"
                             label="Place Order"
                         />
                     </div>
