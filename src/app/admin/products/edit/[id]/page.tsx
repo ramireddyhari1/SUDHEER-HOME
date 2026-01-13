@@ -1,21 +1,30 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
+import { use } from "react";
 
-export default function AddProductPage() {
+export default function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    // Unwrap params using React.use() as per Next.js 15+ patterns or await it if component is async (but this is client)
+    // Actually in Next 15 client components, params is a promise.
+    const { id } = use(params);
+
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+
     const [formData, setFormData] = useState({
+        _id: "",
         name: "",
         englishName: "",
         price: "",
         originalPrice: "",
         discount: "", // New
         weight: "1 kg",
+        stock: 0, // New
         image: "",
         description: "",
         category: "General",
@@ -27,6 +36,42 @@ export default function AddProductPage() {
         isTopRated: false,
         status: 'active'
     });
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                const res = await fetch(`/api/products?id=${id}`);
+                const data = await res.json();
+
+                if (data.success && data.product) {
+                    setFormData({
+                        ...data.product,
+                        price: data.product.price.toString(),
+                        originalPrice: data.product.originalPrice ? data.product.originalPrice.toString() : "",
+                        discount: data.product.discount ? data.product.discount.toString() : "",
+                        stock: data.product.stock || 0,
+                        // Ensure bools are bools
+                        isSeasonBest: !!data.product.isSeasonBest,
+                        isFeatured: !!data.product.isFeatured,
+                        isNewArrival: !!data.product.isNewArrival,
+                        isOrganicCollection: !!data.product.isOrganicCollection,
+                        isTopRated: !!data.product.isTopRated,
+                    });
+                } else {
+                    alert("Product not found");
+                    router.push("/admin/products");
+                }
+            } catch (error) {
+                alert("Error fetching product details");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (id) {
+            fetchProduct();
+        }
+    }, [id, router]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value, type } = e.target;
@@ -40,32 +85,35 @@ export default function AddProductPage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
+        setSaving(true);
 
         try {
             const res = await fetch('/api/products', {
-                method: 'POST',
+                method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     ...formData,
                     price: parseFloat(formData.price),
                     originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
-                    discount: formData.discount ? parseFloat(formData.discount) : 0,
-                    tags: ["Fresh", "Organic"]
                 })
             });
 
             if (res.ok) {
                 router.push("/admin/products");
             } else {
-                alert("Failed to create product");
+                const data = await res.json();
+                alert("Failed to update product: " + data.message);
             }
         } catch (error) {
-            alert("Error creating product");
+            alert("Error updating product");
         } finally {
-            setLoading(false);
+            setSaving(false);
         }
     };
+
+    if (loading) {
+        return <div className="p-12 text-center text-gray-500">Loading product details...</div>;
+    }
 
     return (
         <div className="p-8 max-w-4xl mx-auto">
@@ -73,7 +121,7 @@ export default function AddProductPage() {
                 <Link href="/admin/products" className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                     <ArrowLeft className="w-5 h-5 text-gray-500" />
                 </Link>
-                <h1 className="text-2xl font-bold text-gray-800">Add New Product</h1>
+                <h1 className="text-2xl font-bold text-gray-800">Edit Product</h1>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
@@ -86,7 +134,6 @@ export default function AddProductPage() {
                                 type="text" name="name" required
                                 value={formData.name} onChange={handleChange}
                                 className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
-                                placeholder="e.g. Pure Ghee"
                             />
                         </div>
                         {/* English Name */}
@@ -96,12 +143,11 @@ export default function AddProductPage() {
                                 type="text" name="englishName"
                                 value={formData.englishName} onChange={handleChange}
                                 className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
-                                placeholder="e.g. Clarified Butter"
                             />
                         </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         {/* Price */}
                         <div>
                             <label className="block text-sm font-medium text-gray-700 mb-1">Price (₹) *</label>
@@ -128,6 +174,26 @@ export default function AddProductPage() {
                                 value={formData.weight} onChange={handleChange}
                                 className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
                             />
+                        </div>
+                        {/* Stock */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+                            <div className="flex gap-2">
+                                <input
+                                    type="number" name="stock"
+                                    // @ts-ignore
+                                    value={formData.stock || 0} onChange={handleChange}
+                                    className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(prev => ({ ...prev, stock: 0 }))}
+                                    className="px-3 py-2 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200 whitespace-nowrap"
+                                    title="Set stock to 0"
+                                >
+                                    Out Supply
+                                </button>
+                            </div>
                         </div>
                     </div>
 
@@ -158,8 +224,13 @@ export default function AddProductPage() {
                                         const file = e.target.files?.[0];
                                         if (!file) return;
 
+                                        // Upload Logic
                                         const uploadData = new FormData();
                                         uploadData.append('file', file);
+
+                                        // Optional: Set loading state for upload here
+                                        const btn = e.target as HTMLInputElement;
+                                        const originalText = btn.previousElementSibling?.textContent;
 
                                         try {
                                             const res = await fetch('/api/upload', {
@@ -185,6 +256,9 @@ export default function AddProductPage() {
                                       hover:file:bg-green-100
                                     "
                                 />
+                                <p className="text-xs text-gray-500 mt-2">
+                                    Upload a new image to replace the current one.
+                                </p>
                                 <input type="hidden" name="image" value={formData.image} />
                             </div>
                         </div>
@@ -258,10 +332,18 @@ export default function AddProductPage() {
 
                     <div className="flex justify-end pt-4">
                         <Button
-                            type="submit" disabled={loading}
+                            type="submit" disabled={saving}
                             className="bg-[#155E42] hover:bg-[#0E3F2D] text-white px-6 py-2 rounded-lg"
                         >
-                            {loading ? "Saving..." : "Save Product"}
+                            {saving ? (
+                                <span className="flex items-center gap-2">
+                                    <Save className="w-4 h-4 animate-spin" /> Saving...
+                                </span>
+                            ) : (
+                                <span className="flex items-center gap-2">
+                                    <Save className="w-4 h-4" /> Update Product
+                                </span>
+                            )}
                         </Button>
                     </div>
                 </form>

@@ -53,16 +53,16 @@ function ProductDetailContent({ id }: { id: string }) {
     return (
         <div className="bg-[#FDFBF7] min-h-screen pb-20">
             {/* Breadcrumb */}
-            <div className="bg-white border-b py-3 text-xs md:text-sm text-muted-foreground sticky top-20 z-30">
+            <div className="bg-white border-b py-3 text-xs md:text-sm text-muted-foreground sticky top-20 z-30 overflow-x-auto no-scrollbar">
                 <Container>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 whitespace-nowrap">
                         <Link href="/" className="hover:text-primary">Home</Link>
-                        <ChevronRight className="h-3 w-3" />
+                        <ChevronRight className="h-3 w-3 flex-shrink-0" />
                         <Link href="/products" className="hover:text-primary">Shop</Link>
-                        <ChevronRight className="h-3 w-3" />
+                        <ChevronRight className="h-3 w-3 flex-shrink-0" />
                         <Link href={`/products?category=${product.category.toLowerCase()}`} className="hover:text-primary">{product.category}</Link>
-                        <ChevronRight className="h-3 w-3" />
-                        <span className="text-foreground font-medium truncate max-w-[150px] md:max-w-none">{product.name}</span>
+                        <ChevronRight className="h-3 w-3 flex-shrink-0" />
+                        <span className="text-foreground font-medium truncate max-w-[120px] md:max-w-none">{product.name}</span>
                     </div>
                 </Container>
             </div>
@@ -215,7 +215,7 @@ function ProductDetailContent({ id }: { id: string }) {
             </Container>
 
             {/* Mobile Sticky Action Bar */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 md:hidden z-50 flex items-center gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+            <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 md:hidden z-[101] flex items-center gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
                 <div className="flex items-center border border-gray-300 rounded-md bg-white h-10 px-2 justify-between w-24 flex-shrink-0">
                     <button className="px-2 text-lg text-gray-500 font-medium">-</button>
                     <span className="font-bold text-sm">1</span>

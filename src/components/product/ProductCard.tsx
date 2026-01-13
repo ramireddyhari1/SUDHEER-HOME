@@ -149,10 +149,18 @@ export function ProductCard({
                         <span className="text-base md:text-lg font-bold text-orange-500">Rs. {price}</span>
                     </div>
 
-                    <AnimatedTractorButton
-                        className="bg-[#F59E0B] hover:bg-[#D97706] h-8 md:h-10 text-xs md:text-sm w-full"
-                        onClick={handleAddToCart}
-                    />
+                    <div className="w-full">
+                        <AnimatedTractorButton
+                            className="bg-[#F59E0B] hover:bg-[#D97706] h-8 md:h-10 text-xs md:text-sm w-full hidden md:flex"
+                            onClick={handleAddToCart}
+                            label="Add to cart"
+                        />
+                        <AnimatedTractorButton
+                            className="bg-[#F59E0B] hover:bg-[#D97706] h-8 text-xs w-full md:hidden flex items-center justify-center px-2"
+                            onClick={handleAddToCart}
+                            label="Add"
+                        />
+                    </div>
                 </div>
             </div>
         </div>

@@ -130,8 +130,8 @@ export function HeroCarousel() {
     return (
         <section className="w-full bg-gray-50 pt-2 pb-2"> {/* Added padding for separation */}
             <div className="container mx-auto px-4 lg:px-6">
-                {/* Carousel Container - Mobile: Landscape Rectangle Aspect Ratio (3:2), Desktop: Wide Aspect Ratio */}
-                <div className="relative w-full rounded-2xl overflow-hidden shadow-xl aspect-[3/2] md:aspect-[1600/472]">
+                {/* Carousel Container - Mobile: Portrait/Taller Ratio (4:5), Desktop: Wide Aspect Ratio */}
+                <div className="relative w-full rounded-2xl overflow-hidden shadow-xl aspect-[4/5] md:aspect-[1600/472]">
 
                     {/* Embla Viewport */}
                     <div className="overflow-hidden h-full" ref={emblaRef}>

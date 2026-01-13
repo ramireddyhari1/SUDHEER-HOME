@@ -46,7 +46,7 @@ export function Navbar() {
                             <Link href="/" className="flex items-center gap-2 group">
                                 {/* Logo Video - Visual Overflow for Impact */}
                                 <div className="relative h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 origin-center lg:origin-left">
-                                    <div className="absolute inset-0 flex items-center justify-center scale-[2.5] lg:scale-[1.8]">
+                                    <div className="absolute inset-0 flex items-center justify-center scale-[1.8]">
                                         <video
                                             src="/logo.mp4"
                                             autoPlay
@@ -106,7 +106,7 @@ export function Navbar() {
                                 <button className="p-2 hover:bg-secondary/5 rounded-full transition-colors relative" aria-label="Cart">
                                     <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80 stroke-[2]" />
                                     {cartCount > 0 && (
-                                        <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full font-bold">
+                                        <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-secondary text-white text-[9px] flex items-center justify-center rounded-full font-bold shadow-sm">
                                             {cartCount}
                                         </span>
                                     )}

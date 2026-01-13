@@ -23,6 +23,15 @@ const SECTIONS: Record<string, { title: string, fields: ContentField[] }> = {
             { key: "announcement_text", label: "Announcement Bar", type: "text", placeholder: "e.g., Free Shipping on orders over ₹999" },
         ]
     },
+    "home-story": {
+        title: "Our Story Section",
+        fields: [
+            { key: "story_title", label: "Section Title", type: "text", placeholder: "e.g., Our Roots" },
+            { key: "story_subtitle", label: "Subtitle", type: "text", placeholder: "e.g., A Legacy of Tradition" },
+            { key: "story_description", label: "Description", type: "textarea", placeholder: "e.g., Use this space to tell your brand story..." },
+            { key: "story_image_url", label: "Image URL", type: "text", placeholder: "https://..." },
+        ]
+    },
     "footer": {
         title: "Footer Information",
         fields: [

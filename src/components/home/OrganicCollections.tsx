@@ -3,21 +3,22 @@
 import React from "react";
 import { Container } from "@/components/ui/Container";
 import { ProductCard } from "@/components/product/ProductCard";
+import { Button } from "@/components/ui/Button";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-export function NewArrivals() {
+export function OrganicCollections() {
     const [products, setProducts] = React.useState<any[]>([]);
     const [loading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch('/api/products?collection=new-arrivals');
+                const res = await fetch('/api/products?collection=organic');
                 const data = await res.json();
 
                 if (data.success && data.products) {
-                    const dbProducts = data.products.map((p: any) => ({
+                    setProducts(data.products.map((p: any) => ({
                         id: p._id,
                         name: p.name,
                         price: p.price,
@@ -25,12 +26,11 @@ export function NewArrivals() {
                         image: p.image,
                         weight: p.weight,
                         category: p.category,
-                        isBestSeller: p.isSeasonBest // Optional if ProductCard uses it
-                    }));
-                    setProducts(dbProducts);
+                        isBestSeller: p.isSeasonBest
+                    })));
                 }
             } catch (error) {
-                console.error("Failed to load new arrivals");
+                console.error("Failed to load organic collections");
             } finally {
                 setLoading(false);
             }
@@ -41,19 +41,21 @@ export function NewArrivals() {
     if (!loading && products.length === 0) return null;
 
     return (
-        <section className="py-16 bg-secondary/5">
+        <section className="py-16 bg-white">
             <Container>
-                <div className="flex items-center justify-between mb-8">
-                    <div>
-                        <h2 className="font-serif text-2xl md:text-3xl font-bold">Fresh from Farm</h2>
-                        <p className="text-muted-foreground text-sm">Newly harvested & packed with love</p>
+                <div className="flex flex-col md:flex-row items-center justify-between mb-12">
+                    <div className="text-center md:text-left mb-6 md:mb-0">
+                        <h2 className="font-serif text-3xl md:text-4xl font-bold mb-2">Our Organic Collections</h2>
+                        <p className="text-muted-foreground">Pure, natural and certified organic products</p>
                     </div>
-                    <Link href="/products?sort=new" className="text-primary font-medium flex items-center gap-1 hover:underline text-sm">
-                        View All <ArrowRight className="h-4 w-4" />
+                    <Link href="/products?collection=organic">
+                        <Button variant="outline" className="gap-2">
+                            Explore Collection <ArrowRight className="h-4 w-4" />
+                        </Button>
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
                     {products.map((product) => (
                         <ProductCard key={product.id} {...product} />
                     ))}

@@ -167,7 +167,7 @@ export default function CartPage() {
             </Container>
 
             {/* Fixed Bottom Bar (Visible on ALL screens) - Clean Implementation */}
-            <div className="fixed bottom-[56px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-3 md:p-4 z-40">
+            <div className="fixed bottom-[56px] md:bottom-0 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] p-3 md:p-4 z-[101]">
                 <Container>
                     <div className="flex items-center gap-4 justify-between">
                         <div>

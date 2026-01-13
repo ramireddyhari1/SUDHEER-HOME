@@ -7,75 +7,19 @@ import { BestSellerCard } from "@/components/product/BestSellerCard";
 import { Container } from "@/components/ui/Container";
 
 
-const initialProducts = [
-    {
-        id: "jaggery-cubes",
-        name: "Palm Jaggery Cubes",
-        englishName: "(Karupatti)",
-        price: 260,
-        originalPrice: 320,
-        weight: "500 g",
-        image: "/products/jaggery cubes.png",
-        tags: ["Natural Sweetener", "Iron Rich", "Bone Health"],
-        rating: 4.9,
-        reviews: 420,
-        isBestSeller: true
-    },
-    {
-        id: "black-rice",
-        name: "Black Rice",
-        englishName: "(Kavuni Arisi)",
-        price: 350,
-        originalPrice: 450,
-        weight: "1 kg",
-        image: "/products/black rice.png",
-        tags: ["Antioxidants", "Superfood", "Diabetes Friendly"],
-        rating: 4.8,
-        reviews: 185,
-        isBestSeller: true
-    },
-    {
-        id: "jaggery-powder",
-        name: "Palm Jaggery Powder",
-        englishName: "(Nattu Sakkarai)",
-        price: 280,
-        originalPrice: 340,
-        weight: "500 g",
-        image: "/products/jaggery powder.png",
-        tags: ["Chemical Free", "Mineral Rich", "Coffee Ready"],
-        rating: 4.9,
-        reviews: 310,
-        isBestSeller: true
-    },
-    {
-        id: "brown-rice",
-        name: "Traditional Brown Rice",
-        englishName: "(Kaikuthal Arisi)",
-        price: 180,
-        originalPrice: 240,
-        weight: "1 kg",
-        image: "/products/brown rice.png",
-        tags: ["High Fiber", "Weight Loss", "Farm Fresh"],
-        rating: 4.7,
-        reviews: 150,
-        isBestSeller: true
-    }
-];
-
 export function BestSellers() {
-    const [products, setProducts] = React.useState(initialProducts);
+    const [products, setProducts] = React.useState<any[]>([]);
+    const [loading, setLoading] = React.useState(true);
 
-    // Fetch products from API
     React.useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const res = await fetch('/api/products');
+                // Fetch only Season Best products
+                const res = await fetch('/api/products?collection=season-best');
                 const data = await res.json();
-                if (data.success && data.products.length > 0) {
-                    // Combine default products with new DB products for MVP display
-                    // Or ideally replace them if DB works well.
-                    // Let's replace only if we get data, and map DB fields to UI fields.
-                    const dbProducts = data.products.slice(0, 4).map((p: any) => ({
+
+                if (data.success && data.products) {
+                    const dbProducts = data.products.map((p: any) => ({
                         id: p._id,
                         name: p.name,
                         englishName: p.englishName || "",
@@ -86,18 +30,21 @@ export function BestSellers() {
                         tags: p.tags || [],
                         rating: p.rating || 5,
                         reviews: p.reviews || 0,
-                        isBestSeller: p.isBestSeller
+                        isBestSeller: p.isSeasonBest || p.isBestSeller // Fallback
                     }));
-                    if (dbProducts.length > 0) {
-                        setProducts(dbProducts);
-                    }
+                    setProducts(dbProducts);
                 }
             } catch (error) {
                 console.error("Failed to load products");
+            } finally {
+                setLoading(false);
             }
         };
         fetchProducts();
     }, []);
+
+    if (!loading && products.length === 0) return null; // Hide section if no data
+
 
     return (
         <section className="py-6 md:py-12 bg-white">
