@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Vaishnavi Organics</string>
+    <string name="title_activity_main">Vaishnavi Organics</string>
+    <string name="package_name">com.vaishnaviorganics.store</string>
+    <string name="custom_url_scheme">com.vaishnaviorganics.store</string>
+</resources>
