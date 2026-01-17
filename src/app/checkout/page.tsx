@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { useCart } from "@/context/CartContext";
@@ -70,7 +70,8 @@ export default function CheckoutPage() {
         try {
             // Call Notification API
             // ... (fetch logic) ...
-            const response = await fetch('/api/notify', {
+            // FIRE AND FORGET NOTIFICATION (Don't await response to speed up UI)
+            fetch('/api/notify', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -80,14 +81,10 @@ export default function CheckoutPage() {
                     customer: formData,
                     items: cart || []
                 })
-            });
+            }).catch(err => console.error("Notification trigger failed (background)", err));
 
-            const result = await response.json();
-
-            if (!result.success) {
-                console.error("Notification API Failed:", result);
-                alert(`Order Placed, but confirmation email failed: ${result.error}.`);
-            }
+            // Optimistic success - assume it works for the UI
+            // We don't check 'result' here to save time
 
             // Save order to localStorage
             const newOrder = {

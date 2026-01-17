@@ -113,7 +113,7 @@ export function OrderSuccess({ orderId, amount, paymentMethod }: OrderSuccessPro
                     transition={{ type: "spring", stiffness: 300, damping: 20 }}
                     className="absolute text-center bg-white/90 backdrop-blur px-6 py-2 rounded-full shadow-lg border border-[#155E42]/10"
                 >
-                    <span className="font-serif font-bold text-[#155E42] text-lg">Order Delivered!</span>
+                    <span className="font-serif font-bold text-[#155E42] text-lg">Order Placed!</span>
                 </motion.div>
             </div>
 
@@ -148,10 +148,7 @@ export function OrderSuccess({ orderId, amount, paymentMethod }: OrderSuccessPro
                                     {copied ? <Check className="w-3 h-3 text-green-600" /> : <Copy className="w-3 h-3 text-gray-400" />}
                                 </button>
                             </div>
-                            <div className="flex justify-between items-center px-3">
-                                <span className="text-gray-500 text-sm">Amount</span>
-                                <span className="font-bold text-lg text-[#155E42]">₹{amount.toLocaleString()}</span>
-                            </div>
+
                             <div className="flex justify-between items-center px-3">
                                 <span className="text-gray-500 text-sm">Payment</span>
                                 <span className="text-sm font-medium capitalize">{paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online'}</span>
