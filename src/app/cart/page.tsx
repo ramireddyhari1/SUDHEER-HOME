@@ -115,6 +115,13 @@ export default function CartPage() {
                         ))}
                     </div>
 
+                    {/* Add More Items Button */}
+                    <Link href="/products" className="block w-full">
+                        <button className="w-full py-4 border-2 border-dashed border-[#DAA520] rounded-xl text-[#B8860B] font-bold text-sm bg-[#DAA520]/5 hover:bg-[#DAA520]/10 transition-colors flex items-center justify-center gap-2 mb-6 md:mb-0">
+                            + Add More Items
+                        </button>
+                    </Link>
+
                     {/* Right Column: Summary (Desktop Sticky) */}
                     <div className="hidden lg:block w-full lg:w-[400px]">
                         <div className="bg-white rounded-xl p-6 border border-[#6F4E37]/10 shadow-sm sticky top-24">
