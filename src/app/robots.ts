@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ['/admin/', '/api/'],
             },
         ],
-        sitemap: 'https://vaishnaviorganics.com/sitemap.xml',
+        sitemap: 'https://vaishnaviorganics.store/sitemap.xml',
     };
 }

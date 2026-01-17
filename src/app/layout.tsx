@@ -42,14 +42,14 @@ export const metadata: Metadata = {
   authors: [{ name: "Vaishnavi Organics" }],
   creator: "Vaishnavi Organics",
   publisher: "Vaishnavi Organics",
-  metadataBase: new URL('https://vaishnaviorganics.com'),
+  metadataBase: new URL('https://vaishnaviorganics.store'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_IN',
-    url: 'https://vaishnaviorganics.com',
+    url: 'https://vaishnaviorganics.store',
     title: 'Vaishnavi Organics - 100% Organic Traditional Foods',
     description: 'Handcrafted organic foods from village to your home. FSSAI certified & lab-tested since 1998.',
     siteName: 'Vaishnavi Organics',
