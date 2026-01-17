@@ -99,7 +99,7 @@ export function HeroCarousel() {
         <section className="w-full bg-white pb-0 pt-0">
             <div className="w-full">
                 {/* Carousel Container - Full Screen Earthy Hero */}
-                <div className="relative w-full overflow-hidden aspect-[2.6/1] md:aspect-auto md:h-screen md:min-h-[600px]">
+                <div className="relative w-full overflow-hidden aspect-[2/1] md:aspect-auto md:h-screen md:min-h-[700px]">
 
                     {/* Embla Viewport */}
                     <div className="overflow-hidden h-full" ref={emblaRef}>
@@ -153,21 +153,7 @@ export function HeroCarousel() {
                                                 </>
                                             )}
 
-                                            <motion.div
-                                                initial={{ opacity: 0, scale: 0.9 }}
-                                                animate={isActive ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
-                                                transition={{ duration: 0.5, delay: 0.7 }}
-                                                className="absolute bottom-4 left-1/2 -translate-x-1/2 md:static md:translate-x-0 md:mt-8"
-                                            >
-                                                <Link href={slide.link || '#'}>
-                                                    <Button
-                                                        size="lg"
-                                                        className="bg-[#DAA520] text-[#2C1810] hover:bg-[#B8860B] hover:text-white font-bold text-[10px] md:text-xl min-h-[26px] md:min-h-[56px] px-4 md:px-12 py-1 md:py-4 rounded-full shadow-lg hover:scale-105 transition-all duration-300 border border-[#DAA520]"
-                                                    >
-                                                        {slide.cta || "Shop Now"}
-                                                    </Button>
-                                                </Link>
-                                            </motion.div>
+
                                         </div>
                                     </div>
                                 );

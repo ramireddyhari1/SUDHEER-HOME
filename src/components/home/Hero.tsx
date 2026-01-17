@@ -65,7 +65,7 @@ export function Hero() {
     const slide = slides[currentSlide];
 
     return (
-        <section className="relative bg-[#8B2E18] text-white overflow-hidden min-h-[450px] md:min-h-[600px] flex items-center transition-all duration-700 group">
+        <section className="relative bg-[#8B2E18] text-white overflow-hidden min-h-[550px] md:min-h-[700px] flex items-center transition-all duration-700 group">
 
             {/* Background Pattern Overlay */}
             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-repeat z-0"></div>
