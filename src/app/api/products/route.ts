@@ -79,14 +79,23 @@ export async function POST(req: Request) {
         const body = await req.json();
 
         // Basic validation
-        if (!body.name || !body.price || !body.image) {
-            return NextResponse.json({ success: false, message: 'Name, Price and Image are required' }, { status: 400 });
+        if (!body.name || body.price === undefined || body.price === null || !body.image) {
+            return NextResponse.json({
+                success: false,
+                message: 'Name, Price and Image are required. Price must be a number.'
+            }, { status: 400 });
         }
 
         const product = await Product.create(body);
+        console.log("Product Created:", product._id);
         return NextResponse.json({ success: true, product }, { status: 201 });
-    } catch (error) {
-        return NextResponse.json({ success: false, message: 'Failed to create product' }, { status: 500 });
+    } catch (error: any) {
+        console.error("Create Product Error:", error);
+        return NextResponse.json({
+            success: false,
+            message: 'Failed to create product',
+            error: error.message || String(error)
+        }, { status: 500 });
     }
 }
 

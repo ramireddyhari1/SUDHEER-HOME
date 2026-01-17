@@ -32,7 +32,7 @@ export function MobileBottomNav() {
     ];
 
     return (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 py-2 px-4 md:hidden z-[100] flex justify-between items-center shadow-[0_-2px_10px_rgba(0,0,0,0.05)] safe-area-pb">
+        <div className="fixed bottom-0 left-0 right-0 bg-[#F5F5DC]/95 backdrop-blur-md border-t-2 border-[#DAA520]/20 py-2 px-4 md:hidden z-[100] flex justify-between items-center shadow-[0_-8px_30px_rgba(0,0,0,0.12)] safe-area-pb">
             {navItems.map((item) => {
                 const isActive = pathname === item.href;
                 const Icon = item.icon;
@@ -41,10 +41,10 @@ export function MobileBottomNav() {
                     <Link
                         key={item.label}
                         href={item.href}
-                        className={`flex flex-col items-center gap-1 ${isActive ? "text-[#155e42]" : "text-gray-500"
+                        className={`flex flex-col items-center gap-1 ${isActive ? "text-[#6F4E37]" : "text-gray-500 hover:text-[#DAA520]"
                             }`}
                     >
-                        <Icon className={`h-6 w-6 ${isActive ? "fill-current" : ""}`} strokeWidth={isActive ? 2.5 : 2} />
+                        <Icon className={`h-6 w-6 ${isActive ? "fill-[#6F4E37]/10" : ""}`} strokeWidth={isActive ? 2.5 : 2} />
                         <span className={`text-[10px] font-medium ${isActive ? "font-bold" : ""}`}>
                             {item.label}
                         </span>

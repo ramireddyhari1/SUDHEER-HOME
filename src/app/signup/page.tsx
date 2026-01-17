@@ -127,7 +127,7 @@ export default function SignupPage() {
                                             required
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none"
+                                            className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none"
                                             placeholder="Email address"
                                         />
                                     </div>
@@ -136,7 +136,7 @@ export default function SignupPage() {
                                 <Button
                                     type="submit"
                                     disabled={isSendingOtp}
-                                    className="w-full h-12 bg-[#155E42] hover:bg-[#0f4631] text-white rounded-xl font-bold shadow-lg shadow-green-900/30 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="w-full h-12 bg-[#DAA520] hover:bg-[#B8860B] text-[#2C1810] rounded-xl font-bold shadow-lg shadow-yellow-900/20 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
                                     {isSendingOtp ? "Sending..." : "Continue with Email"}
                                 </Button>
@@ -158,7 +158,7 @@ export default function SignupPage() {
                                             required
                                             value={otpCode}
                                             onChange={(e) => setOtpCode(e.target.value)}
-                                            className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none tracking-[0.5em] font-mono text-center"
+                                            className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none tracking-[0.5em] font-mono text-center"
                                             placeholder="123456"
                                         />
                                     </div>
@@ -167,7 +167,7 @@ export default function SignupPage() {
                                 <Button
                                     type="submit"
                                     disabled={isVerifying}
-                                    className="w-full h-12 bg-[#155E42] hover:bg-[#0f4631] text-white rounded-xl font-bold shadow-lg shadow-green-900/30 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="w-full h-12 bg-[#DAA520] hover:bg-[#B8860B] text-[#2C1810] rounded-xl font-bold shadow-lg shadow-yellow-900/20 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
                                     {isVerifying ? "Verifying..." : "Create Account"}
                                 </Button>

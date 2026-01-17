@@ -1,31 +1,57 @@
 @import "tailwindcss";
 
 @theme {
-  --color-background: #FDFDFD;
-  --color-foreground: #2C1810;
+  --color-background: #F5F5DC;
+  /* Beige Background */
+  --color-foreground: #6F4E37;
+  /* Deep Brown Text */
 
-  /* Sweet Karam Inspired Palette */
-  --color-primary: #155E42;
-  /* Deep Green - Main Brand Color */
+  /* Sweet Karam Earthy Palette - REFINED FOR ACCESSIBILITY */
+  --color-primary: #6F4E37;
+  /* Deep Brown - Main Brand Color */
   --color-primary-foreground: #ffffff;
 
-  --color-secondary: #8B2E18;
-  /* Brick Red - Accents/Buttons */
-  --color-secondary-foreground: #ffffff;
+  --color-secondary: #DAA520;
+  /* Gold - For Backgrounds/Buttons ONLY */
+  --color-secondary-foreground: #2C1810;
 
-  --color-accent: #FFB800;
-  /* Gold/Yellow - Sale Badges */
-  --color-accent-foreground: #000000;
+  /* NEW: Accessible Gold for Text */
+  --color-gold-text: #B8860B;
+  /* Dark Goldenrod - Readable on Beige */
 
-  --color-muted: #F5F5F0;
-  --color-muted-foreground: #666666;
+  --color-accent: #8B4513;
+  /* Saddle Brown - Secondary Accents */
+  --color-accent-foreground: #ffffff;
 
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-serif), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --color-muted: #E8E4C9;
+  /* Muted Beige */
+  --color-muted-foreground: #6B5842;
 
-  --radius-sm: 0.375rem;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-playfair), ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
+  --radius-lg: 1rem;
+
+  /* Spacing Scale (8px base) */
+  --space-1: 0.5rem;
+  /* 8px */
+  --space-2: 1rem;
+  /* 16px */
+  --space-3: 1.5rem;
+  /* 24px */
+  --space-4: 2rem;
+  /* 32px */
+  --space-5: 2.5rem;
+  /* 40px */
+  --space-6: 3rem;
+  /* 48px */
+  --space-8: 4rem;
+  /* 64px */
+
+  /* Container */
+  --container-width: 1440px;
 }
 
 /* Custom Utilities if needed */
@@ -63,23 +89,40 @@
   }
 
   /* Tractor Drive Animation */
-  @keyframes drive {
-    0% {
-      transform: translateX(-200px);
+  /* Float Animation for Hero */
+  @keyframes float {
+
+    0%,
+    100% {
+      transform: translateY(0);
     }
 
-    100% {
-      transform: translateX(120vw);
-      /* Move fully off screen */
+    50% {
+      transform: translateY(-10px);
     }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+}
+
+@layer base {
+  html {
+    overflow-x: hidden;
   }
 }
 
 body {
   background-color: var(--color-background);
+  background-image: url('/backgrounds/south-india-pattern.png');
+  background-repeat: repeat;
+  background-size: 300px;
+  background-blend-mode: multiply;
   color: var(--color-foreground);
   font-family: var(--font-sans);
   padding-bottom: 80px;
+  overflow-x: hidden;
   /* Safe area for fixed mobile bottom nav */
 }
 

@@ -2,9 +2,10 @@
 
 import React from "react";
 import { Container } from "@/components/ui/Container";
-import { ProductCard } from "@/components/product/ProductCard";
+import { BestSellerCard } from "@/components/product/BestSellerCard";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 
 export function NewArrivals() {
     const [products, setProducts] = React.useState<any[]>([]);
@@ -43,20 +44,35 @@ export function NewArrivals() {
     return (
         <section className="py-16 bg-secondary/5">
             <Container>
-                <div className="flex items-center justify-between mb-8">
-                    <div>
-                        <h2 className="font-serif text-2xl md:text-3xl font-bold">Fresh from Farm</h2>
-                        <p className="text-muted-foreground text-sm">Newly harvested & packed with love</p>
+                <div className="text-center mb-8 relative z-10">
+                    <h2 className="font-serif font-extrabold text-2xl md:text-3xl text-[#2C1810] tracking-tight drop-shadow-sm mb-0">
+                        Fresh from Farm
+                    </h2>
+
+                    <div className="w-full flex justify-center -my-1">
+                        <SectionDivider variant="namam" className="!py-0 scale-90" />
                     </div>
-                    <Link href="/products?sort=new" className="text-primary font-medium flex items-center gap-1 hover:underline text-sm">
-                        View All <ArrowRight className="h-4 w-4" />
-                    </Link>
+
+                    <p className="text-[#5D4037] font-semibold tracking-wider flex items-center justify-center gap-2 text-sm md:text-base -mt-1">
+                        Newly harvested & packed with love
+                    </p>
                 </div>
 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6">
                     {products.map((product) => (
-                        <ProductCard key={product.id} {...product} />
+                        <BestSellerCard
+                            key={product.id}
+                            {...product}
+                            badge="New Arrival"
+                            isBestSeller={false}
+                        />
                     ))}
+                </div>
+
+                <div className="mt-8 text-center">
+                    <Link href="/products?sort=new" className="inline-flex items-center gap-2 text-primary font-bold hover:underline text-sm uppercase tracking-wide">
+                        View All <ArrowRight className="h-4 w-4" />
+                    </Link>
                 </div>
             </Container>
         </section>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Menu, X, ShoppingBag, Search, User, Heart, ChevronDown, MapPin } from "lucide-react";
 import { Container } from "@/components/ui/Container";
 import { useCart } from "@/context/CartContext";
@@ -26,87 +27,86 @@ export function Navbar() {
         <div className="w-full sticky top-0 z-50">
 
 
-            {/* Main Header */}
-            <header className="w-full bg-white border-b shadow-sm transition-all duration-300">
-                <div className="w-full px-4 lg:px-8 relative">
-                    <div className="flex h-24 md:h-28 lg:h-32 items-center justify-between gap-4">
+            {/* Main Header - Earthy Beige Sticky */}
+            <header className="w-full bg-[#F5F5DC]/95 backdrop-blur-md border-b-[3px] border-[#DAA520]/20 shadow-sm transition-all duration-300">
+                <div className="mx-auto max-w-[1440px] px-4 lg:px-8 relative">
+                    <div className="flex h-[52px] lg:h-[80px] items-center justify-between gap-4">
 
-                        {/* Mobile Menu Button */}
+                        {/* Mobile Menu Button - Brown */}
                         <div className="flex-shrink-0 flex items-center lg:hidden z-10">
                             <button
                                 onClick={() => setIsOpen(!isOpen)}
-                                className="p-2 -ml-2 text-foreground"
+                                className="p-2 -ml-2 text-[#6F4E37] active:scale-95 transition-transform"
                             >
-                                <Menu className="h-6 w-6" />
+                                <Menu className="h-6 w-6 stroke-[2]" />
                             </button>
                         </div>
 
-                        {/* Logo Area - Centered on Mobile, Left on Desktop */}
-                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 lg:flex-shrink-0 lg:flex lg:items-center lg:gap-3">
+                        {/* Logo Area - Centered */}
+                        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 lg:static lg:translate-x-0 lg:translate-y-0 lg:flex-shrink-0 lg:flex lg:items-center">
                             <Link href="/" className="flex items-center gap-2 group">
-                                {/* Logo Video - Visual Overflow for Impact */}
-                                <div className="relative h-16 w-16 md:h-20 md:w-20 lg:h-24 lg:w-24 flex items-center justify-center group-hover:scale-110 transition-transform duration-300 origin-center lg:origin-left">
-                                    <div className="absolute inset-0 flex items-center justify-center scale-[1.8]">
-                                        <video
-                                            src="/logo.mp4"
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
-                                            className="h-full w-full object-contain mix-blend-multiply"
-                                            style={{ filter: "brightness(1.05) contrast(1.2)" }}
-                                        />
-                                    </div>
+                                {/* Logo Video/Image */}
+                                <div className="relative h-9 w-9 lg:h-16 lg:w-16 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                    <Image
+                                        src="/logo-stamp.png"
+                                        alt="Vaishnavi Organics"
+                                        fill
+                                        className="object-contain mix-blend-multiply"
+                                        priority
+                                    />
                                 </div>
+                                <span className="hidden lg:block font-serif text-2xl font-bold text-[#6F4E37] tracking-tight">Vaishnavi Organics</span>
                             </Link>
                         </div>
 
-                        {/* Desktop Navigation */}
-                        <nav className="hidden lg:flex items-center gap-6 xl:gap-8 pt-2">
+                        {/* Desktop Navigation - Centered & Earthy */}
+                        <nav className="hidden lg:flex items-center justify-center flex-1 gap-8 px-4">
                             {navigation.map((item) => (
                                 <Link
                                     key={item.name}
                                     href={item.href}
-                                    className="relative group flex flex-col items-center"
+                                    className="relative group flex flex-col items-center py-2"
                                 >
                                     {item.badge && (
-                                        <span className={`absolute -top-5 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm ${item.badgeColor}`}>
+                                        <span className={`absolute -top-3 left-1/2 -translate-x-1/2 text-[9px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm bg-[#DAA520] text-[#2C1810] transform transition-transform group-hover:-translate-y-1`}>
                                             {item.badge}
                                         </span>
                                     )}
-                                    <span className="text-[15px] font-medium text-gray-800 group-hover:text-primary transition-colors flex items-center gap-1">
-                                        {item.icon === "⚡" && <span className="text-orange-500">⚡</span>}
+                                    <span className="text-[16px] font-medium text-[#6F4E37]/80 group-hover:text-[#6F4E37] group-hover:font-bold transition-all flex items-center gap-1.5 font-sans tracking-wide">
+                                        {item.icon === "⚡" && <span className="text-[#DAA520] animate-pulse">⚡</span>}
                                         {item.name}
-                                        {item.hasDropdown && <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2.5]" />}
+                                        {item.hasDropdown && <ChevronDown className="h-3.5 w-3.5 text-[#6F4E37]/60 stroke-[2.5]" />}
                                     </span>
                                 </Link>
                             ))}
-
-                            {/* My Account & More - Text Style */}
-                            <Link href={user ? "/account" : "/login"} className="relative group flex flex-col items-center ml-2">
-                                <span className="text-[15px] font-medium text-gray-800 group-hover:text-primary transition-colors flex items-center gap-1">
-                                    {user ? `Hi, ${user.name.split(' ')[0]}` : "Login"}
-                                    {user && <ChevronDown className="h-4 w-4 text-gray-500 stroke-[2.5]" />}
-                                </span>
-                            </Link>
                         </nav>
 
-                        {/* Icons / Actions */}
-                        <div className="flex items-center gap-2 sm:gap-4 ml-2">
-                            <button className="p-2 hover:bg-secondary/5 rounded-full transition-colors" aria-label="Search">
-                                <Search className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80 stroke-[2]" />
+                        {/* Icons / Actions - Right - Earthy Brown */}
+                        <div className="flex items-center gap-1.5 md:gap-3 lg:gap-4 ml-auto lg:ml-0 z-10">
+                            {/* Search */}
+                            <button className="p-2 hover:bg-[#DAA520]/10 rounded-full transition-colors active:scale-95" aria-label="Search">
+                                <Search className="h-5 w-5 lg:h-5 lg:w-5 text-[#6F4E37] stroke-[2]" />
                             </button>
+
+                            {/* Account */}
+                            <Link href={user ? "/account" : "/login"} className="hidden lg:block">
+                                <button className="p-2 hover:bg-[#DAA520]/10 rounded-full transition-colors active:scale-95" aria-label="Account">
+                                    <User className="h-5 w-5 lg:h-5 lg:w-5 text-[#6F4E37] stroke-[2]" />
+                                </button>
+                            </Link>
+
                             {/* Wishlist */}
-                            <button className="hidden sm:block p-2 hover:bg-secondary/5 rounded-full transition-colors relative" aria-label="Wishlist">
-                                <Heart className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80 stroke-[2]" />
-                                <span className="absolute -top-1 -right-1 h-4 w-4 bg-secondary text-white text-[10px] flex items-center justify-center rounded-full font-bold">0</span>
+                            <button className="hidden sm:block p-2 hover:bg-[#DAA520]/10 rounded-full transition-colors relative active:scale-95" aria-label="Wishlist">
+                                <Heart className="h-5 w-5 lg:h-5 lg:w-5 text-[#6F4E37] stroke-[2]" />
+                                <span className="absolute top-1 right-0.5 h-3.5 w-3.5 bg-[#DAA520] text-[#2C1810] text-[9px] flex items-center justify-center rounded-full font-bold shadow-sm">0</span>
                             </button>
+
                             {/* Cart */}
                             <Link href="/cart">
-                                <button className="p-2 hover:bg-secondary/5 rounded-full transition-colors relative" aria-label="Cart">
-                                    <ShoppingBag className="h-5 w-5 sm:h-6 sm:w-6 text-foreground/80 stroke-[2]" />
+                                <button className="p-2 hover:bg-[#DAA520]/10 rounded-full transition-colors relative active:scale-95" aria-label="Cart">
+                                    <ShoppingBag className="h-5 w-5 lg:h-5 lg:w-5 text-[#6F4E37] stroke-[2]" />
                                     {cartCount > 0 && (
-                                        <span className="absolute -top-0.5 -right-0.5 h-4 w-4 bg-secondary text-white text-[9px] flex items-center justify-center rounded-full font-bold shadow-sm">
+                                        <span className="absolute top-0.5 right-0.5 h-4 w-4 bg-[#DAA520] text-[#2C1810] text-[10px] flex items-center justify-center rounded-full font-bold shadow-sm">
                                             {cartCount}
                                         </span>
                                     )}

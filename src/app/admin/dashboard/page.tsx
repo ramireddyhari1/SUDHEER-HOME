@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { DollarSign, ShoppingBag, Users, TrendingUp, RefreshCcw, Package, Clock } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { AnnouncementEditor } from "@/components/admin/AnnouncementEditor";
+import CouponManager from "@/components/admin/CouponManager";
 
 export default function AdminDashboardPage() {
     const [loading, setLoading] = useState(true);
@@ -159,98 +161,107 @@ export default function AdminDashboardPage() {
                 ))}
             </div>
 
-            {/* Recent Orders Section */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-                <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
-                    <div className="flex items-center gap-3">
-                        <div className="p-2 bg-green-100 rounded-lg text-green-700">
-                            <Package className="w-5 h-5" />
-                        </div>
-                        <h2 className="text-lg font-bold text-gray-900">Recent Orders</h2>
-                    </div>
-                    <Link href="/admin/orders" className="text-sm font-medium text-green-700 hover:text-green-800 hover:underline flex items-center gap-1">
-                        View All Orders
-                    </Link>
+            {/* Content Management Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Announcement Bar Editor & Coupon Manager */}
+                <div className="lg:col-span-1 space-y-8">
+                    <AnnouncementEditor />
+                    <CouponManager />
                 </div>
 
-                <div className="overflow-x-auto">
-                    <table className="w-full">
-                        <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
-                            <tr>
-                                <th className="px-6 py-4 font-semibold text-left">Order Detail</th>
-                                <th className="px-6 py-4 font-semibold text-left">Customer</th>
-                                <th className="px-6 py-4 font-semibold text-left">Date</th>
-                                <th className="px-6 py-4 font-semibold text-left">Amount</th>
-                                <th className="px-6 py-4 font-semibold text-left">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-100">
-                            {loading ? (
-                                // Skeleton Rows
-                                Array.from({ length: 5 }).map((_, i) => (
-                                    <tr key={i}>
-                                        <td className="px-6 py-4"><div className="h-4 w-24 bg-gray-100 rounded animate-pulse"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-32 bg-gray-100 rounded animate-pulse"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-20 bg-gray-100 rounded animate-pulse"></div></td>
-                                        <td className="px-6 py-4"><div className="h-4 w-16 bg-gray-100 rounded animate-pulse"></div></td>
-                                        <td className="px-6 py-4"><div className="h-6 w-20 bg-gray-100 rounded-full animate-pulse"></div></td>
-                                    </tr>
-                                ))
-                            ) : recentOrders.length === 0 ? (
+                {/* Recent Orders Section - Taking up remaining space */}
+                <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50/30">
+                        <div className="flex items-center gap-3">
+                            <div className="p-2 bg-green-100 rounded-lg text-green-700">
+                                <Package className="w-5 h-5" />
+                            </div>
+                            <h2 className="text-lg font-bold text-gray-900">Recent Orders</h2>
+                        </div>
+                        <Link href="/admin/orders" className="text-sm font-medium text-green-700 hover:text-green-800 hover:underline flex items-center gap-1">
+                            View All Orders
+                        </Link>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                        <table className="w-full">
+                            <thead className="bg-gray-50 text-gray-500 text-xs uppercase tracking-wider">
                                 <tr>
-                                    <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
-                                        <div className="flex flex-col items-center gap-2">
-                                            <Package className="w-10 h-10 text-gray-300" />
-                                            <p>No orders yet</p>
-                                        </div>
-                                    </td>
+                                    <th className="px-6 py-4 font-semibold text-left">Order Detail</th>
+                                    <th className="px-6 py-4 font-semibold text-left">Customer</th>
+                                    <th className="px-6 py-4 font-semibold text-left">Date</th>
+                                    <th className="px-6 py-4 font-semibold text-left">Amount</th>
+                                    <th className="px-6 py-4 font-semibold text-left">Status</th>
                                 </tr>
-                            ) : (
-                                recentOrders.map((order) => (
-                                    <tr key={order.id} className="hover:bg-gray-50/80 transition-colors group">
-                                        <td className="px-6 py-4">
-                                            <span className="font-medium text-gray-900 group-hover:text-green-700 transition-colors">
-                                                {order.id}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex flex-col">
-                                                <span className="text-gray-900 font-medium">{order.customer}</span>
-                                                <span className="text-xs text-gray-400">{order.email}</span>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {loading ? (
+                                    // Skeleton Rows
+                                    Array.from({ length: 5 }).map((_, i) => (
+                                        <tr key={i}>
+                                            <td className="px-6 py-4"><div className="h-4 w-24 bg-gray-100 rounded animate-pulse"></div></td>
+                                            <td className="px-6 py-4"><div className="h-4 w-32 bg-gray-100 rounded animate-pulse"></div></td>
+                                            <td className="px-6 py-4"><div className="h-4 w-20 bg-gray-100 rounded animate-pulse"></div></td>
+                                            <td className="px-6 py-4"><div className="h-4 w-16 bg-gray-100 rounded animate-pulse"></div></td>
+                                            <td className="px-6 py-4"><div className="h-6 w-20 bg-gray-100 rounded-full animate-pulse"></div></td>
+                                        </tr>
+                                    ))
+                                ) : recentOrders.length === 0 ? (
+                                    <tr>
+                                        <td colSpan={5} className="px-6 py-12 text-center text-gray-500">
+                                            <div className="flex flex-col items-center gap-2">
+                                                <Package className="w-10 h-10 text-gray-300" />
+                                                <p>No orders yet</p>
                                             </div>
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="flex items-center gap-2 text-gray-500 hover:text-gray-700" title={order.fullDate}>
-                                                <Clock className="w-3 h-3" />
-                                                <span className="text-sm">{order.date}</span>
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 font-bold text-gray-900">
-                                            {order.amount}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
-                                                ${order.status === 'Delivered' ? 'bg-green-100 text-green-800 border border-green-200' :
-                                                    order.status === 'Processing' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
-                                                        order.status === 'In Transit' ? 'bg-purple-50 text-purple-700 border border-purple-200' :
-                                                            'bg-yellow-50 text-yellow-700 border border-yellow-200'
-                                                }
-                                            `}>
-                                                <span className={`w-1.5 h-1.5 rounded-full mr-1.5 
-                                                    ${order.status === 'Delivered' ? 'bg-green-500' :
-                                                        order.status === 'Processing' ? 'bg-blue-500' :
-                                                            order.status === 'In Transit' ? 'bg-purple-500' :
-                                                                'bg-yellow-500'
-                                                    }
-                                                `}></span>
-                                                {order.status}
-                                            </span>
                                         </td>
                                     </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                                ) : (
+                                    recentOrders.map((order) => (
+                                        <tr key={order.id} className="hover:bg-gray-50/80 transition-colors group">
+                                            <td className="px-6 py-4">
+                                                <span className="font-medium text-gray-900 group-hover:text-green-700 transition-colors">
+                                                    {order.id}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex flex-col">
+                                                    <span className="text-gray-900 font-medium">{order.customer}</span>
+                                                    <span className="text-xs text-gray-400">{order.email}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-2 text-gray-500 hover:text-gray-700" title={order.fullDate}>
+                                                    <Clock className="w-3 h-3" />
+                                                    <span className="text-sm">{order.date}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 font-bold text-gray-900">
+                                                {order.amount}
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize
+                                                    ${order.status === 'Delivered' ? 'bg-green-100 text-green-800 border border-green-200' :
+                                                        order.status === 'Processing' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                                                            order.status === 'In Transit' ? 'bg-purple-50 text-purple-700 border border-purple-200' :
+                                                                'bg-yellow-50 text-yellow-700 border border-yellow-200'
+                                                    }
+                                                `}>
+                                                    <span className={`w-1.5 h-1.5 rounded-full mr-1.5 
+                                                        ${order.status === 'Delivered' ? 'bg-green-500' :
+                                                            order.status === 'Processing' ? 'bg-blue-500' :
+                                                                order.status === 'In Transit' ? 'bg-purple-500' :
+                                                                    'bg-yellow-500'
+                                                        }
+                                                    `}></span>
+                                                    {order.status}
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

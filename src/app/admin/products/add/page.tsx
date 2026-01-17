@@ -16,6 +16,7 @@ export default function AddProductPage() {
         originalPrice: "",
         discount: "", // New
         weight: "1 kg",
+        stock: 0,
         image: "",
         description: "",
         category: "General",
@@ -42,26 +43,42 @@ export default function AddProductPage() {
         e.preventDefault();
         setLoading(true);
 
+        const price = parseFloat(formData.price);
+        if (isNaN(price)) {
+            alert("Please enter a valid price");
+            setLoading(false);
+            return;
+        }
+
         try {
+            const payload = {
+                ...formData,
+                price: price,
+                originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
+                discount: formData.discount ? parseFloat(formData.discount) : 0,
+                stock: formData.stock ? parseInt(formData.stock.toString()) : 0,
+                tags: ["Fresh", "Organic"]
+            };
+
+            console.log("Submitting payload:", payload);
+
             const res = await fetch('/api/products', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    ...formData,
-                    price: parseFloat(formData.price),
-                    originalPrice: formData.originalPrice ? parseFloat(formData.originalPrice) : undefined,
-                    discount: formData.discount ? parseFloat(formData.discount) : 0,
-                    tags: ["Fresh", "Organic"]
-                })
+                body: JSON.stringify(payload)
             });
 
-            if (res.ok) {
+            const data = await res.json();
+
+            if (res.ok && data.success) {
                 router.push("/admin/products");
             } else {
-                alert("Failed to create product");
+                console.error("Submission failed:", data);
+                alert(`Failed to create product: ${data.message || data.error || "Unknown Error"}`);
             }
         } catch (error) {
-            alert("Error creating product");
+            console.error("Network error:", error);
+            alert("Error creating product: Network request failed");
         } finally {
             setLoading(false);
         }
@@ -128,6 +145,26 @@ export default function AddProductPage() {
                                 value={formData.weight} onChange={handleChange}
                                 className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
                             />
+                        </div>
+                        {/* Stock */}
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Stock Quantity</label>
+                            <div className="flex gap-2">
+                                <input
+                                    type="number" name="stock"
+                                    // @ts-ignore
+                                    value={formData.stock || 0} onChange={handleChange}
+                                    className="w-full px-4 py-2 border rounded-lg focus:ring-green-500 focus:border-green-500"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={() => setFormData(prev => ({ ...prev, stock: 0 }))}
+                                    className="px-3 py-2 text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-lg border border-red-200 whitespace-nowrap"
+                                    title="Set stock to 0"
+                                >
+                                    Out Supply
+                                </button>
+                            </div>
                         </div>
                     </div>
 

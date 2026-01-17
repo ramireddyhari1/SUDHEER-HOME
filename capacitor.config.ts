@@ -5,9 +5,20 @@ const config: CapacitorConfig = {
   appName: 'Vaishnavi Organics',
   webDir: 'out',
   server: {
-    url: 'https://your-deployed-site.com', // ⚠️ REPLACE this with your actual Vercel/Production URL
+    url: 'https://vaishnaviorganics.store/',
     cleartext: true
-  }
+  },
+  plugins: {
+    SplashScreen: {
+      launchShowDuration: 0,
+      launchAutoHide: true,
+      backgroundColor: "#ffffffff",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
+      splashFullScreen: true,
+      splashImmersive: true,
+    },
+  },
 };
 
 export default config;

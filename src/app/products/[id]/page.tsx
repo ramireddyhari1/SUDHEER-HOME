@@ -4,65 +4,93 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import Image from "next/image";
 import Link from "next/link";
-import { Star, Truck, ShieldCheck, Leaf, ChevronRight, MapPin, Heart, Share2 } from "lucide-react";
+import { Star, Truck, ShieldCheck, Leaf, ChevronRight, MapPin, Heart, ShoppingBag } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
+import { useCart } from "@/context/CartContext";
 
-// Mock data lookup
-const getProduct = (id: string) => {
-    return {
-        id,
-        name: "Premium Organic Jaggery Powder",
-        price: 349,
-        originalPrice: 399,
-        description: "Our authentic organic jaggery powder is made using the traditional specialized Okkaliga method from chemical-free sugarcane. It retains all natural minerals and has a distinct rich taste. Perfect for sweetening your daily coffee, tea, or traditional desserts without the guilt of refined sugar.",
-        image: "https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&q=80&w=800",
-        images: [
-            "https://images.unsplash.com/photo-1610970881699-44a5587cabec?auto=format&fit=crop&q=80&w=800",
-            "https://images.unsplash.com/photo-1589139250009-8073cd03da7e?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1615485500704-8e99099928b3?auto=format&fit=crop&q=80&w=600"
-        ],
-        weight: "500g",
-        category: "Sweeteners",
-        rating: 4.8,
-        reviews: 2124,
-        sku: "VO-JAG-500",
-        inStock: true,
-    };
-};
-
-export default function ProductDetailPage(props: { params: Promise<{ id: string }> }) {
+export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params);
     return (
-        <ProductDetailContent id={"jaggery-powder"} />
+        <ProductDetailContent id={id} />
     );
 }
 
 function ProductDetailContent({ id }: { id: string }) {
-    const product = getProduct(id);
+    const [product, setProduct] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
     const [pincode, setPincode] = useState("");
     const [checkResult, setCheckResult] = useState<string | null>(null);
+    const [quantity, setQuantity] = useState(1);
+
+    // Hooks
+    const { addToCart } = useCart();
+
+    useEffect(() => {
+        const fetchProduct = async () => {
+            try {
+                // Try fetching from API
+                const res = await fetch(`/api/products?id=${id}`);
+                const data = await res.json();
+
+                if (data.success && data.product) {
+                    setProduct({
+                        ...data.product,
+                        images: data.product.images || [data.product.image], // Fallback if no gallery
+                        rating: data.product.rating || 4.8,
+                        reviews: data.product.reviews || 0,
+                    });
+                } else {
+                    // Fallback for debugging or invalid IDs if needed, or just set null
+                    setProduct(null);
+                }
+            } catch (error) {
+                console.error("Failed to fetch product", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchProduct();
+    }, [id]);
 
     const handleCheck = () => {
         if (pincode.length === 6) {
-            setCheckResult("Delivery by 12th Jan, Friday");
+            setCheckResult("Delivery available! Est: 3-5 days");
         } else {
             setCheckResult("Please enter valid 6 digit pincode");
         }
     }
 
+    const handleAddToCart = () => {
+        if (!product) return;
+        addToCart({
+            id: product._id || product.id,
+            name: product.name,
+            price: product.price,
+            image: product.image,
+            quantity: quantity,
+            weight: product.weight || "1 kg"
+        });
+        alert("Added to cart!"); // Simple feedback for now
+    };
+
+    if (loading) return <div className="h-[50vh] flex items-center justify-center">Loading...</div>;
+    if (!product) return <div className="h-[50vh] flex items-center justify-center">Product not found.</div>;
+
+    const discount = product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
+
     return (
         <div className="bg-[#FDFBF7] min-h-screen pb-20">
             {/* Breadcrumb */}
-            <div className="bg-white border-b py-3 text-xs md:text-sm text-muted-foreground sticky top-20 z-30 overflow-x-auto no-scrollbar">
+            <div className="bg-white border-b py-3 text-xs md:text-sm text-muted-foreground sticky top-16 md:top-20 z-30 overflow-x-auto no-scrollbar">
                 <Container>
                     <div className="flex items-center gap-2 whitespace-nowrap">
                         <Link href="/" className="hover:text-primary">Home</Link>
                         <ChevronRight className="h-3 w-3 flex-shrink-0" />
                         <Link href="/products" className="hover:text-primary">Shop</Link>
                         <ChevronRight className="h-3 w-3 flex-shrink-0" />
-                        <Link href={`/products?category=${product.category.toLowerCase()}`} className="hover:text-primary">{product.category}</Link>
-                        <ChevronRight className="h-3 w-3 flex-shrink-0" />
-                        <span className="text-foreground font-medium truncate max-w-[120px] md:max-w-none">{product.name}</span>
+                        <span className="text-foreground font-medium truncate max-w-[150px] md:max-w-none">{product.name}</span>
                     </div>
                 </Container>
             </div>
@@ -72,7 +100,7 @@ function ProductDetailContent({ id }: { id: string }) {
 
                     {/* Left: Detail Gallery */}
                     <div className="lg:col-span-1 hidden lg:flex flex-col gap-4">
-                        {product.images.map((img, i) => (
+                        {product.images && product.images.map((img: string, i: number) => (
                             <div key={i} className={`relative w-20 h-20 rounded-lg overflow-hidden border cursor-pointer ${i === 0 ? 'border-primary ring-1 ring-primary' : 'border-gray-200 hover:border-gray-300'}`}>
                                 <Image src={img} alt="Thumb" fill className="object-cover" />
                             </div>
@@ -82,9 +110,11 @@ function ProductDetailContent({ id }: { id: string }) {
                     {/* Center: Main Image */}
                     <div className="lg:col-span-5">
                         <div className="relative aspect-square md:aspect-square rounded-xl overflow-hidden bg-white border border-gray-100 shadow-sm">
-                            <div className="absolute top-4 left-4 z-10 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full">
-                                BESTSELLER
-                            </div>
+                            {product.isSeasonBest && (
+                                <div className="absolute top-4 left-4 z-10 bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
+                                    SEASON BEST
+                                </div>
+                            )}
                             <Image
                                 src={product.image}
                                 alt={product.name}
@@ -92,14 +122,6 @@ function ProductDetailContent({ id }: { id: string }) {
                                 className="object-cover"
                                 priority
                             />
-                        </div>
-                        {/* Mobile Thumbnails */}
-                        <div className="flex gap-3 mt-4 overflow-x-auto pb-2 no-scrollbar lg:hidden">
-                            {product.images.map((img, i) => (
-                                <div key={i} className="relative w-16 h-16 flex-shrink-0 rounded-lg overflow-hidden border border-gray-200">
-                                    <Image src={img} alt="Thumb" fill className="object-cover" />
-                                </div>
-                            ))}
                         </div>
                     </div>
 
@@ -119,29 +141,13 @@ function ProductDetailContent({ id }: { id: string }) {
 
                         <div className="border-t border-b border-dashed py-3 md:py-4 flex items-end gap-3">
                             <span className="text-2xl md:text-3xl font-bold text-[#155E42]">₹{product.price}</span>
-                            <span className="text-sm md:text-lg text-muted-foreground line-through mb-1">₹{product.originalPrice}</span>
-                            <span className="text-red-600 font-bold text-xs md:text-sm mb-1.5">(Save ₹{product.originalPrice - product.price})</span>
+                            {product.originalPrice && (
+                                <>
+                                    <span className="text-sm md:text-lg text-muted-foreground line-through mb-1">₹{product.originalPrice}</span>
+                                    <span className="text-red-600 font-bold text-xs md:text-sm mb-1.5">({discount}% OFF)</span>
+                                </>
+                            )}
                             <span className="text-[10px] md:text-xs text-muted-foreground ml-auto mb-1">Tax included</span>
-                        </div>
-
-                        {/* Trust Badges Strip */}
-                        <div className="flex gap-4 md:gap-8 overflow-x-auto py-2">
-                            <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><Leaf className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
-                                <span className="text-[10px] text-center font-medium leading-tight">No Palm<br />Oil</span>
-                            </div>
-                            <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><Star className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
-                                <span className="text-[10px] text-center font-medium leading-tight">Premium<br />Quality</span>
-                            </div>
-                            <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><ShieldCheck className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
-                                <span className="text-[10px] text-center font-medium leading-tight">Chemical<br />Free</span>
-                            </div>
-                            <div className="flex flex-col items-center gap-2 min-w-[60px]">
-                                <div className="bg-amber-50 p-2 md:p-3 rounded-full"><Truck className="h-4 w-4 md:h-5 md:w-5 text-amber-700" /></div>
-                                <span className="text-[10px] text-center font-medium leading-tight">Safe<br />Shipping</span>
-                            </div>
                         </div>
 
                         {/* Delivery Check */}
@@ -169,11 +175,20 @@ function ProductDetailContent({ id }: { id: string }) {
                         <div className="space-y-4 hidden md:block">
                             <div className="flex gap-4">
                                 <div className="flex items-center border border-gray-300 rounded-md bg-white w-32 justify-between">
-                                    <button className="px-3 py-2 hover:bg-gray-50 text-xl text-gray-500 font-medium">-</button>
-                                    <span className="font-bold">1</span>
-                                    <button className="px-3 py-2 hover:bg-gray-50 text-xl text-gray-500 font-medium">+</button>
+                                    <button
+                                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                                        className="px-3 py-2 hover:bg-gray-50 text-xl text-gray-500 font-medium"
+                                    >-</button>
+                                    <span className="font-bold">{quantity}</span>
+                                    <button
+                                        onClick={() => setQuantity(quantity + 1)}
+                                        className="px-3 py-2 hover:bg-gray-50 text-xl text-gray-500 font-medium"
+                                    >+</button>
                                 </div>
-                                <Button className="flex-1 h-12 text-lg font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg animate-shimmer">
+                                <Button
+                                    onClick={handleAddToCart}
+                                    className="flex-1 h-12 text-lg font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg animate-shimmer"
+                                >
                                     ADD TO CART
                                 </Button>
                                 <button className="h-12 w-12 border border-gray-300 rounded-md flex items-center justify-center hover:bg-gray-50 hover:text-red-500 transition-colors">
@@ -184,44 +199,31 @@ function ProductDetailContent({ id }: { id: string }) {
 
                         <div className="text-sm text-gray-600 leading-relaxed bg-white p-4 rounded-lg border border-gray-100">
                             <h3 className="font-bold text-foreground mb-2">Description</h3>
-                            {product.description}
+                            {product.description || "No description available."}
                         </div>
                     </div>
                 </div>
 
-                {/* Related Products */}
-                <div className="border-t border-gray-200 pt-8 md:pt-12">
-                    <h2 className="font-serif text-xl md:text-3xl font-bold mb-6 md:mb-8">You may also like</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
-                        <ProductCard
-                            id="black-rice"
-                            name="Karuppu Kavuni Rice"
-                            price={499}
-                            originalPrice={550}
-                            image="https://plus.unsplash.com/premium_photo-1675237626068-bf4dc298ca3a?auto=format&fit=crop&q=80&w=600"
-                            weight="1kg"
-                            category="Rice"
-                        />
-                        <ProductCard
-                            id="ghee"
-                            name="A2 Desi Cow Ghee"
-                            price={1250}
-                            image="https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&q=80&w=600"
-                            weight="500ml"
-                            category="Staples"
-                        />
-                    </div>
-                </div>
+                {/* Related Products Placeholder - Could be made dynamic later */}
             </Container>
 
             {/* Mobile Sticky Action Bar */}
             <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-3 md:hidden z-[101] flex items-center gap-3 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
                 <div className="flex items-center border border-gray-300 rounded-md bg-white h-10 px-2 justify-between w-24 flex-shrink-0">
-                    <button className="px-2 text-lg text-gray-500 font-medium">-</button>
-                    <span className="font-bold text-sm">1</span>
-                    <button className="px-2 text-lg text-gray-500 font-medium">+</button>
+                    <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="px-2 text-lg text-gray-500 font-medium"
+                    >-</button>
+                    <span className="font-bold text-sm">{quantity}</span>
+                    <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="px-2 text-lg text-gray-500 font-medium"
+                    >+</button>
                 </div>
-                <Button className="flex-1 h-10 text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-md animate-shimmer">
+                <Button
+                    onClick={handleAddToCart}
+                    className="flex-1 h-10 text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-md animate-shimmer"
+                >
                     ADD TO CART
                 </Button>
             </div>

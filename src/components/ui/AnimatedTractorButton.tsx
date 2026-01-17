@@ -65,7 +65,7 @@ export function AnimatedTractorButton({
                     </div>
                 )}
 
-                <span className="font-bold text-[15px]">{label}</span>
+                <span className="font-bold text-[13px] md:text-[15px] whitespace-nowrap">{label}</span>
 
                 {price && (
                     <span className="text-sm font-medium border-l border-white/30 pl-2 ml-1">

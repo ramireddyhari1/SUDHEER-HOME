@@ -37,30 +37,47 @@ const categories = [
 
 export function SiripurapuStore() {
     return (
-        <section className="py-8 md:py-16 bg-white relative">
+        <section className="py-8 md:py-16 bg-transparent/50 relative">
             <Container>
-                {/* Header Section */}
-                <div className="text-center mb-6 md:mb-12 relative">
-                    <div className="flex items-center justify-center gap-3 mb-2">
-                        <span className="text-2xl">🎀</span>
-                        <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 text-center">
-                            SIRIPURAPU VARI STORE
-                        </h2>
-                        <span className="text-2xl">🎀</span>
+                {/* Themed Board Header */}
+                <div className="relative w-full max-w-4xl mx-auto h-[120px] md:h-[200px] flex items-center justify-center mb-8 md:mb-12 scale-100 hover:scale-[1.02] transition-transform duration-500">
+
+                    {/* Glowing Backlight for Separation */}
+                    <div className="absolute inset-4 bg-[#DAA520]/40 blur-2xl rounded-[50%] -z-10"></div>
+
+                    {/* Background Board Image */}
+                    <div className="absolute inset-0 w-full h-full shadow-2xl rounded-xl overflow-hidden border-2 border-[#5D4037] bg-[#FFF8E1]">
+                        <Image
+                            src="/andhra_temples_board_bg_1768629491449.png"
+                            alt="Siripurapu Vari Store Board"
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                        {/* Subtle Overlay to ensure text smooths out */}
+                        <div className="absolute inset-0 bg-[#FFF8E1]/20 mix-blend-multiply"></div>
                     </div>
 
-                    <div className="flex items-center justify-center gap-2 text-gray-600 italic">
-                        <Gift className="w-5 h-5 text-red-500" />
-                        <p>100% Organic Groceries, Handcrafted Snacks & Nature's Sweet Treats</p>
-                    </div>
+                    {/* Text Content */}
+                    <div className="relative z-10 text-center px-4">
+                        <div className="flex items-center justify-center gap-4">
+                            {/* Decorative Bows/Ribbons (using Lucide as placeholder or similar aesthetic) */}
+                            <span className="text-3xl md:text-5xl text-red-600 drop-shadow-md hidden md:inline">🎀</span>
 
-                    {/* Decorative Line */}
-                    <div className="absolute top-1/2 left-0 w-full h-[1px] bg-gray-200 -z-10 hidden md:block"></div>
-                    <div className="w-full h-[1px] bg-gray-200 mt-6 md:hidden"></div>
+                            <h2 className="text-2xl md:text-5xl font-serif font-black text-[#0B2136] tracking-wide uppercase drop-shadow-sm px-4 py-2">
+                                Siripurapu Vari <br className="md:hidden" /> Store
+                            </h2>
+
+                            <span className="text-3xl md:text-5xl text-red-600 drop-shadow-md hidden md:inline">🎀</span>
+                        </div>
+                        <p className="text-[#5D4037] font-medium text-[10px] md:text-sm tracking-widest uppercase mt-1 md:mt-2 opacity-90">
+                            — Est. 1998 —
+                        </p>
+                    </div>
                 </div>
 
                 {/* Categories Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8">
                     {categories.map((category) => (
                         <Link
                             key={category.id}

@@ -49,7 +49,7 @@ export function ComboPacks() {
                     <div className="w-24 h-1 bg-yellow-400 mt-4 rounded-full"></div>
                 </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-8">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
                     {categories.map((category) => (
                         <Link
                             key={category.id}

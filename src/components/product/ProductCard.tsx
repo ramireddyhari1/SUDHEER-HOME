@@ -58,7 +58,7 @@ export function ProductCard({
     };
 
     return (
-        <div className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+        <div className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300 h-full">
 
             {/* Image Section */}
             <div className="relative aspect-square bg-gray-50 overflow-hidden">
@@ -99,8 +99,8 @@ export function ProductCard({
                 )}
             </div>
 
-            {/* Content Section */}
-            <div className="p-2 md:p-3 flex flex-col gap-1 md:gap-1.5 flex-1">
+            {/* Content Section - Increased Padding & Gap */}
+            <div className="p-3 md:p-4 flex flex-col gap-2 flex-1">
                 <h3 className="font-bold text-gray-900 leading-tight text-sm md:text-base line-clamp-2 min-h-[2.5em]">
                     <Link href={`/products/${id}`} className="hover:text-primary transition-colors">
                         {name} {englishName && <span className="font-normal text-gray-600 text-xs md:text-sm">{englishName}</span>}
@@ -108,7 +108,7 @@ export function ProductCard({
                 </h3>
 
                 {/* Tags (Show Category as tag if no tags provided) */}
-                <div className="flex flex-wrap gap-1 text-[8px] md:text-[9px] font-medium text-gray-700 min-h-[1.5em]">
+                <div className="flex flex-wrap gap-1.5 text-[10px] md:text-xs font-medium text-gray-700 min-h-[1.5em]">
                     {tags.length > 0 ? tags.map(tag => (
                         <span key={tag} className="border border-orange-300 bg-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
                             {tag}
@@ -126,7 +126,7 @@ export function ProductCard({
                         {rating} <Star className="h-2.5 w-2.5 md:h-3 md:w-3 fill-white text-white" />
                     </span>
                     <BadgeCheck className="h-3 w-3 md:h-4 md:w-4 text-red-500 fill-white" />
-                    <span className="text-[10px] md:text-xs text-gray-500 font-medium">({reviews})</span>
+                    <span className="text-xs text-gray-500 font-medium">({reviews})</span>
                 </div>
 
                 {/* Weight Selector (Mock) */}
@@ -151,12 +151,12 @@ export function ProductCard({
 
                     <div className="w-full">
                         <AnimatedTractorButton
-                            className="bg-[#F59E0B] hover:bg-[#D97706] h-8 md:h-10 text-xs md:text-sm w-full hidden md:flex"
+                            className="bg-[#F59E0B] hover:bg-[#D97706] h-10 md:h-12 text-sm w-full hidden md:flex"
                             onClick={handleAddToCart}
                             label="Add to cart"
                         />
                         <AnimatedTractorButton
-                            className="bg-[#F59E0B] hover:bg-[#D97706] h-8 text-xs w-full md:hidden flex items-center justify-center px-2"
+                            className="bg-[#F59E0B] hover:bg-[#D97706] min-h-[44px] text-sm w-full md:hidden flex items-center justify-center px-2"
                             onClick={handleAddToCart}
                             label="Add"
                         />

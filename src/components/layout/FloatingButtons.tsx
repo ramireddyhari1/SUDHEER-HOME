@@ -21,7 +21,7 @@ export function FloatingButtons() {
 
             {/* Rewards/Cart - Fixed Bottom Left Floating Button */}
             <button
-                className="fixed bottom-6 left-6 z-40 bg-[#F59E0B] text-white p-3 rounded-lg shadow-lg hover:bg-[#d97706] transition-transform hover:scale-105 active:scale-95 flex items-center justify-center"
+                className="hidden md:flex fixed bottom-6 left-6 z-40 bg-[#F59E0B] text-white p-3 rounded-lg shadow-lg hover:bg-[#d97706] transition-transform hover:scale-105 active:scale-95 items-center justify-center"
                 aria-label="Rewards"
             >
                 <div className="relative">

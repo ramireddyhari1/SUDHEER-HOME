@@ -15,6 +15,27 @@ export default function CheckoutPage() {
     const [orderPlaced, setOrderPlaced] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    // Dynamic Shipping Config
+    const [shippingConfig, setShippingConfig] = useState({ standardCost: 50, freeThreshold: 500 });
+
+    useEffect(() => {
+        const fetchShippingConfig = async () => {
+            try {
+                const res = await fetch("/api/site-content?sectionId=checkout-shipping");
+                const json = await res.json();
+                if (json.success && json.data) {
+                    setShippingConfig({
+                        standardCost: Number(json.data.standardCost) || 50,
+                        freeThreshold: Number(json.data.freeThreshold) || 500
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to load shipping config", error);
+            }
+        };
+        fetchShippingConfig();
+    }, []);
+
     // Form State
     const [formData, setFormData] = useState({
         name: "",
@@ -33,7 +54,7 @@ export default function CheckoutPage() {
 
     // Derived state
     const subtotal = cartTotal;
-    const shippingCost = subtotal > 500 ? 0 : 50;
+    const shippingCost = subtotal > shippingConfig.freeThreshold ? 0 : shippingConfig.standardCost;
     const grandTotal = subtotal + shippingCost;
 
     const handlePlaceOrder = async () => {
@@ -107,7 +128,7 @@ export default function CheckoutPage() {
 
 
     return (
-        <div className="min-h-screen bg-[#FDFBF7] py-8 md:py-12 pb-40 md:pb-32">
+        <div className="min-h-screen bg-[#F5F5DC] py-8 md:py-12 pb-40 md:pb-32">
             <Container>
                 {/* Breadcrumb */}
                 <div className="flex items-center gap-2 text-sm text-muted-foreground mb-8">
@@ -141,7 +162,7 @@ export default function CheckoutPage() {
                     {/* Shipping Address Form */}
                     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
                         <h2 className="font-serif text-xl font-bold mb-6 flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-[#155E42] text-white text-xs flex items-center justify-center">1</span>
+                            <span className="w-6 h-6 rounded-full bg-[#DAA520] text-[#2C1810] text-xs flex items-center justify-center font-bold">1</span>
                             Shipping Address
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -234,7 +255,7 @@ export default function CheckoutPage() {
                     {/* Payment Method Selection */}
                     <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
                         <h2 className="font-serif text-xl font-bold mb-6 flex items-center gap-2">
-                            <span className="w-6 h-6 rounded-full bg-[#155E42] text-white text-xs flex items-center justify-center">2</span>
+                            <span className="w-6 h-6 rounded-full bg-[#DAA520] text-[#2C1810] text-xs flex items-center justify-center font-bold">2</span>
                             Payment Method
                         </h2>
 
@@ -243,19 +264,19 @@ export default function CheckoutPage() {
                             <div
                                 onClick={() => setPaymentMethod("online")}
                                 className={`cursor-pointer relative overflow-hidden rounded-xl border-2 p-6 transition-all duration-300 ${paymentMethod === "online"
-                                    ? "border-[#155E42] bg-white shadow-md"
+                                    ? "border-[#DAA520] bg-white shadow-md"
                                     : "border-gray-200 bg-gray-50 hover:border-gray-300"
                                     }`}
                             >
                                 <div className="flex items-start justify-between mb-4">
-                                    <CreditCard className={`h-8 w-8 ${paymentMethod === "online" ? "text-[#155E42]" : "text-gray-400"}`} />
+                                    <CreditCard className={`h-8 w-8 ${paymentMethod === "online" ? "text-[#B8860B]" : "text-gray-400"}`} />
                                     {paymentMethod === "online" && (
-                                        <div className="h-6 w-6 rounded-full bg-[#155E42] flex items-center justify-center">
-                                            <CheckCircle2 className="h-4 w-4 text-white" />
+                                        <div className="h-6 w-6 rounded-full bg-[#DAA520] flex items-center justify-center">
+                                            <CheckCircle2 className="h-4 w-4 text-[#2C1810]" />
                                         </div>
                                     )}
                                 </div>
-                                <h3 className={`font-bold text-lg mb-1 ${paymentMethod === "online" ? "text-[#155E42]" : "text-gray-700"}`}>
+                                <h3 className={`font-bold text-lg mb-1 ${paymentMethod === "online" ? "text-[#B8860B]" : "text-gray-700"}`}>
                                     Online Payment
                                 </h3>
                                 <p className="text-sm text-gray-500">UPI, Cards, Netbanking</p>
@@ -265,19 +286,19 @@ export default function CheckoutPage() {
                             <div
                                 onClick={() => setPaymentMethod("cod")}
                                 className={`cursor-pointer relative overflow-hidden rounded-xl border-2 p-6 transition-all duration-300 ${paymentMethod === "cod"
-                                    ? "border-[#155E42] bg-white shadow-md"
+                                    ? "border-[#DAA520] bg-white shadow-md"
                                     : "border-gray-200 bg-gray-50 hover:border-gray-300"
                                     }`}
                             >
                                 <div className="flex items-start justify-between mb-4">
-                                    <Banknote className={`h-8 w-8 ${paymentMethod === "cod" ? "text-[#155E42]" : "text-gray-400"}`} />
+                                    <Banknote className={`h-8 w-8 ${paymentMethod === "cod" ? "text-[#B8860B]" : "text-gray-400"}`} />
                                     {paymentMethod === "cod" && (
-                                        <div className="h-6 w-6 rounded-full bg-[#155E42] flex items-center justify-center">
-                                            <CheckCircle2 className="h-4 w-4 text-white" />
+                                        <div className="h-6 w-6 rounded-full bg-[#DAA520] flex items-center justify-center">
+                                            <CheckCircle2 className="h-4 w-4 text-[#2C1810]" />
                                         </div>
                                     )}
                                 </div>
-                                <h3 className={`font-bold text-lg mb-1 ${paymentMethod === "cod" ? "text-[#155E42]" : "text-gray-700"}`}>
+                                <h3 className={`font-bold text-lg mb-1 ${paymentMethod === "cod" ? "text-[#B8860B]" : "text-gray-700"}`}>
                                     Cash on Delivery
                                 </h3>
                                 <p className="text-sm text-gray-500">Pay when you receive</p>
@@ -303,7 +324,7 @@ export default function CheckoutPage() {
                         </div>
                         <AnimatedTractorButton
                             onClick={handlePlaceOrder}
-                            className="w-full md:w-auto md:min-w-[300px] h-10 md:h-12 text-sm md:text-base font-bold bg-[#155E42] hover:bg-[#0f4631] shadow-lg"
+                            className="w-full md:w-auto md:min-w-[300px] h-10 md:h-12 text-sm md:text-base font-bold bg-[#DAA520] text-[#2C1810] hover:bg-[#B8860B] shadow-lg"
                             label="Place Order"
                         />
                     </div>

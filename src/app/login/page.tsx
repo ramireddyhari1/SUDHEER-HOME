@@ -82,23 +82,15 @@ export default function LoginPage() {
     return (
         <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
             {/* VIDEO BACKGROUND */}
+            {/* IMAGE BACKGROUND */}
             <div className="absolute inset-0 z-0">
-                <video
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
-                >
-                    <source src="/logo.mp4" type="video/mp4" />
-                    Your browser does not support the video tag.
-                </video>
+                <div role="img" aria-label="Andhra Theme Background" className="w-full h-full absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/login_bg.png')" }}></div>
                 {/* Dark Overlay for Readability */}
-                <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
+                <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]"></div>
             </div>
 
             {/* BACK BUTTON */}
-            <div className="absolute top-6 left-6 z-20">
+            <div className="absolute top-4 md:top-6 left-4 md:left-6 z-20">
                 <Link href="/" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
                     <ArrowLeft className="h-5 w-5" />
                     <span className="font-medium text-sm">Back to Store</span>
@@ -106,18 +98,18 @@ export default function LoginPage() {
             </div>
 
             {/* ADMIN LOGIN LINK - TOP RIGHT */}
-            <div className="absolute top-6 right-6 z-20">
+            <div className="absolute top-4 md:top-6 right-4 md:right-6 z-20">
                 <Link href="/admin/login" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 hover:border-white/20">
                     <span className="font-medium text-xs uppercase tracking-wider">Admin</span>
                 </Link>
             </div>
 
             {/* GLASSMORPHISM CARD */}
-            <div className="relative z-10 w-full max-w-md p-8 sm:p-10 mx-4">
-                <div className="bg-white/10 border border-white/20 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] backdrop-blur-md p-8 sm:p-10">
+            <div className="relative z-10 w-full max-w-md p-4 sm:p-10 mx-4">
+                <div className="bg-white/10 border border-white/20 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] backdrop-blur-md p-6 sm:p-10">
 
-                    <div className="text-center mb-10">
-                        <h1 className="font-serif text-4xl font-bold text-white mb-2">Welcome Back</h1>
+                    <div className="text-center mb-6 md:mb-10">
+                        <h1 className="font-serif text-2xl md:text-4xl font-bold text-white mb-2">Welcome Back</h1>
                         <p className="text-white/70 text-sm">
                             {step === 'email' ? "Sign in to access your organic journey" : `Enter the OTP sent to ${email}`}
                         </p>
@@ -181,7 +173,7 @@ export default function LoginPage() {
                                                 required
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
-                                                className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none"
+                                                className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none"
                                                 placeholder="Email address"
                                             />
                                         </div>
@@ -190,7 +182,7 @@ export default function LoginPage() {
                                     <Button
                                         type="submit"
                                         disabled={isSendingOtp}
-                                        className="w-full h-12 bg-[#155E42] hover:bg-[#0f4631] text-white rounded-xl font-bold shadow-lg shadow-green-900/30 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                        className="w-full h-12 bg-[#DAA520] hover:bg-[#B8860B] text-[#2C1810] rounded-xl font-bold shadow-lg shadow-yellow-900/20 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                                     >
                                         {isSendingOtp ? "Sending OTP..." : "Get Login Code"}
                                     </Button>
@@ -213,7 +205,7 @@ export default function LoginPage() {
                                             required
                                             value={otpCode}
                                             onChange={(e) => setOtpCode(e.target.value)}
-                                            className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none tracking-[0.5em] font-mono text-center"
+                                            className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none tracking-[0.5em] font-mono text-center"
                                             placeholder="123456"
                                         />
                                     </div>
@@ -222,7 +214,7 @@ export default function LoginPage() {
                                 <Button
                                     type="submit"
                                     disabled={isVerifying}
-                                    className="w-full h-12 bg-[#155E42] hover:bg-[#0f4631] text-white rounded-xl font-bold shadow-lg shadow-green-900/30 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="w-full h-12 bg-[#DAA520] hover:bg-[#B8860B] text-[#2C1810] rounded-xl font-bold shadow-lg shadow-yellow-900/20 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
                                     {isVerifying ? "Verifying..." : "Verify & Login"}
                                 </Button>

@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Container } from "@/components/ui/Container";
+import { SectionDivider } from "@/components/ui/SectionDivider";
 
 const collections = [
     {
@@ -46,14 +47,7 @@ const collections = [
         href: "/products?category=rice",
         type: "standard"
     },
-    {
-        id: 6,
-        title: "Cold-Pressed Oils",
-        badge: "Exclusive",
-        image: "/products/features/cold-pressed-oils.png",
-        href: "/products?category=oils",
-        type: "standard"
-    },
+
     {
         id: 7,
         title: "Honey & Spices",
@@ -66,16 +60,19 @@ const collections = [
 
 export function FeaturedCollections() {
     return (
-        <section className="pt-4 pb-8 md:py-8 bg-[#FFFDF5]">
+        <section className="pt-4 pb-0 md:py-8 bg-transparent/50">
             <Container>
-                <div className="mb-6">
-                    <h2 className="font-serif text-xl md:text-2xl font-bold text-gray-900 border-b-2 border-black inline-block pb-1">
+                <div className="mb-8 text-center">
+                    <h2 className="font-serif text-2xl md:text-3xl font-bold text-[#2C1810] mb-2">
                         Featured this week!
                     </h2>
+                    <div className="flex justify-center">
+                        <SectionDivider variant="royal" className="!py-0" />
+                    </div>
                 </div>
 
                 {/* Grid Layout for Mobile consistency */}
-                <div className="grid grid-cols-2 md:flex md:gap-4 md:overflow-x-auto md:pb-6 md:no-scrollbar md:pr-4 md:snap-x md:snap-mandatory gap-3">
+                <div className="grid grid-cols-3 md:flex md:gap-4 md:overflow-x-auto md:pb-6 md:no-scrollbar md:pr-4 md:snap-x md:snap-mandatory gap-2">
                     {collections.map((item) => (
                         <Link
                             key={item.id}
@@ -88,8 +85,8 @@ export function FeaturedCollections() {
                                 {item.type === 'standard' ? (
                                     <>
                                         {/* Top Badge - White Pill with Pink Text */}
-                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-b-lg shadow-sm z-10 w-max max-w-[90%]">
-                                            <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider text-[#D81B60] truncate block">
+                                        <div className="absolute top-0 left-1/2 -translate-x-1/2 bg-white px-1.5 py-0.5 rounded-b shadow-sm z-10 w-max max-w-[95%]">
+                                            <span className="text-[7px] md:text-[10px] font-bold uppercase tracking-wider text-[#D81B60] truncate block">
                                                 {item.badge}
                                             </span>
                                         </div>
@@ -110,16 +107,16 @@ export function FeaturedCollections() {
                                         <div className="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.3)_50%,transparent_75%,transparent_100%)] bg-[length:20px_20px]"></div>
 
                                         <div className="relative z-10 flex flex-col items-center">
-                                            <span className="text-lg font-black italic mb-0 leading-none tracking-tighter">PRICE</span>
-                                            <span className="text-2xl font-black italic text-yellow-400 leading-none tracking-tighter mb-1">DROP</span>
-                                            <ArrowRight className="h-6 w-6 text-yellow-400 animate-bounce mt-1 rotate-90" strokeWidth={3} />
+                                            <span className="text-xs md:text-lg font-black italic mb-0 leading-none tracking-tighter">PRICE</span>
+                                            <span className="text-sm md:text-2xl font-black italic text-yellow-400 leading-none tracking-tighter mb-1">DROP</span>
+                                            <ArrowRight className="h-4 w-4 md:h-6 md:w-6 text-yellow-400 animate-bounce mt-1 rotate-90" strokeWidth={3} />
                                         </div>
                                     </div>
                                 )}
                             </div>
 
                             {/* Label */}
-                            <h3 className="font-bold text-xs md:text-sm text-center text-gray-900 leading-tight px-1 line-clamp-2 min-h-[2.5em] flex items-center justify-center">
+                            <h3 className="font-bold text-[10px] md:text-sm text-center text-gray-900 leading-tight px-1 line-clamp-2 min-h-[2.5em] flex items-center justify-center">
                                 {item.type === 'sale_card' ? (
                                     <span className="flex items-center justify-center gap-1 text-[#ea580c]">
                                         ⚡ {item.title}
@@ -134,7 +131,7 @@ export function FeaturedCollections() {
             </Container>
 
             {/* Branding Bar */}
-            <div className="w-full bg-[#155E42] py-2 mt-8 flex items-center justify-center gap-4 relative overflow-hidden group">
+            <div className="w-full bg-[#155E42] py-2 mt-2 flex items-center justify-center gap-4 relative overflow-hidden group">
 
                 {/* Left Animated Line */}
                 <div className="h-[1px] w-12 md:w-24 bg-gradient-to-r from-transparent via-[#FFD700] to-[#FFD700] animate-pulse opacity-80"></div>

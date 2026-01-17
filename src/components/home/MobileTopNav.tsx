@@ -54,49 +54,47 @@ const categories = [
     }
 ];
 
+// ... (imports)
+
 export function MobileTopNav() {
     return (
-        <section className="bg-white pt-4 pb-2 md:hidden">
-            <div className="flex overflow-x-auto no-scrollbar gap-4 px-4 pb-2 snap-x">
+        <section className="bg-[#F5F5DC] pt-4 pb-2 md:hidden border-b border-[#DAA520]/20">
+            <div className="flex overflow-x-auto no-scrollbar gap-5 px-5 pb-2 snap-x">
                 {categories.map((item) => (
                     <Link
                         key={item.id}
                         href={item.href}
-                        className="flex flex-col items-center gap-2 flex-shrink-0 snap-center group"
+                        className="flex flex-col items-center gap-3 flex-shrink-0 snap-center group"
                     >
-                        <div className="relative w-[74px] h-[74px] flex items-center justify-center">
-                            {/* Animated Gradient Ring */}
-                            <div className={`absolute inset-0 rounded-full bg-gradient-to-tr ${item.borderColor.replace('border-', 'from-white via-').replace('-300', '-200')} to-transparent opacity-80 animate-spin-slow`}></div>
-                            <div className={`absolute inset-0.5 rounded-full bg-white z-0`}></div>
-
-                            {/* Inner Circle Container */}
-                            <div className={`relative w-[68px] h-[68px] rounded-full border-[2px] p-[2px] ${item.borderColor} ${item.bgColor} shadow-sm group-active:scale-90 transition-transform duration-200 z-10`}>
-                                <div className="relative w-full h-full rounded-full overflow-hidden">
+                        <div className="relative w-[60px] h-[60px] flex items-center justify-center">
+                            {/* Static Gold Ring for consistency */}
+                            <div className="absolute inset-0 rounded-full border border-yellow-500/30 scale-100 group-active:scale-95 transition-transform duration-200"></div>
+                            {/* White spacer */}
+                            <div className="absolute inset-[3px] rounded-full bg-white z-0 header-shadow"></div>
+                            {/* Image Container */}
+                            <div className="relative w-full h-full rounded-full overflow-hidden p-[6px]">
+                                <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-50">
                                     <Image
                                         src={item.image}
                                         alt={item.title}
                                         fill
-                                        className="object-cover"
+                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
                                         sizes="80px"
                                         priority={item.id <= 4}
                                     />
                                 </div>
                             </div>
                         </div>
-                        <span className="text-[10px] font-bold text-center leading-tight max-w-[70px] text-gray-800 group-active:text-primary transition-colors">
+                        <span className="text-[11px] font-medium tracking-wide text-center leading-tight max-w-[80px] text-gray-900 group-active:text-primary transition-colors font-serif">
                             {item.title}
                         </span>
                     </Link>
                 ))}
             </div>
             <style jsx>{`
-                .animate-spin-slow {
-                    animation: spin 3s linear infinite;
-                }
-                @keyframes spin {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
-                }
+               .header-shadow {
+                   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+               }
             `}</style>
         </section>
     );

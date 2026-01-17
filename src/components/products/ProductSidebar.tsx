@@ -21,7 +21,7 @@ const prices = [
     { label: "Rs. 2000+", count: 5 },
 ];
 
-export function ProductSidebar() {
+export function ProductSidebar({ className = "hidden lg:block" }: { className?: string }) {
     const [openSections, setOpenSections] = useState({
         collections: true,
         price: true,
@@ -33,7 +33,7 @@ export function ProductSidebar() {
     };
 
     return (
-        <aside className="w-full lg:w-64 flex-shrink-0 lg:pr-6 space-y-8 hidden lg:block">
+        <aside className={`w-full lg:w-64 flex-shrink-0 lg:pr-6 space-y-8 ${className}`}>
             {/* Header */}
             <div className="flex items-center gap-2 pb-4 border-b border-gray-100">
                 <Filter className="h-5 w-5 text-gray-500" />

@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 
 export function AuthenticFarmerBanner() {
     return (
-        <section className="relative w-full bg-[#FFF9E5] overflow-hidden pt-12 md:pt-0">
+        <section className="relative w-full bg-[#F5F5DC] overflow-hidden pt-12 md:pt-0">
             {/* Wavy Top Separator - Transition from White to Cream */}
             <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0]">
                 <svg
@@ -41,9 +41,9 @@ export function AuthenticFarmerBanner() {
 
                     {/* Text Content */}
                     <div className="w-full md:w-1/2 text-center md:text-left pb-16 md:pb-0 px-4">
-                        <h2 className="font-sans font-bold text-3xl md:text-5xl lg:text-6xl text-gray-900 leading-tight">
+                        <h2 className="font-sans font-bold text-3xl md:text-5xl lg:text-6xl text-[#2C1810] leading-tight">
                             Authentic Taste, just like your <br className="hidden md:block" />
-                            <span className="text-red-600 block mt-2">
+                            <span className="text-[#B8860B] block mt-2">
                                 Farmer&apos;s Harvest
                             </span>
                         </h2>

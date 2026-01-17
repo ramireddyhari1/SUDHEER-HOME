@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import { Star, BadgeCheck } from "lucide-react";
+import { Star, BadgeCheck, CheckCircle2, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { AnimatedTractorButton } from "@/components/ui/AnimatedTractorButton";
 import { AdminEditButton } from "@/components/admin/AdminEditButton";
@@ -22,6 +22,7 @@ interface BestSellerCardProps {
     reviews: number;
     isBestSeller?: boolean;
     badge?: string; // "Winter Special" etc
+    compact?: boolean;
 }
 
 export function BestSellerCard({
@@ -36,7 +37,8 @@ export function BestSellerCard({
     rating,
     reviews,
     isBestSeller,
-    badge
+    badge,
+    compact = false
 }: BestSellerCardProps) {
     const router = useRouter();
     const { addToCart } = useCart();
@@ -59,90 +61,94 @@ export function BestSellerCard({
     };
 
     return (
-        <div className="group relative flex flex-col bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+        <div className="group relative flex flex-col bg-white rounded-2xl overflow-hidden border border-[#DAA520]/20 shadow-sm hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
 
             {/* Image Section */}
-            <div className="relative aspect-square bg-gray-50 overflow-hidden">
+            <div className="relative aspect-square bg-[#F5F5DC] overflow-hidden">
                 <AdminEditButton productId={id} />
                 <Link href={`/products/${id}`} className="block w-full h-full relative">
                     <Image
                         src={image}
                         alt={name}
                         fill
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                 </Link>
 
-                {/* Top Badge (Best Seller / Winter Special) */}
+                {/* Dynamic Badge System */}
                 {(isBestSeller || badge) && (
-                    <div className="absolute top-1 right-1 md:top-2 md:right-2">
+                    <div className="absolute top-2 left-2 z-10">
                         {isBestSeller ? (
-                            <div className="bg-red-600 text-white text-[10px] font-bold rounded-full h-10 w-10 md:h-12 md:w-12 flex flex-col items-center justify-center shadow-md animate-pulse border-2 border-white">
-                                <span className="leading-none text-[7px] md:text-[8px]">BEST</span>
-                                <span className="leading-none text-[8px] md:text-[10px]">SELLER</span>
-                                <div className="flex gap-[1px]">
-                                    {[1, 2, 3].map(i => <Star key={i} className="h-1.5 w-1.5 fill-white text-white" />)}
-                                </div>
+                            <div className="bg-[#DAA520] text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1">
+                                <ShieldCheck className="w-3 h-3" />
+                                <span>BESTSELLER</span>
                             </div>
                         ) : (
-                            <div className="bg-blue-600 text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-md border-2 border-white">
-                                {badge}
+                            <div className="bg-[#556B2F] text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 rounded shadow-sm flex items-center gap-1">
+                                <span className="uppercase tracking-wide">{badge}</span>
                             </div>
                         )}
                     </div>
                 )}
 
-                {/* Discount Overlay */}
-                <div className="absolute top-0 left-0">
-                    <div className="bg-orange-500 text-white text-[9px] md:text-[10px] font-bold px-1.5 py-0.5 md:px-2 md:py-1 rounded-br-lg shadow-sm">
-                        FLAT <br /> <span className="text-xs md:text-sm">{discount}%</span> <br /> OFF
+                {/* Discount Badge - Minimalist */}
+                <div className="absolute top-2 right-2 z-10">
+                    <div className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-sm">
+                        -{discount}%
                     </div>
                 </div>
             </div>
 
-            {/* Content Section */}
-            <div className="p-2 md:p-3 flex flex-col gap-1 md:gap-1.5 flex-1">
-                <h3 className="font-bold text-gray-900 leading-tight text-sm md:text-base line-clamp-2 min-h-[2.5em]">
-                    <Link href={`/products/${id}`} className="hover:text-primary transition-colors">
-                        {name} <span className="font-normal text-gray-600 text-xs md:text-sm">{englishName}</span>
-                    </Link>
-                </h3>
+            {/* Content Section - Reference Style */}
+            <div className={`flex flex-col flex-1 relative bg-white ${compact ? 'p-1.5 gap-1' : 'p-2.5 gap-2'} md:p-4`}>
+                <div className="flex flex-col gap-1">
+                    <h3 className={`font-bold text-gray-900 leading-tight line-clamp-2 min-h-[3.2ex] ${compact ? 'text-[0.7rem] leading-3' : 'text-xs'} md:text-base`}>
+                        <Link href={`/products/${id}`} className="hover:text-primary transition-colors">
+                            {name}
+                        </Link>
+                    </h3>
 
-                {/* Tags */}
-                <div className="flex flex-wrap gap-1 text-[8px] md:text-[9px] font-medium text-gray-700 min-h-[1.5em]">
-                    {tags.map(tag => (
-                        <span key={tag} className="border border-orange-300 bg-white px-1.5 py-0.5 rounded-full whitespace-nowrap">
-                            {tag}
-                        </span>
-                    ))}
+                    {/* Tags - Pill Style */}
+                    <div className="flex flex-wrap gap-1 mb-0.5">
+                        {(tags.length > 0 ? tags : ["No Maida", "No Palm Oil"]).slice(0, 2).map((tag, idx) => (
+                            <span key={idx} className="text-[8px] md:text-[10px] font-medium text-[#D97706] border border-[#D97706] bg-[#FFF3E0] px-1 py-0.5 rounded-full whitespace-nowrap">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
                 </div>
 
-                {/* Rating */}
-                <div className="flex items-center gap-1.5 mt-0.5 md:mt-1">
-                    <span className="bg-[#155E42] text-white text-[10px] md:text-xs font-bold px-1.5 py-0.5 rounded flex items-center gap-1">
-                        {rating} <Star className="h-2.5 w-2.5 md:h-3 md:w-3 fill-white text-white" />
-                    </span>
-                    <BadgeCheck className="h-3 w-3 md:h-4 md:w-4 text-red-500 fill-white" />
-                    <span className="text-[10px] md:text-xs text-gray-500 font-medium">({reviews})</span>
+                {/* Rating & Reviews - Green Box */}
+                <div className="flex items-center gap-1.5 md:gap-2 mb-1">
+                    <div className="flex items-center gap-0.5 md:gap-1 bg-[#155E42] text-white px-1 py-0.5 rounded text-[9px] md:text-xs font-bold">
+                        <span>{rating}</span>
+                        <Star className="h-2 w-2 md:h-2.5 md:w-2.5 fill-white text-white" />
+                    </div>
+                    <span className="text-[9px] md:text-xs text-gray-400 font-medium">({reviews})</span>
                 </div>
 
-                {/* Weight Selector (Mock) */}
-                <div className="mt-1 md:mt-2">
-                    <select className="w-full text-xs md:text-sm border border-orange-200 rounded px-1.5 py-1 md:px-2 md:py-1.5 bg-white text-gray-700 focus:outline-none focus:border-orange-500">
+                {/* Weight/Variant Selector */}
+                <div className="mt-0.5">
+                    <select className="w-full bg-[#FFFDF5] border border-orange-200 text-gray-700 text-[10px] md:text-xs py-1 px-1.5 rounded focus:outline-none focus:border-orange-500">
                         <option>{weight}</option>
                     </select>
                 </div>
 
-                {/* Price Section */}
-                <div className="mt-auto pt-1 md:pt-2">
-                    <div className="text-[10px] md:text-xs font-bold text-[#004D40] mb-0.5">{discount}% OFF</div>
-                    <div className="flex items-baseline gap-1.5 mb-2 md:mb-3">
-                        <span className="text-xs md:text-sm text-gray-400 line-through">Rs. {originalPrice}</span>
-                        <span className="text-base md:text-lg font-bold text-orange-500">Rs. {price}</span>
+                {/* Price & Discount */}
+                <div className="mt-auto pt-1.5 md:pt-2">
+                    {discount > 0 && (
+                        <p className="text-[#155E42] text-[9px] md:text-xs font-bold mb-0.5">
+                            {discount}% OFF
+                        </p>
+                    )}
+                    <div className="flex items-baseline gap-1 md:gap-1.5 mb-1.5">
+                        {originalPrice && <span className={`text-gray-400 line-through ${compact ? 'text-[9px]' : 'text-[10px] md:text-xs'}`}>Rs. {originalPrice}</span>}
+                        <span className={`font-bold text-[#D97706] ${compact ? 'text-xs' : 'text-sm md:text-base'}`}>Rs. {price}</span>
                     </div>
 
                     <AnimatedTractorButton
-                        className="bg-[#F59E0B] hover:bg-[#D97706] h-8 md:h-10 text-xs md:text-sm w-full"
+                        className={`w-full bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded shadow-none ${compact ? 'h-7 text-[9px]' : 'h-8 text-[10px]'} md:h-10 md:text-sm`}
+                        label="Add"
                         onClick={handleAddToCart}
                     />
                 </div>

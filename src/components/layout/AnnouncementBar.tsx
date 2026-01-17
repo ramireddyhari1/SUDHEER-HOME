@@ -1,8 +1,50 @@
 "use client";
 
-import { MapPin, Rocket, Star } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Rocket } from "lucide-react";
 
 export function AnnouncementBar() {
+    const [content, setContent] = useState<{
+        enabled: boolean;
+        text: string;
+        bgColor: string;
+        textColor: string;
+    }>({
+        enabled: true,
+        text: "Get Flat <span class='text-[#FFD700] font-bold'>10% OFF</span> on your first order! Use Code: <span class='text-[#FFD700] font-bold'>WELCOME10</span>",
+        bgColor: "#155E42",
+        textColor: "#FFFFFF"
+    });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchContent = async () => {
+            try {
+                const res = await fetch('/api/content?section=announcement-bar');
+                const data = await res.json();
+                if (data.success && data.content) {
+                    // Check if the fetched color is Brown (previous default), if so, revert to Green
+                    const fetchedBg = data.content.bg_color || "#155E42";
+                    const finalBg = fetchedBg === "#2C1810" ? "#155E42" : fetchedBg;
+
+                    setContent({
+                        enabled: data.content.enabled !== 'false', // Default to true if not set
+                        text: data.content.text || "Get Flat <span class='text-[#FFD700] font-bold'>10% OFF</span> on your first order! Use Code: <span class='text-[#FFD700] font-bold'>WELCOME10</span>",
+                        bgColor: finalBg,
+                        textColor: data.content.text_color || "#FFFFFF"
+                    });
+                }
+            } catch (error) {
+                console.error("Failed to load announcement");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchContent();
+    }, []);
+
+    if (!content.enabled) return null;
+
     return (
         <>
             <style jsx>{`
@@ -17,39 +59,20 @@ export function AnnouncementBar() {
                     animation-play-state: paused;
                 }
             `}</style>
-            <div className="bg-[#155e42] text-white overflow-hidden py-1.5 relative z-50">
-                <div className="flex w-[200%] sm:w-[200%] md:w-full animate-marquee whitespace-nowrap group">
-                    {/* Content Set 1 */}
-                    <div className="flex items-center gap-4 md:gap-12 w-1/2 justify-around px-4">
-                        <span className="flex items-center gap-2 text-[10px] md:text-sm font-medium">
-                            <Rocket className="h-3 w-3 md:h-4 md:w-4 text-yellow-400" />
-                            <span>₹848 FREE Goodies — Sale LIVE!</span>
-                        </span>
-                        <span className="hidden sm:flex items-center gap-2 text-sm font-medium">
-                            <MapPin className="h-4 w-4 text-yellow-400" />
-                            <span>Shipping Worldwide</span>
-                        </span>
-                        <span className="flex items-center gap-2 text-[10px] md:text-sm font-medium">
-                            <Star className="h-3 w-3 md:h-4 md:w-4 text-yellow-400 fill-yellow-400" />
-                            <span>FREE Ship &gt; ₹999</span>
-                        </span>
-                    </div>
-
-                    {/* Content Set 2 (Duplicate for seamless loop) */}
-                    <div className="flex items-center gap-4 md:gap-12 w-1/2 justify-around px-4">
-                        <span className="flex items-center gap-2 text-[10px] md:text-sm font-medium">
-                            <Rocket className="h-3 w-3 md:h-4 md:w-4 text-yellow-400" />
-                            <span>₹848 FREE Goodies — Sale LIVE!</span>
-                        </span>
-                        <span className="hidden sm:flex items-center gap-2 text-sm font-medium">
-                            <MapPin className="h-4 w-4 text-yellow-400" />
-                            <span>Shipping Worldwide</span>
-                        </span>
-                        <span className="flex items-center gap-2 text-[10px] md:text-sm font-medium">
-                            <Star className="h-3 w-3 md:h-4 md:w-4 text-yellow-400 fill-yellow-400" />
-                            <span>FREE Ship &gt; ₹999</span>
-                        </span>
-                    </div>
+            <div
+                className="overflow-hidden relative z-50 group transition-colors duration-300"
+                style={{ backgroundColor: content.bgColor, color: content.textColor }}
+            >
+                <div className="flex whitespace-nowrap animate-marquee hover:[animation-play-state:paused] py-1.5">
+                    {/* Content duplicated multiple times for seamless scrolling */}
+                    {[1, 2, 3, 4, 5, 6].map((i) => (
+                        <div key={i} className="flex items-center justify-center mx-8">
+                            <p className="text-[11px] sm:text-sm font-medium tracking-wide flex items-center gap-2">
+                                <Rocket className="h-3 w-3" style={{ color: content.textColor }} />
+                                <span dangerouslySetInnerHTML={{ __html: content.text }}></span>
+                            </p>
+                        </div>
+                    ))}
                 </div>
             </div>
         </>
