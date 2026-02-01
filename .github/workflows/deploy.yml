@@ -1,0 +1,25 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          port: 22
+          script: |
+            cd /var/www/SUDHEER-HOME
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh
+            git pull
+            npm install
+            npm run build
+            pm2 restart all
