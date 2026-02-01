@@ -112,9 +112,7 @@ export default function MediaManager() {
                     />
                     <label htmlFor="media-upload">
                         <Button
-                            variant="default"
                             className="bg-[#155E42] hover:bg-[#0f4631] flex items-center gap-2 cursor-pointer"
-                            asChild
                         >
                             <span>
                                 <Upload className="h-4 w-4" />
