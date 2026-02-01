@@ -30,7 +30,7 @@ export async function createAndSendCoupon(data: CreateCouponData) {
             discountType: data.discountType,
             discountValue: data.discountValue,
             minOrderValue: data.minOrderValue || 0,
-            expirationDate: data.expirationDate ? new Date(data.expirationDate) : null,
+            expirationDate: data.expirationDate ? new Date(data.expirationDate) : undefined,
             sentTo: sentTo.join(', ') || 'Manual Generation'
         });
 
