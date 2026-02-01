@@ -9,6 +9,7 @@ export interface ICoupon extends Document {
     usageLimit?: number;
     usedCount: number;
     isActive: boolean;
+    sentTo?: string;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -50,6 +51,10 @@ const CouponSchema: Schema<ICoupon> = new Schema(
         isActive: {
             type: Boolean,
             default: true,
+        },
+        sentTo: {
+            type: String, // Store "WhatsApp: xxxx" or "Email: xxxx"
+            default: null,
         },
     },
     {

@@ -3,7 +3,8 @@ export const generateOrderEmail = (
     customer: { name: string; address: string; city: string; state: string; pincode: string; phone: string },
     items: any[],
     amount: number,
-    paymentMethod: string
+    paymentMethod: string,
+    transactionId?: string
 ) => {
     // Current Date Formatted
     const orderDate = new Date().toLocaleDateString('en-IN', {
@@ -78,6 +79,12 @@ export const generateOrderEmail = (
                   <span style="color: #888; font-size: 13px; text-transform: uppercase;">Payment</span>
                   <span style="color: #2C1810; text-transform: capitalize;">${paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online Payment'}</span>
               </div>
+              ${transactionId ? `
+              <div style="display: flex; justify-content: space-between; margin-top: 5px;">
+                  <span style="color: #888; font-size: 13px; text-transform: uppercase;">Transaction ID</span>
+                  <span style="color: #2C1810; font-weight: bold;">${transactionId}</span>
+              </div>
+              ` : ''}
           </div>
 
           <!-- Items Table -->

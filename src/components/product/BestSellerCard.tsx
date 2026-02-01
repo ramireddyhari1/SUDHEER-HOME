@@ -23,6 +23,7 @@ interface BestSellerCardProps {
     isBestSeller?: boolean;
     badge?: string; // "Winter Special" etc
     compact?: boolean;
+    stock?: number;
 }
 
 export function BestSellerCard({
@@ -38,13 +39,16 @@ export function BestSellerCard({
     reviews,
     isBestSeller,
     badge,
-    compact = false
+    compact = false,
+    stock = 10 // Default stock to positive if not provided, to avoid breaking existing usages immediately
 }: BestSellerCardProps) {
     const router = useRouter();
     const { addToCart } = useCart();
     const discount = Math.round(((originalPrice - price) / originalPrice) * 100);
+    const isOutOfStock = stock !== undefined && stock <= 0;
 
     const handleAddToCart = () => {
+        if (isOutOfStock) return;
         addToCart({
             id,
             name,
@@ -97,6 +101,15 @@ export function BestSellerCard({
                         -{discount}%
                     </div>
                 </div>
+
+                {/* Out of Stock Overlay */}
+                {isOutOfStock && (
+                    <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] z-20 flex items-center justify-center">
+                        <div className="bg-gray-900 text-white text-[10px] md:text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+                            OUT OF STOCK
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* Content Section - Reference Style */}
@@ -147,9 +160,10 @@ export function BestSellerCard({
                     </div>
 
                     <AnimatedTractorButton
-                        className={`w-full bg-[#F59E0B] hover:bg-[#D97706] text-white font-bold rounded shadow-none ${compact ? 'h-7 text-[9px]' : 'h-8 text-[10px]'} md:h-10 md:text-sm`}
-                        label="Add"
+                        className={`w-full ${isOutOfStock ? 'bg-gray-300 cursor-not-allowed hover:bg-gray-300' : 'bg-[#F59E0B] hover:bg-[#D97706]'} text-white font-bold rounded shadow-none ${compact ? 'h-7 text-[9px]' : 'h-8 text-[10px]'} md:h-10 md:text-sm`}
+                        label={isOutOfStock ? "Out of Stock" : "Add"}
                         onClick={handleAddToCart}
+                        disabled={isOutOfStock}
                     />
                 </div>
             </div>

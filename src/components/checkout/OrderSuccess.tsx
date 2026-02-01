@@ -12,9 +12,10 @@ interface OrderSuccessProps {
     orderId: string;
     amount: number;
     paymentMethod: "online" | "cod";
+    transactionId?: string;
 }
 
-export function OrderSuccess({ orderId, amount, paymentMethod }: OrderSuccessProps) {
+export function OrderSuccess({ orderId, amount, paymentMethod, transactionId }: OrderSuccessProps) {
     const [copied, setCopied] = useState(false);
     const [showReceipt, setShowReceipt] = useState(false);
 
@@ -153,10 +154,27 @@ export function OrderSuccess({ orderId, amount, paymentMethod }: OrderSuccessPro
                                 <span className="text-gray-500 text-sm">Payment</span>
                                 <span className="text-sm font-medium capitalize">{paymentMethod === 'cod' ? 'Cash on Delivery' : 'Online'}</span>
                             </div>
+
+                            {transactionId && (
+                                <div className="flex justify-between items-center px-3">
+                                    <span className="text-gray-500 text-sm">Transaction ID</span>
+                                    <span className="text-xs font-mono font-bold text-gray-700 bg-gray-100 px-1 py-0.5 rounded">{transactionId}</span>
+                                </div>
+                            )}
                         </div>
 
-                        <div className="pt-4 border-t border-gray-100">
-                            <Link href="/products">
+                        <div className="pt-4 border-t border-gray-100 space-y-3">
+                            <a
+                                href={`https://wa.me/919491719681?text=Hi%20Vaishnavi%20Organics,%20I%20just%20placed%20Order%20%23${orderId}.%20Please%20send%20me%20updates%20here.`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <Button variant="outline" className="w-full border-green-500 text-green-600 hover:bg-green-50 h-11 rounded-xl">
+                                    <Image src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WA" width={20} height={20} className="mr-2" />
+                                    Get Updates on WhatsApp
+                                </Button>
+                            </a>
+                            <Link href="/">
                                 <Button className="w-full bg-[#155E42] hover:bg-[#0E3F2D] text-white h-11 rounded-xl shadow-lg shadow-green-900/10">
                                     <Home className="w-4 h-4 mr-2" /> Back to Home
                                 </Button>

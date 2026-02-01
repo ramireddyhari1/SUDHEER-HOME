@@ -2,13 +2,7 @@ import { HeroCarousel } from "@/components/home/HeroCarousel";
 import { BestSellers } from "@/components/home/BestSellers";
 import { OffersTicker } from "@/components/home/OffersTicker";
 import { StorySection } from "@/components/home/StorySection";
-import { GlobalShipping } from "@/components/home/GlobalShipping";
 import { TrustBadges } from "@/components/home/TrustBadges";
-import { OrganicCollections } from "@/components/home/OrganicCollections";
-import { NewArrivals } from "@/components/home/NewArrivals";
-import { FeaturedProducts } from "@/components/home/FeaturedProducts";
-import { TopRatedProducts } from "@/components/home/TopRatedProducts";
-import { AuthenticFarmerBanner } from "@/components/home/AuthenticFarmerBanner";
 import { FeaturedCollections } from "@/components/home/FeaturedCollections";
 import { ProductCategories } from "@/components/home/ProductCategories";
 import { SiripurapuStore } from "@/components/home/SiripurapuStore";
@@ -19,7 +13,9 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { MobileTopNav } from "@/components/home/MobileTopNav";
 import dynamic from 'next/dynamic';
 
-// Lazy load Testimonials for better performance
+// Lazy load heavy components and those below fold
+const GlobalShipping = dynamic(() => import("@/components/home/GlobalShipping").then(m => ({ default: m.GlobalShipping })));
+const NewArrivals = dynamic(() => import("@/components/home/NewArrivals").then(m => ({ default: m.NewArrivals })));
 const Testimonials = dynamic(() => import("@/components/home/Testimonials").then(mod => ({ default: mod.Testimonials })), {
   loading: () => <div className="h-96 bg-gray-50 animate-pulse" />
 });
@@ -30,10 +26,6 @@ export default function Home() {
       <MobileTopNav />
       <HeroCarousel />
       <div className="relative z-10">
-        {/* Categories / Navigation for Mobile (Now below Hero for better impression) */}
-        {/* Categories / Navigation for Mobile (Now above Hero) */}
-        {/* 1. Our Organic Collections - HIDDEN */}
-        {/* <OrganicCollections /> */}
 
         {/* 2. Season's Best Sellers */}
         <ScrollReveal>
@@ -42,10 +34,6 @@ export default function Home() {
         <OffersTicker />
 
         <StorySection />
-
-
-
-
 
         {/* Restored Visual Sections */}
         <ScrollReveal delay={0.2}>
@@ -73,14 +61,6 @@ export default function Home() {
           <NewArrivals />
         </ScrollReveal>
 
-        {/* 4. Featured Products - HIDDEN */}
-        {/* <FeaturedProducts /> */}
-
-        {/* 5. Top Rated Products - HIDDEN */}
-        {/* <TopRatedProducts /> */}
-
-        {/* Fresh from Farm - HIDDEN */}
-        {/* <AuthenticFarmerBanner /> */}
         <ScrollReveal width="100%">
           <GlobalShipping />
         </ScrollReveal>
@@ -91,7 +71,7 @@ export default function Home() {
           <Testimonials />
         </ScrollReveal>
 
-        <TrustBadges />
+        {/* <TrustBadges /> */}
       </div>
     </main>
   );

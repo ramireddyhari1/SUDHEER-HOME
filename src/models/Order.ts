@@ -23,6 +23,7 @@ const OrderSchema = new Schema({
     ],
     amount: { type: Number, required: true },
     paymentMethod: { type: String, default: 'online' },
+    transactionId: String,
     status: { type: String, default: 'Processing' }, // Processing, In Transit, Delivered, Cancelled
     trackingNumber: String,
     courierName: String,

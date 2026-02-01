@@ -33,7 +33,7 @@ export async function GET(req: Request) {
         if (collection === 'top-rated') query.isTopRated = true;
 
         // Sorting
-        let sort: any = { createdAt: -1 };
+        let sort: any = { stock: -1, createdAt: -1 };
         if (collection === 'top-rated') sort = { rating: -1 };
 
         const products = await Product.find(query).sort(sort);

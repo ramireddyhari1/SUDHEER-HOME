@@ -133,23 +133,26 @@ function ProductsList() {
                     <Loader2 className="h-10 w-10 animate-spin text-primary" />
                 </div>
             ) : products.length > 0 ? (
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-6 lg:gap-8">
-                    {products.map((product) => (
-                        <BestSellerCard
-                            key={product._id}
-                            id={product._id}
-                            name={product.name}
-                            englishName={product.englishName || ""}
-                            price={product.price}
-                            originalPrice={product.originalPrice}
-                            image={product.image}
-                            rating={product.rating || 4.5}
-                            reviews={product.reviews || 0}
-                            weight={product.weight || "1kg"}
-                            tags={product.tags || []} // Assuming backend has tags or we default empty
-                            isBestSeller={product.isSeasonBest}
-                        />
-                    ))}
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 md:gap-4 lg:gap-8">
+                        {products.map((product) => (
+                            <BestSellerCard
+                                key={product._id}
+                                id={product._id}
+                                name={product.name}
+                                englishName={product.englishName || ""}
+                                price={product.price}
+                                originalPrice={product.originalPrice}
+                                image={product.image}
+                                rating={product.rating || 4.5}
+                                reviews={product.reviews || 0}
+                                weight={product.weight || "1kg"}
+                                tags={product.tags || []} // Assuming backend has tags or we default empty
+                                isBestSeller={product.isSeasonBest}
+                                stock={product.stock}
+                            />
+                        ))}
+                    </div>
                 </div>
             ) : (
                 <div className="text-center py-20">
@@ -294,6 +297,7 @@ function ProductsListMobileWrapper() {
                         tags={product.tags || ["Melt in Mouth", "Authentic"]} // Mock tags for UI match
                         isBestSeller={product.isSeasonBest}
                         compact={true}
+                        stock={product.stock}
                     />
                 ))
             )}

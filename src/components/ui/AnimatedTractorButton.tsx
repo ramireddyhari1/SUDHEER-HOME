@@ -9,19 +9,21 @@ interface AnimatedTractorButtonProps {
     className?: string;
     price?: string; // Optional price to display
     label?: string; // Default to "Add to cart"
+    disabled?: boolean;
 }
 
 export function AnimatedTractorButton({
     onClick,
     className = "",
     price,
-    label = "Add to cart"
+    label = "Add to cart",
+    disabled = false
 }: AnimatedTractorButtonProps) {
     const [isAnimating, setIsAnimating] = useState(false);
 
     const handleClick = (e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent parent link clicks
-        if (isAnimating) return;
+        if (isAnimating || disabled) return;
 
         setIsAnimating(true);
         if (onClick) onClick();

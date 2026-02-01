@@ -72,7 +72,7 @@ export function FeaturedCollections() {
                 </div>
 
                 {/* Grid Layout for Mobile consistency */}
-                <div className="grid grid-cols-3 md:flex md:gap-4 md:overflow-x-auto md:pb-6 md:no-scrollbar md:pr-4 md:snap-x md:snap-mandatory gap-2">
+                <div className="grid grid-cols-3 md:flex md:justify-center md:gap-4 md:overflow-x-auto md:pb-6 md:no-scrollbar md:pr-4 md:snap-x md:snap-mandatory gap-2">
                     {collections.map((item) => (
                         <Link
                             key={item.id}

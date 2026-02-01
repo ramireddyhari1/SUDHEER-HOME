@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Store, Truck, Image as ImageIcon } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Store, Truck, Image as ImageIcon, Ticket } from "lucide-react";
 
 import { Menu, X } from "lucide-react"; // Import Menu and X icons
 import { useState } from "react"; // Import useState
@@ -42,6 +42,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: "Shipping Rates", href: "/admin/shipping", icon: Truck },
         { name: "Customers", href: "/admin/customers", icon: Users },
         { name: "Media Manager", href: "/admin/media", icon: ImageIcon },
+        { name: "Coupons", href: "/admin/coupons", icon: Ticket },
         { name: "Site Content", href: "/admin/content", icon: Store },
     ];
 

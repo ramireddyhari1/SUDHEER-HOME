@@ -2,7 +2,9 @@ import nodemailer from 'nodemailer';
 
 // Shared Transporter
 export const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 587,
+    secure: false, // true for 465, false for other ports
     auth: {
         user: 'agentcat31@gmail.com',
         pass: 'zmek zage mbhf btkq'

@@ -40,7 +40,7 @@ export function StorySection() {
     return (
         <section className="py-6 md:py-8 bg-transparent relative">
             <Container>
-                <div className="relative bg-[#FFF9F0] rounded-lg p-4 md:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#DAA520]/20 max-w-2xl mx-auto">
+                <div className="relative bg-[#FFF9F0] rounded-lg p-4 md:p-5 shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-[#DAA520]/20 max-w-4xl mx-auto">
                     {/* Decorative Corner Accents */}
                     <div className="absolute top-2 left-2 w-3 h-3 border-l-2 border-t-2 border-[#DAA520] opacity-60"></div>
                     <div className="absolute top-2 right-2 w-3 h-3 border-r-2 border-t-2 border-[#DAA520] opacity-60"></div>

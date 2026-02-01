@@ -8,6 +8,10 @@ import { ChevronRight, CreditCard, Banknote, CheckCircle2, ArrowRight } from "lu
 import Link from "next/link";
 import { AnimatedTractorButton } from "@/components/ui/AnimatedTractorButton";
 import { OrderSuccess } from "@/components/checkout/OrderSuccess";
+import { QRCodeSVG } from "qrcode.react";
+
+const UPI_VPA = "8328667337@ptsbi";
+const UPI_NAME = "Vaishnavi Organics";
 
 export default function CheckoutPage() {
     const { cartTotal, cart, clearCart } = useCart();
@@ -47,6 +51,9 @@ export default function CheckoutPage() {
         state: "Select State"
     });
 
+    const [transactionId, setTransactionId] = useState("");
+
+
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
@@ -64,6 +71,11 @@ export default function CheckoutPage() {
             return;
         }
 
+        if (paymentMethod === "online" && !transactionId) {
+            alert("Please enter the Transaction ID / UTR Number for online payment.");
+            return;
+        }
+
         setLoading(true);
         const orderId = `VO-${Math.floor(10000 + Math.random() * 90000)}`;
 
@@ -77,9 +89,10 @@ export default function CheckoutPage() {
                 body: JSON.stringify({
                     orderId,
                     amount: grandTotal,
-                    paymentMethod,
+                    paymentMethod: paymentMethod === "online" ? `Online (Txn: ${transactionId})` : paymentMethod,
                     customer: formData,
-                    items: cart || []
+                    items: cart || [],
+                    transactionId // Pass specifically for email handling
                 })
             }).catch(err => console.error("Notification trigger failed (background)", err));
 
@@ -92,7 +105,8 @@ export default function CheckoutPage() {
                 date: new Date().toISOString(),
                 amount: grandTotal,
                 status: 'Processing',
-                paymentMethod,
+                paymentMethod: paymentMethod === "online" ? "online" : "cod",
+                transactionId: paymentMethod === "online" ? transactionId : undefined,
                 items: cart || []
             };
 
@@ -119,6 +133,7 @@ export default function CheckoutPage() {
                 orderId={`VO-${Math.floor(10000 + Math.random() * 90000)}`} // In a real app, this comes from the API response
                 amount={grandTotal}
                 paymentMethod={paymentMethod}
+                transactionId={transactionId}
             />
         );
     }
@@ -277,6 +292,43 @@ export default function CheckoutPage() {
                                     Online Payment
                                 </h3>
                                 <p className="text-sm text-gray-500">UPI, Cards, Netbanking</p>
+
+                                {paymentMethod === "online" && (
+                                    <div className="mt-4 p-4 bg-[#FFFDF5] rounded-lg border border-[#DAA520]/30 animate-in fade-in zoom-in duration-300">
+                                        <div className="flex flex-col items-center gap-4">
+                                            <div className="bg-white p-2 rounded-lg shadow-sm border border-gray-200">
+                                                <QRCodeSVG
+                                                    value={`upi://pay?pa=${UPI_VPA}&pn=${encodeURIComponent(UPI_NAME)}&am=${grandTotal}&tn=Order-${Date.now()}&cu=INR`}
+                                                    size={180}
+                                                    level={"H"}
+                                                    includeMargin={true}
+                                                />
+                                            </div>
+                                            <p className="text-xs text-gray-500 text-center font-medium">Scan with GPay, PhonePe, Paytm</p>
+
+                                            <a
+                                                href={`upi://pay?pa=${UPI_VPA}&pn=${encodeURIComponent(UPI_NAME)}&am=${grandTotal}&tn=Order-${Date.now()}&cu=INR`}
+                                                className="md:hidden w-full"
+                                            >
+                                                <Button variant="outline" className="w-full border-green-600 text-green-700 bg-green-50 hover:bg-green-100">
+                                                    Open UPI App
+                                                </Button>
+                                            </a>
+
+                                            <div className="w-full mt-2">
+                                                <label className="block text-xs font-bold text-gray-700 mb-1 uppercase tracking-wide">Enter Transaction ID / UTR <span className="text-red-500">*</span></label>
+                                                <input
+                                                    type="text"
+                                                    value={transactionId}
+                                                    onChange={(e) => setTransactionId(e.target.value)}
+                                                    placeholder="e.g. 123456789012"
+                                                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:border-[#155E42] focus:ring-1 focus:ring-[#155E42]"
+                                                />
+                                                <p className="text-[10px] text-gray-500 mt-1">Please enter the 12-digit UTR number after payment.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                             </div>
 
                             {/* COD Option */}

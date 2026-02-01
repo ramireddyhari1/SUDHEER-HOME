@@ -53,7 +53,7 @@ export function BestSellers() {
                 </div>
 
                 {/* Grid Layout (Only 4 items) */}
-                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 max-w-[1440px] mx-auto">
+                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8 max-w-6xl mx-auto">
                     {loading ? (
                         // Skeleton Loading
                         Array(4).fill(0).map((_, i) => (
@@ -76,6 +76,7 @@ export function BestSellers() {
                                 reviews={product.reviews || 0}
                                 weight={product.weight}
                                 tags={product.isSeasonBest ? ["Season Best"] : []}
+                                stock={product.stock}
                             />
                         ))
                     )}
