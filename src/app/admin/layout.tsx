@@ -4,7 +4,7 @@ import { useAuth } from "@/context/AuthContext";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Store, Truck, Image as ImageIcon, Ticket } from "lucide-react";
+import { LayoutDashboard, Package, ShoppingCart, Users, LogOut, Store, Truck, Image as ImageIcon, Ticket, Handshake } from "lucide-react";
 
 import { Menu, X } from "lucide-react"; // Import Menu and X icons
 import { useState } from "react"; // Import useState
@@ -31,6 +31,12 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     const isLoginPage = pathname === "/admin/login";
 
+    // If not on login page and not authenticated as admin, don't render anything
+    // This prevents the "flash" or direct access to the dashboard UI
+    if (!isLoginPage && (!user || !user.isAdmin)) {
+        return null;
+    }
+
     if (isLoginPage) {
         return <>{children}</>;
     }
@@ -43,6 +49,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         { name: "Customers", href: "/admin/customers", icon: Users },
         { name: "Media Manager", href: "/admin/media", icon: ImageIcon },
         { name: "Coupons", href: "/admin/coupons", icon: Ticket },
+        { name: "Partners", href: "/admin/partners", icon: Handshake },
         { name: "Site Content", href: "/admin/content", icon: Store },
     ];
 

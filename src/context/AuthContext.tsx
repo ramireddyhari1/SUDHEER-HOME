@@ -47,12 +47,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setIsLoading(true);
         // Mock Login
         const mockUser = {
-            name: "Hariharan",
+            name: "Customer",
             email: email,
-            image: "", // Could add a placeholder avatar
+            image: "",
             phone: "+91 98765 43210",
-            address: "Green Heights, HSR Layout, Bengaluru",
-            isAdmin: true // Mock Admin User
+            address: "Main Street, City",
+            isAdmin: false // Regular users should not be admins
         };
         setUser(mockUser);
         localStorage.setItem("currentUser", JSON.stringify(mockUser));
