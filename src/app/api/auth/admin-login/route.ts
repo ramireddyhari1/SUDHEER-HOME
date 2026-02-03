@@ -3,6 +3,9 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import User from '@/models/User';
+import jwt from 'jsonwebtoken';
+
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
 
 export async function POST(req: Request) {
     try {
@@ -13,10 +16,16 @@ export async function POST(req: Request) {
         const envAdminPass = process.env.ADMIN_PASSWORD;
 
         if (username === envAdminUser && password === envAdminPass) {
-            // Success - Return a mock admin token/user
-            // In a real app, use JWT or Session
+            // Success - Generate a JWT
+            const token = jwt.sign(
+                { name: 'Super Admin', email: 'admin@sweet.com', isAdmin: true },
+                JWT_SECRET,
+                { expiresIn: '7d' }
+            );
+
             return NextResponse.json({
                 success: true,
+                token,
                 user: { name: 'Super Admin', email: 'admin@sweet.com', isAdmin: true }
             });
         }

@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Plus, Trash2, ToggleLeft, ToggleRight, TrendingUp, Key, Clock, LogIn, Users, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 
 interface Partner {
     _id: string;
@@ -23,6 +24,7 @@ interface Partner {
 }
 
 export default function PartnersPage() {
+    const { user } = useAuth();
     const [partners, setPartners] = useState<Partner[]>([]);
     const [loading, setLoading] = useState(true);
     const [showForm, setShowForm] = useState(false);
@@ -49,7 +51,11 @@ export default function PartnersPage() {
 
     const fetchPartners = async () => {
         try {
-            const res = await fetch('/api/partners');
+            const res = await fetch('/api/partners', {
+                headers: {
+                    'Authorization': `Bearer ${user?.token}`
+                }
+            });
             const data = await res.json();
             if (data.success) {
                 setPartners(data.data);
@@ -66,7 +72,10 @@ export default function PartnersPage() {
         try {
             const res = await fetch('/api/partners', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user?.token}`
+                },
                 body: JSON.stringify(formData),
             });
 
@@ -99,7 +108,10 @@ export default function PartnersPage() {
         try {
             const res = await fetch(`/api/partners/${id}`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user?.token}`
+                },
                 body: JSON.stringify({ isActive: !currentStatus }),
             });
 
@@ -115,7 +127,12 @@ export default function PartnersPage() {
         if (!confirm('Are you sure you want to delete this partner?')) return;
 
         try {
-            const res = await fetch(`/api/partners/${id}`, { method: 'DELETE' });
+            const res = await fetch(`/api/partners/${id}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${user?.token}`
+                }
+            });
             if (res.ok) {
                 fetchPartners();
             }
@@ -139,7 +156,10 @@ export default function PartnersPage() {
         try {
             const res = await fetch(`/api/partners/${selectedPartner._id}/set-password`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${user?.token}`
+                },
                 body: JSON.stringify({ password, hasAccess }),
             });
 
@@ -259,7 +279,11 @@ export default function PartnersPage() {
                                 min="0"
                                 step="0.01"
                                 value={formData.commissionValue}
-                                onChange={(e) => setFormData({ ...formData, commissionValue: parseFloat(e.target.value) })}
+                                onChange={(e) => {
+                                    const value = e.target.value;
+                                    const numValue = value === '' ? 0 : parseFloat(value);
+                                    setFormData({ ...formData, commissionValue: isNaN(numValue) ? 0 : numValue });
+                                }}
                                 className="w-full border border-gray-300 rounded-lg px-3 py-2"
                             />
                         </div>

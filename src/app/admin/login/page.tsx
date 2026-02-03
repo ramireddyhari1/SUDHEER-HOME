@@ -34,10 +34,10 @@ export default function AdminLoginPage() {
                 // Or we manually set user here if AuthContext simple
                 // Better: Extend AuthContext
                 if (loginAsAdmin) {
-                    loginAsAdmin(data.user);
+                    loginAsAdmin({ ...data.user, token: data.token });
                 } else {
                     // Fallback if context not updated yet
-                    localStorage.setItem("currentUser", JSON.stringify(data.user));
+                    localStorage.setItem("currentUser", JSON.stringify({ ...data.user, token: data.token }));
                     window.location.href = "/admin"; // Force reload to pick up storage
                 }
                 router.push("/admin/dashboard");

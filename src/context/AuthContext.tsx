@@ -10,6 +10,7 @@ interface User {
     phone?: string;
     address?: string;
     isAdmin?: boolean;
+    token?: string;
 }
 
 interface AuthContextType {
@@ -20,7 +21,7 @@ interface AuthContextType {
     logout: () => void;
     sendOtp: (email: string) => Promise<{ success: boolean; message: string }>;
     verifyOtp: (email: string, code: string) => Promise<{ success: boolean; message: string }>;
-    loginAsAdmin: (adminUser: User) => void;
+    loginAsAdmin: (adminUser: User & { token?: string }) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -128,7 +129,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         router.push("/");
     };
 
-    const loginAsAdmin = (adminUser: User) => {
+    const loginAsAdmin = (adminUser: User & { token?: string }) => {
         setUser(adminUser);
         localStorage.setItem("currentUser", JSON.stringify(adminUser));
         router.push("/admin/dashboard");
