@@ -171,8 +171,8 @@ export async function POST(request: NextRequest) {
 
         // Convert to plain object and remove sensitive fields before returning
         const partnerResponse = partner.toObject();
-        delete partnerResponse.password;
-        delete partnerResponse.__v;
+        delete (partnerResponse as any).password;
+        delete (partnerResponse as any).__v;
 
         return NextResponse.json(
             { success: true, data: partnerResponse },
