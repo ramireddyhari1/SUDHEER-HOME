@@ -1,61 +1,71 @@
-
-import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import path from 'path';
 
-// Load env vars
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+// Load environment variables
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
-const MONGODB_URI = process.env.MONGODB_URI;
+async function testMongoDBConnection() {
+    const mongoURI = process.env.MONGODB_URI;
 
-if (!MONGODB_URI) {
-    console.error("❌ MONGODB_URI is missing from env");
-    process.exit(1);
-}
+    console.log('🔍 MongoDB Connection Test');
+    console.log('================================');
+    console.log(`📍 Cluster: cluster0.yasbgfq.mongodb.net`);
+    console.log(`👤 Username: ${process.env.DB_USERNAME}`);
+    console.log(`🔐 Password: ${process.env.DB_PASSWORD ? '***' + process.env.DB_PASSWORD.slice(-2) : 'NOT SET'}`);
+    console.log(`📊 Database: ${process.env.DB_NAME}`);
+    console.log('================================\n');
 
-console.log("Found MONGODB_URI:", MONGODB_URI.substring(0, 20) + "...");
-
-async function testConnection() {
     try {
-        console.log("Connecting to MongoDB...");
-        await mongoose.connect(MONGODB_URI!);
-        console.log("✅ Connected to MongoDB successfully!");
+        console.log('⏳ Attempting connection...');
 
-        // Test Schema Validation with the exact model
-        const ProductSchema = new mongoose.Schema({
-            name: { type: String, required: true },
-            price: { type: Number, required: true },
-            image: { type: String, required: true },
-            stock: { type: Number, default: 0 },
-            isSeasonBest: { type: Boolean, default: false }
+        // Explicitly check for mongoURI
+        if (!mongoURI) {
+            throw new Error("MONGODB_URI is not defined in .env.local");
+        }
+
+        const connection = await mongoose.connect(mongoURI as string, {
+            serverSelectionTimeoutMS: 5000,
+            socketTimeoutMS: 5000,
         });
 
-        // Use a temporary model name to avoid conflicts
-        const TestProduct = mongoose.models.TestProduct || mongoose.model('TestProduct', ProductSchema);
+        console.log('✅ Connection Successful!');
+        console.log(`\n📌 Connection Details:`);
+        console.log(`   - Host: ${connection.connection.host}`);
+        console.log(`   - Port: ${connection.connection.port}`);
+        console.log(`   - Database: ${connection.connection.name}`);
+        console.log(`   - Ready State: ${connection.connection.readyState === 1 ? 'Connected' : 'Disconnected'}`);
 
-        console.log("Attempting to create a test product...");
-        const product = await TestProduct.create({
-            name: "Test Jaggery",
-            price: 100,
-            image: "/test.png",
-            stock: 10,
-            isSeasonBest: true
-        });
+        // List collections
+        const collections = await connection.connection.db?.listCollections().toArray();
+        console.log(`\n📚 Collections: ${collections?.length || 0}`);
 
-        console.log("✅ Test Product Created:", product._id);
-
-        await TestProduct.findByIdAndDelete(product._id);
-        console.log("✅ Test Product Cleaned up");
+        await mongoose.disconnect();
+        console.log('\n✅ Test Completed Successfully!');
+        process.exit(0);
 
     } catch (error: any) {
-        console.error("❌ DB Operation Failed:", error.message);
-        if (error.errors) {
-            console.error("Validation Errors:", JSON.stringify(error.errors, null, 2));
+        console.error('\n❌ Connection Failed!');
+        console.error(`\n🔴 Error: ${error.message}`);
+
+        if (error.message.includes('authentication failed')) {
+            console.error('\n💡 Troubleshooting Tips:');
+            console.error('   1. Verify username and password in .env.local');
+            console.error('   2. Check if special characters need URL encoding');
+            console.error('   3. Ensure the database user exists in MongoDB Atlas');
+            console.error('   4. Try with simple alphanumeric password first');
         }
-    } finally {
-        await mongoose.disconnect();
+
+        if (error.message.includes('ip not whitelisted')) {
+            console.error('\n💡 IP Address Issue:');
+            console.error('   Add your current IP to Network Access whitelist');
+            console.error('   Or allow all IPs temporarily: 0.0.0.0/0');
+        }
+
+        console.error('\n📋 Full Error Details:');
+        console.error(error);
+        process.exit(1);
     }
 }
 
-testConnection();
+testMongoDBConnection();

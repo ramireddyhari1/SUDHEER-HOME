@@ -3,7 +3,7 @@
 import { Container } from "@/components/ui/Container";
 import { BestSellerCard } from "@/components/product/BestSellerCard";
 import { ProductSidebar } from "@/components/products/ProductSidebar";
-import { ProductMobileHero } from "@/components/products/ProductMobileHero";
+
 import { ChevronDown, SlidersHorizontal, Loader2 } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
@@ -188,14 +188,14 @@ export default function ProductsPage() {
             backgroundRepeat: "repeat",
             backgroundSize: "400px" // Adjust size for pattern scale
         }}>
-            {/* Header Section (Hidden on Mobile to match screenshot compact look?) - Keeping minimal */}
-            <div className="border-b border-gray-100 bg-gray-50/50 md:block hidden">
-                <Container className="py-4 lg:py-12">
+            {/* Header Section */}
+            <div className="border-b border-gray-100 bg-gray-50/50 block">
+                <Container className="py-8 lg:py-12">
                     <div className="max-w-4xl">
-                        <h1 className="font-serif text-xl md:text-5xl font-bold text-gray-900 mb-2 md:mb-4">
+                        <h1 className="font-serif text-3xl md:text-5xl font-bold text-gray-900 mb-3 md:mb-4">
                             Our Organic Collections
                         </h1>
-                        <p className="text-gray-600 text-xs md:text-lg leading-relaxed max-w-2xl hidden md:block">
+                        <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-2xl block">
                             Explore our range of traditionally processed, chemical-free essentials. From <span className="font-semibold text-orange-600">Palm Jaggery</span> to <span className="font-semibold text-orange-600">Heritage Rice</span>, every product is sourced directly from organic farmers.
                         </p>
                     </div>
@@ -203,7 +203,7 @@ export default function ProductsPage() {
             </div>
 
             <div className="lg:container mx-auto">
-                <ProductMobileHero />
+                {/* ProductMobileHero removed */}
                 <div className="flex flex-col lg:flex-row gap-8 lg:py-12">
                     {/* Desktop Sidebar */}
                     <ProductSidebar className="hidden lg:block" />

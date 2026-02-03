@@ -1,0 +1,1 @@
+string(353) "{"error":{"root_cause":[{"type":"document_missing_exception","reason":"[logo][121316]: document missing","index_uuid":"3oRcYt_6Qfi7dAXGBjDj9Q","shard":"3","index":"worldvectorlogo"}],"type":"document_missing_exception","reason":"[logo][121316]: document missing","index_uuid":"3oRcYt_6Qfi7dAXGBjDj9Q","shard":"3","index":"worldvectorlogo"},"status":404}"
