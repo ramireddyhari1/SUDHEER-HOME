@@ -1,36 +1,24 @@
-import nodemailer from 'nodemailer';
+import { Resend } from 'resend';
 
-// Shared Transporter
-export const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 587,
-    secure: false,
-    auth: {
-        user: 'agentcat31@gmail.com',
-        pass: 'zmek zage mbhf btkq'
-    },
-    // Force IPv4 and add timeouts to debug better
-    tls: {
-        ciphers: 'SSLv3',
-        rejectUnauthorized: false
-    },
-    connectionTimeout: 10000, // 10 seconds
-    socketTimeout: 10000,
-    family: 4 // Force IPv4
-} as any);
+// Initialize Resend with API Key 
+// (Fallback to a placeholder if not set to prevent crash during build, but sending will fail until set)
+const resend = new Resend(process.env.RESEND_API_KEY || 're_123456789');
 
 export const sendEmail = async (to: string, subject: string, html: string) => {
     try {
-        // Verify connection before sending
-        await transporter.verify();
-
-        await transporter.sendMail({
-            from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
-            to,
-            subject,
-            html,
+        const { data, error } = await resend.emails.send({
+            from: 'Vaishnavi Organics <onboarding@resend.dev>', // Use default testing domain until custom domain is verified
+            to: [to],
+            subject: subject,
+            html: html,
         });
-        return { success: true };
+
+        if (error) {
+            console.error("Resend API Error:", error);
+            return { success: false, error };
+        }
+
+        return { success: true, data };
     } catch (error) {
         console.error("Email Sending Error:", error);
         return { success: false, error };
