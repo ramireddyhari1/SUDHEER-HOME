@@ -109,11 +109,7 @@ export function HeroCarousel() {
                                 return (
                                     <div className="flex-[0_0_100%] min-w-0 relative h-full overflow-hidden" key={slide.id || Math.random()}>
                                         {/* Background Image with Ken Burns Effect */}
-                                        <motion.div
-                                            className="absolute inset-0 w-full h-full"
-                                            animate={isActive ? { scale: 1.1 } : { scale: 1.0 }}
-                                            transition={{ duration: 10, ease: "linear" }}
-                                        >
+                                        <div className="absolute inset-0 w-full h-full">
                                             <Image
                                                 src={slide.image}
                                                 alt={slide.title || "Banner"}
@@ -122,7 +118,7 @@ export function HeroCarousel() {
                                                 priority={index === 0}
                                                 sizes="100vw"
                                             />
-                                        </motion.div>
+                                        </div>
 
                                         {/* Earthy Gradient Overlay - Immersive & Warm */}
                                         <div className="absolute inset-0 bg-gradient-to-b from-[#6F4E37]/80 via-transparent to-[#6F4E37]/90 mix-blend-multiply" />

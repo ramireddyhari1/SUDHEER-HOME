@@ -148,7 +148,7 @@ export function Hero() {
                         </div>
 
                         {/* Product Layer 2 (Front - Main Slide Image) */}
-                        <div key={currentSlide} className="relative w-56 h-72 md:w-64 md:h-[350px] z-20 -translate-x-6 md:-translate-x-20 hover:scale-110 transition-transform duration-500 animate-in zoom-in-95 fade-in duration-700 group-hover:rotate-1">
+                        <div key={currentSlide} className="relative w-56 h-72 md:w-64 md:h-[350px] z-20 -translate-x-6 md:-translate-x-20 transition-transform duration-500 animate-in fade-in duration-700 group-hover:rotate-1">
                             <Image
                                 src={slide.image}
                                 alt="Hero Product"
