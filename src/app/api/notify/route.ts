@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 
 import { NextResponse } from 'next/server';
-import { transporter } from '@/lib/email';
+import { sendEmail } from '@/lib/email';
 import dbConnect from '@/lib/mongodb';
 import Order from '@/models/Order';
 import { generateOrderEmail } from '@/lib/email-templates';
@@ -13,15 +13,6 @@ export async function POST(request: Request) {
         console.log("Received Notification Request:", body); // DEBUG LOG
 
         const { orderId, amount, paymentMethod, customer, items, transactionId } = body;
-
-        // Verify Transporter connection
-        try {
-            await transporter.verify();
-            console.log("SMTP Connection verified");
-        } catch (verifyError) {
-            console.error("SMTP Connection Failed:", verifyError);
-            return NextResponse.json({ success: false, error: "SMTP Connection Failed", details: verifyError }, { status: 500 });
-        }
 
         // 0. Save Order to Database
         try {
@@ -77,19 +68,17 @@ export async function POST(request: Request) {
         // 2. Send Emails (Parallel)
         await Promise.all([
             // Customer Email
-            transporter.sendMail({
-                from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
-                to: customer.email,
-                subject: `Order Confirmation - ${orderId}`,
-                html: emailHtml,
-            }),
+            sendEmail(
+                customer.email,
+                `Order Confirmation - ${orderId}`,
+                emailHtml
+            ),
             // Admin Email
-            transporter.sendMail({
-                from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
-                to: "vaishnaviorganics1995@gmail.com", // Admin Email
-                subject: `New Order: ${orderId} from ${customer.name}`,
-                html: adminEmailHtml,
-            })
+            sendEmail(
+                "vaishnaviorganics1995@gmail.com", // Admin Email
+                `New Order: ${orderId} from ${customer.name}`,
+                adminEmailHtml
+            )
         ]);
 
         console.log("Emails sent successfully to Customer and Admin");

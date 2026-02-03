@@ -3,7 +3,7 @@ export const dynamic = "force-dynamic";
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Order from '@/models/Order';
-import { transporter } from '@/lib/email';
+import { sendEmail } from '@/lib/email';
 
 export async function GET(req: Request) {
     try {
@@ -76,12 +76,12 @@ export async function PUT(req: Request) {
                 </div>
             `;
 
-            await transporter.sendMail({
-                from: '"Vaishnavi Organics" <agentcat31@gmail.com>',
-                to: updatedOrder.customer?.email,
-                subject: `Order Update: ${orderId} is ${updatedOrder.status}`,
-                html: emailHtml,
-            });
+
+            await sendEmail(
+                updatedOrder.customer?.email,
+                `Order Update: ${orderId} is ${updatedOrder.status}`,
+                emailHtml
+            );
             console.log(`Status update email sent to ${updatedOrder.customer?.email}`);
         } catch (emailError) {
             console.error("Failed to send status email:", emailError);
