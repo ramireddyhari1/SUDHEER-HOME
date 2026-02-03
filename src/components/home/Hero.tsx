@@ -65,7 +65,7 @@ export function Hero() {
     const slide = slides[currentSlide];
 
     return (
-        <section className="relative bg-[#8B2E18] text-white overflow-hidden min-h-[700px] md:min-h-[500px] flex items-center transition-all duration-700 group">
+        <section className="relative bg-[#8B2E18] text-white overflow-hidden min-h-[550px] md:min-h-[500px] flex items-center transition-all duration-700 group">
 
             {/* Background Pattern Overlay */}
             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-repeat z-0"></div>
@@ -127,7 +127,7 @@ export function Hero() {
                     </div>
 
                     {/* Right Content - Product Visual */}
-                    <div className="flex-1 relative w-full h-[500px] md:h-[450px] flex items-end justify-center md:justify-end perspective-1000">
+                    <div className="flex-1 relative w-full h-[400px] md:h-[450px] flex items-end justify-center md:justify-end perspective-1000">
 
                         {/* Badge */}
                         <div className="absolute top-10 right-4 md:right-10 z-20 bg-white text-red-700 rounded-full h-32 w-32 flex flex-col items-center justify-center shadow-2xl rotate-12 border-4 border-yellow-400 animate-bounce-slow">
