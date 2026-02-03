@@ -65,7 +65,7 @@ export function Hero() {
     const slide = slides[currentSlide];
 
     return (
-        <section className="relative bg-[#8B2E18] text-white overflow-hidden min-h-[550px] md:min-h-[700px] flex items-center transition-all duration-700 group">
+        <section className="relative bg-[#8B2E18] text-white overflow-hidden min-h-[550px] md:min-h-[500px] flex items-center transition-all duration-700 group">
 
             {/* Background Pattern Overlay */}
             <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] bg-repeat z-0"></div>
@@ -127,7 +127,7 @@ export function Hero() {
                     </div>
 
                     {/* Right Content - Product Visual */}
-                    <div className="flex-1 relative w-full h-[400px] md:h-[600px] flex items-end justify-center md:justify-end perspective-1000">
+                    <div className="flex-1 relative w-full h-[400px] md:h-[450px] flex items-end justify-center md:justify-end perspective-1000">
 
                         {/* Badge */}
                         <div className="absolute top-10 right-4 md:right-10 z-20 bg-white text-red-700 rounded-full h-32 w-32 flex flex-col items-center justify-center shadow-2xl rotate-12 border-4 border-yellow-400 animate-bounce-slow">
@@ -138,7 +138,7 @@ export function Hero() {
                         </div>
 
                         {/* Product Layer 1 (Back Decor) */}
-                        <div className="absolute w-64 h-80 md:w-80 md:h-[450px] z-10 translate-x-10 translate-y-10 rotate-6 transition-transform hover:rotate-0 duration-700 opacity-60 grayscale blur-[1px]">
+                        <div className="absolute w-64 h-80 md:w-64 md:h-[350px] z-10 translate-x-10 translate-y-10 rotate-6 transition-transform hover:rotate-0 duration-700 opacity-60 grayscale blur-[1px]">
                             <Image
                                 src="https://images.unsplash.com/photo-1631451095765-2c91616fc9e6?auto=format&fit=crop&q=80&w=600"
                                 alt="Decor"
@@ -148,7 +148,7 @@ export function Hero() {
                         </div>
 
                         {/* Product Layer 2 (Front - Main Slide Image) */}
-                        <div key={currentSlide} className="relative w-56 h-72 md:w-80 md:h-[450px] z-20 -translate-x-6 md:-translate-x-20 hover:scale-110 transition-transform duration-500 animate-in zoom-in-95 fade-in duration-700 group-hover:rotate-1">
+                        <div key={currentSlide} className="relative w-56 h-72 md:w-64 md:h-[350px] z-20 -translate-x-6 md:-translate-x-20 hover:scale-110 transition-transform duration-500 animate-in zoom-in-95 fade-in duration-700 group-hover:rotate-1">
                             <Image
                                 src={slide.image}
                                 alt="Hero Product"

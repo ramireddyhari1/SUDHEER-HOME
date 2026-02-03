@@ -99,7 +99,7 @@ export function HeroCarousel() {
         <section className="w-full bg-white pb-0 pt-0">
             <div className="w-full">
                 {/* Carousel Container - Full Screen Earthy Hero */}
-                <div className="relative w-full overflow-hidden aspect-[2/1] md:aspect-auto md:h-screen md:min-h-[700px]">
+                <div className="relative w-full overflow-hidden aspect-[2/1] md:aspect-[3.4/1] md:h-auto md:min-h-[450px] md:max-h-[550px]">
 
                     {/* Embla Viewport */}
                     <div className="overflow-hidden h-full" ref={emblaRef}>
@@ -129,7 +129,7 @@ export function HeroCarousel() {
                                         <div className="absolute inset-0 bg-black/20" /> {/* Slight darkener for text pop */}
 
                                         {/* Content - Centered & Floating */}
-                                        <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-6 md:p-12 pb-10 pt-10 md:pb-20 md:pt-20">
+                                        <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-6 md:p-12 pb-10 pt-10 md:pb-12 md:pt-12">
                                             {!slide.hideText && (
                                                 <>
                                                     <motion.h2
@@ -137,7 +137,7 @@ export function HeroCarousel() {
                                                         animate={isActive ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                                                         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
                                                         className="font-bold text-white mb-6 drop-shadow-2xl max-w-4xl leading-tight animate-float"
-                                                        style={{ fontSize: 'clamp(2.5rem, 8vw, 5rem)', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
+                                                        style={{ fontSize: 'clamp(2rem, 6vw, 4rem)', textShadow: '2px 2px 4px rgba(0,0,0,0.5)' }}
                                                     >
                                                         {slide.title}
                                                     </motion.h2>
