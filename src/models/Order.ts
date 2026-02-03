@@ -27,6 +27,12 @@ const OrderSchema = new Schema({
     status: { type: String, default: 'Processing' }, // Processing, In Transit, Delivered, Cancelled
     trackingNumber: String,
     courierName: String,
+
+    // Partner/Affiliate tracking
+    partnerCode: { type: String, uppercase: true },
+    partnerId: { type: Schema.Types.ObjectId, ref: 'Partner' },
+    partnerCommission: { type: Number, default: 0 },
+
     date: { type: Date, default: Date.now }
 });
 

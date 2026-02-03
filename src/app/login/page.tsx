@@ -79,62 +79,110 @@ export default function LoginPage() {
         }
     };
 
+    // Toggle between Login and Sign Up view (logic remains same for OTP)
+    const [isLoginView, setIsLoginView] = useState(true);
+
     return (
-        <div className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
-            {/* VIDEO BACKGROUND */}
-            {/* IMAGE BACKGROUND */}
-            <div className="absolute inset-0 z-0">
-                <div role="img" aria-label="Andhra Theme Background" className="w-full h-full absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/login_bg.png')" }}></div>
-                {/* Dark Overlay for Readability */}
-                <div className="absolute inset-0 bg-black/60 backdrop-blur-[1px]"></div>
+        <div className="h-screen w-full flex flex-col md:flex-row overflow-hidden bg-white">
+
+            {/* LEFT SIDE - ILLUSTRATION & SHAPES */}
+            <div className="relative w-full md:w-[55%] lg:w-[60%] h-[40vh] md:h-full bg-white flex items-center justify-center p-6 md:p-12 overflow-hidden order-2 md:order-1">
+                {/* BACK BUTTON (Mobile position usually, but keeping absolute for now) */}
+                <div className="absolute top-4 left-4 z-20">
+                    <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-[#154D3E] transition-colors group">
+                        <div className="p-2 rounded-full bg-gray-100 group-hover:bg-gray-200 transition-colors">
+                            <ArrowLeft className="h-5 w-5" />
+                        </div>
+                        <span className="font-bold text-sm">Back to Store</span>
+                    </Link>
+                </div>
+
+                {/* Partners Button - Left side top right */}
+                <div className="absolute top-4 right-4 z-20 md:hidden">
+                    <Link
+                        href="/partners/login"
+                        className="flex items-center gap-2 bg-[#154D3E] text-white px-4 py-2 rounded-full shadow-lg text-xs font-bold"
+                    >
+                        <span>⭐</span>
+                        <span>PARTNERS</span>
+                    </Link>
+                </div>
+
+                {/* Organic Blobs Background - Removed for cleaner look */}
+
+                {/* Illustration Container */}
+                <div className="relative z-10 w-full max-w-lg">
+                    <div className="relative w-full aspect-square max-h-[500px] mx-auto flex items-center justify-center p-8">
+                        <img
+                            src="/login-illustration.png"
+                            alt="Organic Lifestyle"
+                            className="w-full h-full object-contain mix-blend-multiply hover:scale-105 transition-transform duration-500"
+                        />
+                    </div>
+                </div>
+
+                {/* Wavy Divider - SVG Overlay */}
+                <div className="absolute top-0 right-[-1px] bottom-0 w-24 md:w-48 h-full hidden md:block pointer-events-none z-20">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full text-[#0A2F1C] fill-current drop-shadow-[-10px_0_10px_rgba(0,0,0,0.1)]">
+                        <path d="M100 0 C 40 30 60 70 100 100 L 100 100 L 100 0 Z" />
+                    </svg>
+                </div>
+                {/* For smaller screens, wave at bottom */}
+                <div className="absolute bottom-[-1px] left-0 right-0 h-24 w-full md:hidden pointer-events-none z-20">
+                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full text-[#0A2F1C] fill-current">
+                        <path d="M0 100 C 30 40 70 60 100 100 L 100 100 L 0 100 Z" />
+                    </svg>
+                </div>
+
             </div>
 
-            {/* BACK BUTTON */}
-            <div className="absolute top-4 md:top-6 left-4 md:left-6 z-20">
-                <Link href="/" className="flex items-center gap-2 text-white/80 hover:text-white transition-colors">
-                    <ArrowLeft className="h-5 w-5" />
-                    <span className="font-medium text-sm">Back to Store</span>
-                </Link>
-            </div>
+            {/* RIGHT SIDE - LOGIN FORM */}
+            <div className="w-full md:w-[45%] lg:w-[40%] min-h-[60vh] md:h-full bg-[#0A2F1C] flex flex-col justify-center items-center p-8 relative order-1 md:order-2 shadow-2xl z-10">
 
-            {/* ADMIN LOGIN LINK - TOP RIGHT */}
-            <div className="absolute top-4 md:top-6 right-4 md:right-6 z-20">
-                <Link href="/admin/login" className="flex items-center gap-2 text-white/60 hover:text-white transition-colors px-4 py-2 rounded-full border border-white/10 hover:bg-white/10 hover:border-white/20">
-                    <span className="font-medium text-xs uppercase tracking-wider">Admin</span>
-                </Link>
-            </div>
+                {/* Partners Button - Desktop */}
+                <div className="absolute top-6 right-6 z-20 hidden md:block">
+                    <Link
+                        href="/partners/login"
+                        className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white px-5 py-2 rounded-full transition-all border border-white/20 hover:scale-105 active:scale-95 backdrop-blur-sm"
+                    >
+                        <span className="text-lg">⭐</span>
+                        <span className="text-xs font-bold tracking-wider">PARTNERS</span>
+                    </Link>
+                </div>
 
-            {/* GLASSMORPHISM CARD */}
-            <div className="relative z-10 w-full max-w-md p-4 sm:p-10 mx-4">
-                <div className="bg-white/10 border border-white/20 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] backdrop-blur-md p-6 sm:p-10">
-
-                    <div className="text-center mb-6 md:mb-10">
-                        <h1 className="font-serif text-2xl md:text-4xl font-bold text-white mb-2">Welcome Back</h1>
-                        <p className="text-white/70 text-sm">
-                            {step === 'email' ? "Sign in to access your organic journey" : `Enter the OTP sent to ${email}`}
+                <div className="w-full max-w-sm space-y-8 animate-fade-in-up">
+                    <div className="text-center text-white space-y-3">
+                        <h2 className="text-4xl md:text-5xl font-serif font-bold tracking-tight text-white/90">
+                            {isLoginView ? "Welcome Back" : "Join Us"}
+                        </h2>
+                        <p className="text-emerald-100/70 text-sm font-light tracking-wide">
+                            {isLoginView ? "Enter your details to access your organic journey" : "Start your organic journey with us today"}
                         </p>
                     </div>
 
                     <div className="space-y-6">
-                        {/* Error/Success Message */}
+                        {/* Messages */}
                         {message && (
-                            <div className={`p-3 rounded-lg text-sm text-center font-medium ${message.type === 'error' ? 'bg-red-500/20 text-red-200 border border-red-500/30' : 'bg-green-500/20 text-green-200 border border-green-500/30'}`}>
+                            <div className={`p-4 rounded-xl text-sm text-center font-medium backdrop-blur-sm border ${message.type === 'error'
+                                ? 'bg-red-500/10 text-red-100 border-red-500/20'
+                                : 'bg-emerald-500/10 text-emerald-100 border-emerald-500/20'
+                                }`}>
                                 {message.text}
                             </div>
                         )}
 
                         {step === 'email' ? (
-                            <>
-                                {/* Google Button */}
+                            <div className="space-y-6">
+                                {/* Google Login */}
                                 <button
                                     onClick={handleGoogleLogin}
                                     disabled={isGoogleLoading}
-                                    className="w-full flex justify-center items-center gap-3 py-3.5 px-4 bg-white rounded-xl shadow-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-black focus:ring-white transition-all transform active:scale-95 group"
+                                    className="w-full h-14 bg-white hover:bg-emerald-50 text-[#0A2F1C] rounded-2xl font-bold shadow-lg shadow-black/10 transition-all flex items-center justify-center gap-3 active:scale-95 group border-2 border-transparent hover:border-emerald-200"
                                 >
                                     {isGoogleLoading ? (
                                         <div className="flex items-center gap-2">
-                                            <span className="w-4 h-4 border-2 border-gray-400 border-t-gray-800 rounded-full animate-spin"></span>
-                                            <span className="text-gray-600 font-medium">Connecting...</span>
+                                            <span className="w-4 h-4 border-2 border-[#0A2F1C] border-t-transparent rounded-full animate-spin"></span>
+                                            <span className="text-[#0A2F1C]">Connecting...</span>
                                         </div>
                                     ) : (
                                         <>
@@ -144,37 +192,37 @@ export default function LoginPage() {
                                                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05" />
                                                 <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
                                             </svg>
-                                            <span className="text-gray-900 font-bold">Sign in with Google</span>
+                                            <span className="font-bold">
+                                                {isLoginView ? "Sign in with Google" : "Sign up with Google"}
+                                            </span>
                                         </>
                                     )}
                                 </button>
 
-                                <div className="relative py-2">
+                                <div className="relative">
                                     <div className="absolute inset-0 flex items-center">
-                                        <div className="w-full border-t border-white/20" />
+                                        <div className="w-full border-t border-white/10"></div>
                                     </div>
-                                    <div className="relative flex justify-center text-xs">
-                                        <span className="px-3 text-white/50 bg-transparent uppercase tracking-wider backdrop-blur-xl">Or using email</span>
+                                    <div className="relative flex justify-center text-sm">
+                                        <span className="px-4 bg-[#0A2F1C] text-white/40 uppercase tracking-widest text-xs font-semibold">Or with email</span>
                                     </div>
                                 </div>
 
-                                <form className="space-y-5" onSubmit={handleSendOtp}>
-                                    <div>
-                                        <label htmlFor="email" className="sr-only">Email address</label>
+                                <form onSubmit={handleSendOtp} className="space-y-6">
+                                    <div className="space-y-2">
+                                        <label htmlFor="email" className="text-sm font-medium text-emerald-100/90 ml-1">Email Address</label>
                                         <div className="relative group">
                                             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                                <Mail className="h-5 w-5 text-white/50 group-focus-within:text-white transition-colors" />
+                                                <Mail className="h-5 w-5 text-emerald-300/70 group-focus-within:text-emerald-300 transition-colors" />
                                             </div>
                                             <input
                                                 id="email"
-                                                name="email"
                                                 type="email"
-                                                autoComplete="email"
                                                 required
                                                 value={email}
                                                 onChange={(e) => setEmail(e.target.value)}
-                                                className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none"
-                                                placeholder="Email address"
+                                                className="block w-full h-14 pl-12 pr-4 rounded-2xl bg-white/5 text-white placeholder-emerald-100/30 border border-white/10 focus:ring-2 focus:ring-emerald-400/50 focus:border-transparent focus:bg-white/10 transition-all font-medium outline-none backdrop-blur-sm"
+                                                placeholder="name@example.com"
                                             />
                                         </div>
                                     </div>
@@ -182,54 +230,74 @@ export default function LoginPage() {
                                     <Button
                                         type="submit"
                                         disabled={isSendingOtp}
-                                        className="w-full h-12 bg-[#DAA520] hover:bg-[#B8860B] text-[#2C1810] rounded-xl font-bold shadow-lg shadow-yellow-900/20 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                        className="w-full h-14 bg-gradient-to-r from-[#FFD700] to-[#FFA500] hover:from-[#FFE44D] hover:to-[#FFB733] text-[#2C1810] rounded-2xl font-bold shadow-lg shadow-orange-500/20 transition-all transform hover:scale-[1.02] active:scale-95 border border-white/10 uppercase tracking-widest text-sm"
                                     >
-                                        {isSendingOtp ? "Sending OTP..." : "Get Login Code"}
+                                        {isSendingOtp ? "Sending Code..." : (isLoginView ? "GET LOGIN CODE" : "CREATE ACCOUNT")}
                                     </Button>
                                 </form>
-                            </>
+
+                                {/* Toggle Login/Signup */}
+                                <div className="text-center pt-2">
+                                    <p className="text-emerald-100/60 text-sm">
+                                        {isLoginView ? "New to Sweet Organic? " : "Already have an account? "}
+                                        <button
+                                            onClick={() => setIsLoginView(!isLoginView)}
+                                            className="text-[#FFD700] hover:text-[#FFE44D] font-bold underline decoration-transparent hover:decoration-[#FFD700] transition-all ml-1"
+                                        >
+                                            {isLoginView ? "Create Account" : "Login Here"}
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
                         ) : (
-                            <form className="space-y-5" onSubmit={handleVerifyOtp}>
-                                <div>
-                                    <label htmlFor="otp" className="sr-only">OTP Code</label>
+                            <form onSubmit={handleVerifyOtp} className="space-y-6">
+                                <div className="space-y-2">
+                                    <label htmlFor="otp" className="text-sm font-medium text-emerald-100/90 ml-1">Verification Code</label>
                                     <div className="relative group">
                                         <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                            <KeyRound className="h-5 w-5 text-white/50 group-focus-within:text-white transition-colors" />
+                                            <KeyRound className="h-5 w-5 text-emerald-300/70 group-focus-within:text-emerald-300 transition-colors" />
                                         </div>
                                         <input
                                             id="otp"
-                                            name="otp"
                                             type="text"
                                             maxLength={6}
-                                            autoComplete="one-time-code"
                                             required
                                             value={otpCode}
                                             onChange={(e) => setOtpCode(e.target.value)}
-                                            className="block w-full pl-11 h-12 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/70 focus:ring-2 focus:ring-white/50 focus:border-transparent focus:bg-white/10 transition-all outline-none tracking-[0.5em] font-mono text-center"
-                                            placeholder="123456"
+                                            className="block w-full h-14 pl-12 pr-4 rounded-2xl bg-white/5 text-white placeholder-emerald-100/30 border border-white/10 focus:ring-2 focus:ring-emerald-400/50 focus:border-transparent focus:bg-white/10 transition-all font-mono tracking-[0.5em] text-xl text-center outline-none backdrop-blur-sm"
+                                            placeholder="••••••"
+                                            autoFocus
                                         />
                                     </div>
+                                    <p className="text-center text-emerald-100/40 text-xs">Code sent to <span className="text-emerald-100/80">{email}</span></p>
                                 </div>
 
                                 <Button
                                     type="submit"
                                     disabled={isVerifying}
-                                    className="w-full h-12 bg-[#DAA520] hover:bg-[#B8860B] text-[#2C1810] rounded-xl font-bold shadow-lg shadow-yellow-900/20 ring-1 ring-white/10 transition-all hover:scale-[1.02] active:scale-95 disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="w-full h-14 bg-gradient-to-r from-[#FFD700] to-[#FFA500] hover:from-[#FFE44D] hover:to-[#FFB733] text-[#2C1810] rounded-2xl font-bold shadow-lg shadow-orange-500/20 transition-all transform hover:scale-[1.02] active:scale-95 border border-white/10 uppercase tracking-widest text-sm"
                                 >
-                                    {isVerifying ? "Verifying..." : "Verify & Login"}
+                                    {isVerifying ? "Verifying..." : "VERIFY & PROCEED"}
                                 </Button>
 
                                 <button
                                     type="button"
                                     onClick={() => setStep('email')}
-                                    className="w-full text-sm text-white/60 hover:text-white transition-colors"
+                                    className="w-full text-sm text-emerald-100/50 hover:text-white transition-colors py-2 flex items-center justify-center gap-2 group"
                                 >
-                                    Change Email or Resend
+                                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                                    <span>Change details</span>
                                 </button>
                             </form>
                         )}
                     </div>
+
+                    {/* Copyright footer */}
+                    <div className="absolute bottom-4 left-0 right-0 text-center">
+                        <p className="text-emerald-100/20 text-xs">© 2026 Sweet Organic Store</p>
+                    </div>
                 </div>
+
             </div>
         </div>
     );

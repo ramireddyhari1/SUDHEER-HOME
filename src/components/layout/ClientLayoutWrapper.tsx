@@ -12,19 +12,21 @@ import { MobileBottomNav } from "@/components/layout/MobileBottomNav";
 export function ClientLayoutWrapper({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     const isAdminRoute = pathname?.startsWith("/admin");
+    const isAuthRoute = pathname === "/login" || pathname === "/partners/login";
+    const shouldHideLayout = isAdminRoute || isAuthRoute;
 
     return (
         <div className="flex min-h-screen flex-col">
-            {!isAdminRoute && <AnnouncementBar />}
+            {!shouldHideLayout && <AnnouncementBar />}
             <VideoLoader />
-            {!isAdminRoute && <FloatingButtons />}
-            {!isAdminRoute && <Navbar />}
+            {!shouldHideLayout && <FloatingButtons />}
+            {!shouldHideLayout && <Navbar />}
             <main className="flex-1">
                 {children}
             </main>
-            {!isAdminRoute && <Footer />}
-            {!isAdminRoute && <CartSpacer />}
-            {!isAdminRoute && <MobileBottomNav />}
+            {!shouldHideLayout && <Footer />}
+            {!shouldHideLayout && <CartSpacer />}
+            {!shouldHideLayout && <MobileBottomNav />}
         </div>
     );
 }
