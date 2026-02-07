@@ -175,6 +175,7 @@ export default function AdminShippingPage() {
                         <button
                             onClick={() => removeRate(idx)}
                             className="absolute top-2 right-2 text-red-400 hover:text-red-600 p-1"
+                            aria-label="Remove rate"
                         >
                             <Trash2 className="w-4 h-4" />
                         </button>
@@ -186,6 +187,7 @@ export default function AdminShippingPage() {
                                     className="w-full border rounded p-2 mt-1 text-sm font-bold"
                                     value={rate.region}
                                     onChange={(e) => updateRate(idx, "region", e.target.value)}
+                                    aria-label="Region Name"
                                 />
                             </div>
 
@@ -196,6 +198,7 @@ export default function AdminShippingPage() {
                                         className="w-full border rounded p-2 mt-1 text-sm"
                                         value={rate.price}
                                         onChange={(e) => updateRate(idx, "price", e.target.value)}
+                                        aria-label="Price"
                                     />
                                 </div>
                                 <div>
@@ -204,6 +207,7 @@ export default function AdminShippingPage() {
                                         className="w-full border rounded p-2 mt-1 text-sm"
                                         value={rate.time}
                                         onChange={(e) => updateRate(idx, "time", e.target.value)}
+                                        aria-label="Time"
                                     />
                                 </div>
                             </div>
@@ -217,6 +221,7 @@ export default function AdminShippingPage() {
                                             onClick={() => updateRate(idx, "color", preset.class)}
                                             className={`w-6 h-6 rounded-full border ${preset.name === "Blue" ? "bg-blue-200" : preset.name === "Purple" ? "bg-purple-200" : preset.name === "Green" ? "bg-green-200" : preset.name === "Orange" ? "bg-orange-200" : "bg-red-200"} ${rate.color === preset.class ? "ring-2 ring-offset-1 ring-gray-400" : ""}`}
                                             title={preset.name}
+                                            aria-label={`Select ${preset.name} color`}
                                         />
                                     ))}
                                 </div>
