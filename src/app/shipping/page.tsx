@@ -113,13 +113,7 @@ export default function ShippingPage() {
             </div>
 
             {/* Master Background Layer 4: Grid Pattern */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
-                backgroundImage: `
-                    linear-gradient(0deg, #6F4E37 1px, transparent 1px),
-                    linear-gradient(90deg, #6F4E37 1px, transparent 1px)
-                `,
-                backgroundSize: '50px 50px'
-            }} />
+            <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-grid-pattern" />
 
             {/* Master Background Layer 5: Top Accent Bar */}
             <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#DAA520] to-transparent opacity-30" />
