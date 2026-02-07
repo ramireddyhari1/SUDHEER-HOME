@@ -2,6 +2,10 @@
   "name": "sweet",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ramireddyhari1/SUDHEER-HOME"
+  },
   "scripts": {
     "clean": "echo skip clean on windows",
     "dev": "next dev",
