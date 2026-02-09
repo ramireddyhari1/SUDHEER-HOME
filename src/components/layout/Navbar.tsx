@@ -58,7 +58,7 @@ export function Navbar() {
                                     priority
                                 />
                             </div>
-                            <span className="hidden sm:block text-xl sm:text-2xl lg:text-3xl font-bold text-[#6F4E37] tracking-tighter whitespace-nowrap" style={{ fontFamily: 'var(--font-arista)', letterSpacing: '-0.02em' }}>Vaishnavi Organics</span>
+                            <span className="text-sm sm:text-2xl lg:text-3xl font-bold text-[#6F4E37] tracking-tighter whitespace-nowrap" style={{ fontFamily: 'var(--font-arista)', letterSpacing: '-0.02em' }}>Vaishnavi Organics</span>
                         </Link>
 
                         {/* Desktop Navigation - Centered & Earthy */}
