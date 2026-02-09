@@ -61,14 +61,9 @@ export function SiripurapuStore() {
                     {/* Text Content */}
                     <div className="relative z-10 text-center px-4">
                         <div className="flex items-center justify-center gap-4">
-                            {/* Decorative Bows/Ribbons (using Lucide as placeholder or similar aesthetic) */}
-                            <span className="text-3xl md:text-5xl text-red-600 drop-shadow-md hidden md:inline">🎀</span>
-
                             <h2 className="text-2xl md:text-5xl font-black text-[#0B2136] tracking-wide uppercase drop-shadow-sm px-4 py-2" style={{ fontFamily: 'var(--font-arista)' }} suppressHydrationWarning>
                                 Siripurapu Vari <br className="md:hidden" /> Store
                             </h2>
-
-                            <span className="text-3xl md:text-5xl text-red-600 drop-shadow-md hidden md:inline">🎀</span>
                         </div>
                         <p className="text-[#5D4037] font-medium text-[10px] md:text-sm tracking-widest uppercase mt-1 md:mt-2 opacity-90">
                             — Est. 1998 —
