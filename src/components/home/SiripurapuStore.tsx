@@ -64,7 +64,7 @@ export function SiripurapuStore() {
                             {/* Decorative Bows/Ribbons (using Lucide as placeholder or similar aesthetic) */}
                             <span className="text-3xl md:text-5xl text-red-600 drop-shadow-md hidden md:inline">🎀</span>
 
-                            <h2 className="text-2xl md:text-5xl font-serif font-black text-[#0B2136] tracking-wide uppercase drop-shadow-sm px-4 py-2">
+                            <h2 className="text-2xl md:text-5xl font-black text-[#0B2136] tracking-wide uppercase drop-shadow-sm px-4 py-2" style={{ fontFamily: 'var(--font-arista)' }} suppressHydrationWarning>
                                 Siripurapu Vari <br className="md:hidden" /> Store
                             </h2>
 
