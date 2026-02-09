@@ -68,7 +68,7 @@ export function ProductCategories() {
         <section className="pt-2 pb-6 md:py-16 bg-transparent/50">
             <Container>
                 <div className="text-center mb-2 md:mb-10">
-                    <h2 className="text-xl md:text-3xl font-bold font-arista text-foreground">Shop by Category</h2>
+                    <h2 className="text-xl md:text-3xl font-bold font-serif text-foreground">Shop by Category</h2>
                 </div>
 
                 <div className="grid grid-cols-3 md:flex md:gap-8 gap-x-3 gap-y-6 px-2 md:px-4 justify-items-center md:justify-center w-full">

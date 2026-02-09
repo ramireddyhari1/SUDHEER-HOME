@@ -64,9 +64,7 @@ export function FeaturedCollections() {
             <Container>
                 <div className="mb-8 text-center">
                     <h2 
-                        className="font-serif text-2xl md:text-3xl font-bold text-[#2C1810] mb-2"
-                        style={{ fontFamily: "var(--font-arista)" }}
-                        suppressHydrationWarning
+                        className="font-arista text-2xl md:text-3xl font-bold text-[#2C1810] mb-2"
                     >
                         Featured this week!
                     </h2>
