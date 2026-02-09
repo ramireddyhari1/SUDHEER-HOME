@@ -35,31 +35,31 @@ export function Navbar() {
                 <div className="mx-auto max-w-[1440px] pl-3 pr-4 lg:px-8 relative">
                     <div className="flex h-[52px] lg:h-[80px] items-center justify-between gap-4">
 
-                        {/* Left: Menu (mobile) + Logo & Company Name */}
-                        <div className="flex items-center gap-2 lg:gap-3 min-w-0 flex-shrink-0">
-                            <div className="flex-shrink-0 flex items-center lg:hidden z-10">
-                                <button
-                                    onClick={() => setIsOpen(!isOpen)}
-                                    className="p-2 -ml-1 text-[#6F4E37] active:scale-95 transition-transform"
-                                    aria-label="Open menu"
-                                >
-                                    <Menu className="h-6 w-6 stroke-[2]" />
-                                </button>
-                            </div>
-                            <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
-                                {/* Logo Video/Image */}
-                                <div className="relative h-9 w-9 lg:h-16 lg:w-16 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-                                    <Image
-                                        src="/main.png"
-                                        alt="Vaishnavi Organics"
-                                        fill
-                                        className="object-contain mix-blend-multiply"
-                                        priority
-                                    />
-                                </div>
-                                <span className="text-xl sm:text-2xl lg:text-3xl font-bold text-[#6F4E37] tracking-tighter whitespace-nowrap" style={{ fontFamily: 'var(--font-arista)', letterSpacing: '-0.02em' }}>Vaishnavi Organics</span>
-                            </Link>
+                        {/* Left: Menu (mobile only) */}
+                        <div className="flex-shrink-0 flex items-center lg:hidden z-10">
+                            <button
+                                onClick={() => setIsOpen(!isOpen)}
+                                className="p-2 -ml-1 text-[#6F4E37] active:scale-95 transition-transform"
+                                aria-label="Open menu"
+                            >
+                                <Menu className="h-6 w-6 stroke-[2]" />
+                            </button>
                         </div>
+
+                        {/* Center: Logo & Company Name (Mobile Centered) */}
+                        <Link href="/" className="flex items-center gap-2 group flex-shrink-0 absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
+                            {/* Logo Video/Image */}
+                            <div className="relative h-9 w-9 lg:h-16 lg:w-16 flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                <Image
+                                    src="/main.png"
+                                    alt="Vaishnavi Organics"
+                                    fill
+                                    className="object-contain mix-blend-multiply"
+                                    priority
+                                />
+                            </div>
+                            <span className="hidden sm:block text-xl sm:text-2xl lg:text-3xl font-bold text-[#6F4E37] tracking-tighter whitespace-nowrap" style={{ fontFamily: 'var(--font-arista)', letterSpacing: '-0.02em' }}>Vaishnavi Organics</span>
+                        </Link>
 
                         {/* Desktop Navigation - Centered & Earthy */}
                         <nav className="hidden lg:flex items-center justify-center flex-1 gap-6 xl:gap-8 px-4 min-w-0">
