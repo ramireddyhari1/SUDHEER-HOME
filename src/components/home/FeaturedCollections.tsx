@@ -65,6 +65,7 @@ export function FeaturedCollections() {
                 <div className="mb-8 text-center">
                     <h2 
                         className="font-arista text-2xl md:text-3xl font-bold text-[#2C1810] mb-2"
+                        suppressHydrationWarning
                     >
                         Featured this week!
                     </h2>
