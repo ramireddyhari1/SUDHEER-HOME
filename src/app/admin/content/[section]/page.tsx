@@ -35,6 +35,17 @@ const SECTIONS: Record<string, { title: string, fields: ContentField[] }> = {
             { key: "story_image_url", label: "Story Image", type: "image" },
         ]
     },
+    "products-banner": {
+        title: "Products Page Banner",
+        fields: [
+            {
+                key: "products_banner_slides",
+                label: "Products Banner Slides",
+                type: "slides",
+                description: "Add banner slides for the products page. These appear at the top of the /products page."
+            },
+        ]
+    },
     "footer": {
         title: "Footer Information",
         fields: [
@@ -78,10 +89,14 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
     const handleSave = async () => {
         setSaving(true);
         try {
-            // Ensure hero_slides is an array before saving, if it exists
+            // Ensure any slides fields are arrays before saving
             const updatesToSave = { ...formData };
-            if (section === 'home-hero' && !updatesToSave.hero_slides) {
-                updatesToSave.hero_slides = [];
+            if (sectionConfig) {
+                sectionConfig.fields.forEach((field) => {
+                    if (field.type === 'slides' && !updatesToSave[field.key]) {
+                        updatesToSave[field.key] = [];
+                    }
+                });
             }
 
             const res = await fetch('/api/content', {
@@ -126,11 +141,13 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
 
             if (data.success) {
                 if (slideIndex !== undefined) {
-                    // Update specific slide image
-                    const slides = [...(formData.hero_slides || [])];
+                    // Update specific slide image — find the slides field key for this section
+                    const slidesField = sectionConfig?.fields.find(f => f.type === 'slides');
+                    const slidesKey = slidesField?.key || 'hero_slides';
+                    const slides = [...(formData[slidesKey] || [])];
                     if (!slides[slideIndex]) slides[slideIndex] = {};
                     slides[slideIndex].image = data.url;
-                    setFormData({ ...formData, hero_slides: slides });
+                    setFormData({ ...formData, [slidesKey]: slides });
                 } else {
                     setFormData((prev: any) => ({ ...prev, [fieldKey]: data.url }));
                 }
@@ -144,24 +161,32 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
         }
     };
 
-    // Helper to manage slides
+    // Helper to manage slides — generic for any slides field key
+    const getSlidesKey = () => {
+        const slidesField = sectionConfig?.fields.find(f => f.type === 'slides');
+        return slidesField?.key || 'hero_slides';
+    };
+
     const updateSlide = (index: number, field: string, value: string) => {
-        const slides = [...(formData.hero_slides || [])];
+        const key = getSlidesKey();
+        const slides = [...(formData[key] || [])];
         if (!slides[index]) slides[index] = {};
         slides[index][field] = value;
-        setFormData({ ...formData, hero_slides: slides });
+        setFormData({ ...formData, [key]: slides });
     };
 
     const addSlide = () => {
-        const slides = [...(formData.hero_slides || [])];
+        const key = getSlidesKey();
+        const slides = [...(formData[key] || [])];
         slides.push({ title: "New Slide", subtitle: "Subtitle", buttonText: "Shop Now", link: "/products", image: "" });
-        setFormData({ ...formData, hero_slides: slides });
+        setFormData({ ...formData, [key]: slides });
     };
 
     const removeSlide = (index: number) => {
-        const slides = [...(formData.hero_slides || [])];
+        const key = getSlidesKey();
+        const slides = [...(formData[key] || [])];
         slides.splice(index, 1);
-        setFormData({ ...formData, hero_slides: slides });
+        setFormData({ ...formData, [key]: slides });
     };
 
     if (!sectionConfig) {
@@ -203,7 +228,7 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
 
                                 {field.type === 'slides' ? (
                                     <div className="space-y-4">
-                                        {(formData.hero_slides || []).map((slide: any, index: number) => (
+                                        {(formData[field.key] || []).map((slide: any, index: number) => (
                                             <div key={index} className="p-4 border border-gray-200 rounded-xl bg-gray-50 relative">
                                                 <button
                                                     onClick={() => removeSlide(index)}

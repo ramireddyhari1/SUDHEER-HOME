@@ -25,9 +25,8 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     optimizePackageImports: ['lucide-react', 'framer-motion', 'date-fns', 'lodash'],
-    // Enable App Router optimizations
-    serverComponentsExternalPackages: ['mongoose'],
   },
+  serverExternalPackages: ['mongoose'],
   compress: true,
   // Enable gzip compression for responses
 

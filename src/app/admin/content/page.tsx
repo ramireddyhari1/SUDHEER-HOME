@@ -6,6 +6,7 @@ import { ArrowRight, Image as ImageIcon, Type, Layout } from "lucide-react";
 export default function AdminContentPage() {
     const editableSections = [
         { id: "home-hero", name: "Home Banner Carousel", description: "Edit slides, images, and text for the main home banner.", icon: ImageIcon },
+        { id: "products-banner", name: "Products Page Banner", description: "Manage banner carousel on the products page.", icon: ImageIcon },
         { id: "home-story", name: "Our Story Section", description: "Update the 'Our Roots' texts and images.", icon: Type },
         { id: "footer", name: "Footer Information", description: "Manage links and contact info.", icon: Layout },
     ];

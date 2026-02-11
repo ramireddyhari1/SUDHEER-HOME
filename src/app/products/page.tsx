@@ -3,6 +3,7 @@
 import { Container } from "@/components/ui/Container";
 import { BestSellerCard } from "@/components/product/BestSellerCard";
 import { ProductSidebar } from "@/components/products/ProductSidebar";
+import { ProductsBannerCarousel } from "@/components/products/ProductsBannerCarousel";
 
 import { ChevronDown, SlidersHorizontal, Loader2 } from "lucide-react";
 import { useState, useEffect, Suspense } from "react";
@@ -188,19 +189,8 @@ export default function ProductsPage() {
             backgroundRepeat: "repeat",
             backgroundSize: "400px" // Adjust size for pattern scale
         }}>
-            {/* Header Section */}
-            <div className="border-b border-gray-100 bg-gray-50/50 block">
-                <Container className="py-8 lg:py-12">
-                    <div className="max-w-4xl">
-                        <h1 className="font-serif text-3xl md:text-5xl font-bold text-gray-900 mb-3 md:mb-4">
-                            Our Organic Collections
-                        </h1>
-                        <p className="text-gray-600 text-base md:text-lg leading-relaxed max-w-2xl block">
-                            Explore our range of traditionally processed, chemical-free essentials. From <span className="font-semibold text-orange-600">Palm Jaggery</span> to <span className="font-semibold text-orange-600">Heritage Rice</span>, every product is sourced directly from organic farmers.
-                        </p>
-                    </div>
-                </Container>
-            </div>
+            {/* Products Banner Carousel */}
+            <ProductsBannerCarousel />
 
             <div className="lg:container mx-auto">
                 {/* ProductMobileHero removed */}
