@@ -122,11 +122,12 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
         }
     };
 
-    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldKey: string, slideIndex?: number) => {
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, fieldKey: string, slideIndex?: number, imageField?: string) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        const uploadKey = slideIndex !== undefined ? `${fieldKey}-${slideIndex}` : fieldKey;
+        const imgField = imageField || 'image';
+        const uploadKey = slideIndex !== undefined ? `${fieldKey}-${slideIndex}-${imgField}` : fieldKey;
         setUploading(uploadKey);
 
         const uploadData = new FormData();
@@ -141,12 +142,11 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
 
             if (data.success) {
                 if (slideIndex !== undefined) {
-                    // Update specific slide image — find the slides field key for this section
                     const slidesField = sectionConfig?.fields.find(f => f.type === 'slides');
                     const slidesKey = slidesField?.key || 'hero_slides';
                     const slides = [...(formData[slidesKey] || [])];
                     if (!slides[slideIndex]) slides[slideIndex] = {};
-                    slides[slideIndex].image = data.url;
+                    slides[slideIndex][imgField] = data.url;
                     setFormData({ ...formData, [slidesKey]: slides });
                 } else {
                     setFormData((prev: any) => ({ ...prev, [fieldKey]: data.url }));
@@ -178,7 +178,7 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
     const addSlide = () => {
         const key = getSlidesKey();
         const slides = [...(formData[key] || [])];
-        slides.push({ title: "New Slide", subtitle: "Subtitle", buttonText: "Shop Now", link: "/products", image: "" });
+        slides.push({ title: "New Slide", subtitle: "Subtitle", buttonText: "Shop Now", link: "/products", image: "", mobileImage: "" });
         setFormData({ ...formData, [key]: slides });
     };
 
@@ -258,32 +258,32 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
                                                         />
                                                     </div>
 
-                                                    {/* Image Upload for Slide */}
-                                                    <div className="md:col-span-2">
-                                                        <label className="text-xs font-medium text-gray-600 block mb-1">Slide Image</label>
+                                                    {/* Desktop Image Upload */}
+                                                    <div className="md:col-span-2 p-3 bg-blue-50/50 border border-blue-200/50 rounded-xl">
+                                                        <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5 mb-2">🖥️ Desktop Image</label>
                                                         <div className="flex items-center gap-4">
-                                                            <div className="w-20 h-20 bg-gray-100 border rounded-lg overflow-hidden flex-shrink-0 relative">
+                                                            <div className="w-24 h-14 bg-gray-100 border rounded-lg overflow-hidden flex-shrink-0 relative">
                                                                 {slide.image ? (
-                                                                    <img src={slide.image} alt="Preview" className="w-full h-full object-cover" />
+                                                                    <img src={slide.image} alt="Desktop Preview" className="w-full h-full object-cover" />
                                                                 ) : (
-                                                                    <div className="flex items-center justify-center h-full text-xs text-gray-400">No Image</div>
+                                                                    <div className="flex items-center justify-center h-full text-[10px] text-gray-400">No Image</div>
                                                                 )}
-                                                                {uploading === `${field.key}-${index}` && (
+                                                                {uploading === `${field.key}-${index}-image` && (
                                                                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
-                                                                        <Loader2 className="w-5 h-5 text-white animate-spin" />
+                                                                        <Loader2 className="w-4 h-4 text-white animate-spin" />
                                                                     </div>
                                                                 )}
                                                             </div>
-                                                            <div className="flex-1 space-y-2">
+                                                            <div className="flex-1 space-y-1.5">
                                                                 <div className="flex gap-2">
-                                                                    <label className="cursor-pointer bg-[#155E42] hover:bg-[#104a33] text-white text-xs font-medium px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
-                                                                        <Upload className="w-3.5 h-3.5" />
-                                                                        Upload Image
+                                                                    <label className="cursor-pointer bg-[#155E42] hover:bg-[#104a33] text-white text-xs font-medium px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition-colors">
+                                                                        <Upload className="w-3 h-3" />
+                                                                        Upload
                                                                         <input
                                                                             type="file"
                                                                             accept="image/*"
                                                                             className="hidden"
-                                                                            onChange={(e) => handleImageUpload(e, field.key, index)}
+                                                                            onChange={(e) => handleImageUpload(e, field.key, index, 'image')}
                                                                         />
                                                                     </label>
                                                                     <input
@@ -291,12 +291,49 @@ export default function EditContentPage({ params }: { params: Promise<{ section:
                                                                         placeholder="Or paste image URL"
                                                                         value={slide.image || ""}
                                                                         onChange={(e) => updateSlide(index, 'image', e.target.value)}
-                                                                        className="flex-1 text-xs border border-gray-300 rounded-lg px-3 py-2"
+                                                                        className="flex-1 text-xs border border-gray-300 rounded-lg px-3 py-1.5"
                                                                     />
                                                                 </div>
-                                                                <p className="text-[10px] text-gray-500">
-                                                                    Recommended: 1200x600px, WebP or JPG. Max 2MB.
-                                                                </p>
+                                                                <p className="text-[10px] text-gray-400">Recommended: 1600×472px (landscape). WebP or JPG.</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Mobile Image Upload */}
+                                                    <div className="md:col-span-2 p-3 bg-orange-50/50 border border-orange-200/50 rounded-xl">
+                                                        <label className="text-xs font-bold text-gray-700 flex items-center gap-1.5 mb-2">📱 Mobile Image</label>
+                                                        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                                                            <div className="w-14 h-14 bg-gray-100 border rounded-lg overflow-hidden flex-shrink-0 relative">
+                                                                {slide.mobileImage ? (
+                                                                    <img src={slide.mobileImage} alt="Mobile Preview" className="w-full h-full object-cover" />
+                                                                ) : (
+                                                                    <div className="flex items-center justify-center h-full text-[10px] text-gray-400">No Image</div>
+                                                                )}
+                                                                {uploading === `${field.key}-${index}-mobileImage` && (
+                                                                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                                                        <Loader2 className="w-4 h-4 text-white animate-spin" />
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                            <div className="flex-1 w-full space-y-2">
+                                                                <label className="cursor-pointer bg-[#B8860B] hover:bg-[#996F0A] text-white text-sm font-medium px-4 py-2.5 rounded-lg flex items-center justify-center gap-2 transition-colors w-full sm:w-auto">
+                                                                    <Upload className="w-4 h-4" />
+                                                                    Upload Mobile Image
+                                                                    <input
+                                                                        type="file"
+                                                                        accept="image/*"
+                                                                        className="hidden"
+                                                                        onChange={(e) => handleImageUpload(e, field.key, index, 'mobileImage')}
+                                                                    />
+                                                                </label>
+                                                                <input
+                                                                    type="text"
+                                                                    placeholder="Or paste mobile image URL"
+                                                                    value={slide.mobileImage || ""}
+                                                                    onChange={(e) => updateSlide(index, 'mobileImage', e.target.value)}
+                                                                    className="w-full text-xs border border-gray-300 rounded-lg px-3 py-2"
+                                                                />
+                                                                <p className="text-[10px] text-gray-400">Recommended: 800×800px (square). Falls back to desktop if empty.</p>
                                                             </div>
                                                         </div>
                                                     </div>

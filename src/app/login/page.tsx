@@ -87,10 +87,10 @@ export default function LoginPage() {
     const [isLoginView, setIsLoginView] = useState(true);
 
     return (
-        <div className="h-screen w-full flex flex-col md:flex-row overflow-hidden bg-white">
+        <div className="min-h-screen w-full flex flex-col md:flex-row overflow-hidden bg-[#0A2F1C]">
 
-            {/* LEFT SIDE - ILLUSTRATION & SHAPES */}
-            <div className="relative w-full md:w-[55%] lg:w-[60%] h-[40vh] md:h-full bg-white flex items-center justify-center p-6 md:p-12 overflow-hidden order-2 md:order-1">
+            {/* LEFT SIDE - ILLUSTRATION & SHAPES (hidden on mobile) */}
+            <div className="relative hidden md:flex w-full md:w-[55%] lg:w-[60%] md:h-screen bg-white items-center justify-center p-6 md:p-12 overflow-hidden">
                 {/* BACK BUTTON (Mobile position usually, but keeping absolute for now) */}
                 <div className="absolute top-4 left-4 z-20">
                     <Link href="/" className="flex items-center gap-2 text-gray-600 hover:text-[#154D3E] transition-colors group">
@@ -101,8 +101,8 @@ export default function LoginPage() {
                     </Link>
                 </div>
 
-                {/* Partners Button - Left side top right */}
-                <div className="absolute top-4 right-4 z-20 md:hidden">
+                {/* Partners Button - Desktop only (on left side) */}
+                <div className="absolute top-4 right-4 z-20">
                     <Link
                         href="/partners/login"
                         className="flex items-center gap-2 bg-[#154D3E] text-white px-4 py-2 rounded-full shadow-lg text-xs font-bold"
@@ -131,19 +131,29 @@ export default function LoginPage() {
                         <path d="M100 0 C 40 30 60 70 100 100 L 100 100 L 100 0 Z" />
                     </svg>
                 </div>
-                {/* For smaller screens, wave at bottom */}
-                <div className="absolute bottom-[-1px] left-0 right-0 h-24 w-full md:hidden pointer-events-none z-20">
-                    <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="h-full w-full text-[#0A2F1C] fill-current">
-                        <path d="M0 100 C 30 40 70 60 100 100 L 100 100 L 0 100 Z" />
-                    </svg>
-                </div>
-
             </div>
 
             {/* RIGHT SIDE - LOGIN FORM */}
-            <div className="w-full md:w-[45%] lg:w-[40%] min-h-[60vh] md:h-full bg-[#0A2F1C] flex flex-col justify-center items-center p-8 relative order-1 md:order-2 shadow-2xl z-10">
+            <div className="w-full md:w-[45%] lg:w-[40%] min-h-screen md:h-screen bg-[#0A2F1C] flex flex-col justify-center items-center p-8 relative shadow-2xl z-10">
 
-                {/* Partners Button - Desktop */}
+                {/* Mobile-only top bar: Back + Partners */}
+                <div className="absolute top-4 left-4 right-4 flex items-center justify-between z-20 md:hidden">
+                    <Link href="/" className="flex items-center gap-2 text-emerald-100/60 hover:text-white transition-colors group">
+                        <div className="p-2 rounded-full bg-white/10 group-hover:bg-white/20 transition-colors">
+                            <ArrowLeft className="h-4 w-4" />
+                        </div>
+                        <span className="font-bold text-xs">Back</span>
+                    </Link>
+                    <Link
+                        href="/partners/login"
+                        className="flex items-center gap-1.5 bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded-full text-xs font-bold border border-white/20 transition-all"
+                    >
+                        <span>⭐</span>
+                        <span>PARTNERS</span>
+                    </Link>
+                </div>
+
+                {/* Partners Button - Desktop only */}
                 <div className="absolute top-6 right-6 z-20 hidden md:block">
                     <Link
                         href="/partners/login"
@@ -297,7 +307,7 @@ export default function LoginPage() {
                     </div>
 
                     {/* Copyright footer */}
-                    <div className="absolute bottom-0.1 left-0 right-0 text-center">
+                    <div className="mt-6 text-center">
                         <p className="text-emerald-100/20 text-xs">© 2026 Sweet Organic Store</p>
                     </div>
                 </div>

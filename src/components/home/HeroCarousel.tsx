@@ -19,7 +19,7 @@ export function HeroCarousel() {
         const fetchContent = async () => {
             try {
                 // Use 'section' parameter to match API
-                const res = await fetch('/api/content?section=home-hero');
+                const res = await fetch(`/api/content?section=home-hero&t=${Date.now()}`, { cache: 'no-store' });
                 const data = await res.json();
 
                 if (data.success && data.content && data.content.hero_slides && data.content.hero_slides.length > 0) {
@@ -77,10 +77,21 @@ export function HeroCarousel() {
                                 const isActive = index === selectedIndex;
                                 return (
                                     <div className="flex-[0_0_100%] min-w-0 relative h-full overflow-hidden" key={slide.id || Math.random()}>
-                                        {/* Background Image with Ken Burns Effect */}
-                                        <div className="absolute inset-0 w-full h-full">
+                                        {/* Desktop Image */}
+                                        <div className="absolute inset-0 w-full h-full hidden md:block">
                                             <Image
                                                 src={slide.image}
+                                                alt={slide.title || "Banner"}
+                                                fill
+                                                className="object-cover"
+                                                priority={index === 0}
+                                                sizes="100vw"
+                                            />
+                                        </div>
+                                        {/* Mobile Image (falls back to desktop if no mobileImage) */}
+                                        <div className="absolute inset-0 w-full h-full block md:hidden">
+                                            <Image
+                                                src={slide.mobileImage || slide.image}
                                                 alt={slide.title || "Banner"}
                                                 fill
                                                 className="object-cover"
